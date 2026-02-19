@@ -9,6 +9,7 @@ import Sales from './pages/sales/Sales'
 import Customers from './pages/customers/Customers'
 import Inventory from './pages/inventory/Inventory'
 import Reports from './pages/reports/Reports'
+import Settings from './pages/settings/Settings'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -41,6 +42,7 @@ function App() {
       <Route path="/customers" element={user ? <Customers /> : <Navigate to="/login" />} />
       <Route path="/inventory" element={user ? <Inventory /> : <Navigate to="/login" />} />
       <Route path="/reports" element={user ? <Reports /> : <Navigate to="/login" />} />
+      <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
     </Routes>
   )
 }
