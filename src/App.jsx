@@ -7,6 +7,8 @@ import Products from './pages/products/Products'
 import POS from './pages/pos/POS'
 import Sales from './pages/sales/Sales'
 import Customers from './pages/customers/Customers'
+import Inventory from './pages/inventory/Inventory'
+import Reports from './pages/reports/Reports'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -37,6 +39,8 @@ function App() {
       <Route path="/pos" element={user ? <POS /> : <Navigate to="/login" />} />
       <Route path="/sales" element={user ? <Sales /> : <Navigate to="/login" />} />
       <Route path="/customers" element={user ? <Customers /> : <Navigate to="/login" />} />
+      <Route path="/inventory" element={user ? <Inventory /> : <Navigate to="/login" />} />
+      <Route path="/reports" element={user ? <Reports /> : <Navigate to="/login" />} />
     </Routes>
   )
 }
