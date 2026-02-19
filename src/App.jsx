@@ -4,6 +4,7 @@ import { onAuthChange } from './firebase/auth'
 import Login from './pages/auth/Login'
 import Dashboard from './pages/dashboard/Dashboard'
 import Products from './pages/products/Products'
+import POS from './pages/pos/POS'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -31,6 +32,7 @@ function App() {
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/products" element={user ? <Products /> : <Navigate to="/login" />} />
+      <Route path="/pos" element={user ? <POS /> : <Navigate to="/login" />} />
     </Routes>
   )
 }
