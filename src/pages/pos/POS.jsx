@@ -166,17 +166,26 @@ function POS() {
                                         <p className="text-sm font-medium text-gray-800">{item.name}</p>
                                         <p className="text-blue-600 text-sm">PKR {item.price}</p>
                                     </div>
+
+
                                     <div className="flex items-center gap-2">
                                         <button
                                             onClick={() => updateQty(item.id, item.quantity - 1)}
                                             className="w-6 h-6 bg-gray-200 rounded-full text-sm hover:bg-gray-300"
                                         >-</button>
-                                        <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
+                                        <input
+                                            type="number"
+                                            value={item.quantity}
+                                            onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
+                                            className="w-12 text-center border rounded-lg text-sm py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            min="1"
+                                        />
                                         <button
                                             onClick={() => updateQty(item.id, item.quantity + 1)}
                                             className="w-6 h-6 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700"
                                         >+</button>
                                     </div>
+
                                     <button
                                         onClick={() => removeFromCart(item.id)}
                                         className="text-red-400 hover:text-red-600 text-xs"
@@ -212,8 +221,8 @@ function POS() {
                                     key={method}
                                     onClick={() => setPaymentMethod(method)}
                                     className={`py-2 rounded-lg text-xs font-medium capitalize transition ${paymentMethod === method
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                         }`}
                                 >
                                     {method}
