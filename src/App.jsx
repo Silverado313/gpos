@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { onAuthChange } from './firebase/auth'
 import Login from './pages/auth/Login'
 import Dashboard from './pages/dashboard/Dashboard'
-// import ProtectedRoute from './routes/ProtectedRoute'
+import Products from './pages/products/Products'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -29,10 +29,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route
-        path="/dashboard"
-        element={user ? <Dashboard /> : <Navigate to="/login" />}
-      />
+      <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+      <Route path="/products" element={user ? <Products /> : <Navigate to="/login" />} />
     </Routes>
   )
 }
