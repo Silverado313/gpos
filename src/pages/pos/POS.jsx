@@ -8,8 +8,12 @@ import {
     addDoc,
     updateDoc,
     doc,
+    deleteDoc,
     increment,
-    serverTimestamp
+    serverTimestamp,
+    where,
+    limit,
+    query
 } from 'firebase/firestore'
 
 function POS() {
@@ -25,6 +29,9 @@ function POS() {
     const [settings, setSettings] = useState(null)
     const [taxEnabled, setTaxEnabled] = useState(true)
     const [redeemPoints, setRedeemPoints] = useState(false)
+    const [suspendedSales, setSuspendedSales] = useState([])
+    const [showHeldSales, setShowHeldSales] = useState(false)
+    const [lastSaleId, setLastSaleId] = useState(null)
 
     const currency = settings?.currency || 'PKR'
 
@@ -44,13 +51,21 @@ function POS() {
             const docSnap = await getDoc(doc(db, 'settings', 'global'))
             if (docSnap.exists()) setSettings(docSnap.data())
         }
+        const fetchSuspendedSales = async () => {
+            const snapshot = await getDocs(collection(db, 'suspended_sales'))
+            const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            setSuspendedSales(list)
+        }
         fetchProducts()
         fetchCustomers()
         fetchSettings()
+        fetchSuspendedSales()
     }, [])
 
     // Add to Cart
     const addToCart = (product) => {
+        setSuccess(false)
+        setLastSaleId(null)
         const existing = cart.find(item => item.id === product.id)
         if (existing) {
             setCart(cart.map(item =>
@@ -141,17 +156,99 @@ function POS() {
                 })
             }
 
+            // 3. Decrement Inventory Stock
+            for (const item of cart) {
+                const invQuery = query(
+                    collection(db, 'inventory'),
+                    where('productId', '==', item.id),
+                    limit(1)
+                )
+                const invSnap = await getDocs(invQuery)
+
+                if (!invSnap.empty) {
+                    const invDoc = invSnap.docs[0]
+                    await updateDoc(doc(db, 'inventory', invDoc.id), {
+                        currentStock: increment(-item.quantity),
+                        lastUpdated: serverTimestamp()
+                    })
+                }
+            }
+
             setCart([])
             setAmountPaid('')
             setSelectedCustomer(null)
             setRedeemPoints(false)
             setSuccess(newSale.id)
+            setLastSaleId(newSale.id)
             setTimeout(() => setSuccess(false), 15000)
         } catch (err) {
             console.error(err)
         } finally {
             setLoading(false)
         }
+    }
+
+    // Hold Sale
+    const handleHoldSale = async () => {
+        if (cart.length === 0) return alert('Cart is empty!')
+        setLoading(true)
+        try {
+            await addDoc(collection(db, 'suspended_sales'), {
+                items: cart,
+                subtotal,
+                tax,
+                taxLabel: settings?.taxLabel || 'Tax',
+                discount: redemptionValue,
+                total,
+                currency,
+                customerId: selectedCustomer?.id || 'walk-in',
+                customerName: selectedCustomer?.name || 'Walk-in Customer',
+                cashierId: auth.currentUser?.uid,
+                cashierName: auth.currentUser?.displayName || 'Unknown Staff',
+                createdAt: serverTimestamp()
+            })
+
+            setCart([])
+            setSelectedCustomer(null)
+            setRedeemPoints(false)
+
+            // Refresh suspended sales list
+            const snapshot = await getDocs(collection(db, 'suspended_sales'))
+            setSuspendedSales(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+
+            alert('Sale suspended successfully!')
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // Restore Held Sale
+    const restoreHeldSale = async (heldSale) => {
+        if (cart.length > 0) {
+            const confirm = window.confirm('Current cart will be cleared. Continue?')
+            if (!confirm) return
+        }
+
+        setCart(heldSale.items)
+        const customer = customers.find(c => c.id === heldSale.customerId)
+        setSelectedCustomer(customer || null)
+
+        try {
+            await deleteDoc(doc(db, 'suspended_sales', heldSale.id))
+            setSuspendedSales(suspendedSales.filter(s => s.id !== heldSale.id))
+            setShowHeldSales(false)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    // Clear cart and Reset last sale print
+    const clearCart = () => {
+        setCart([])
+        setLastSaleId(null)
+        setSuccess(false)
     }
 
     return (
@@ -162,13 +259,26 @@ function POS() {
                 <div className="flex-1">
 
                     {/* Search */}
-                    <input
-                        type="text"
-                        placeholder="🔍 Search products..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full border rounded-xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                    />
+                    <div className="flex gap-3 mb-4">
+                        <input
+                            type="text"
+                            placeholder="🔍 Search products..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        />
+                        <button
+                            onClick={() => setShowHeldSales(true)}
+                            className="bg-orange-100 text-orange-600 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-200 transition relative"
+                        >
+                            <span>⏸️</span> Held
+                            {suspendedSales.length > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
+                                    {suspendedSales.length}
+                                </span>
+                            )}
+                        </button>
+                    </div>
 
                     {/* Product Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -347,18 +457,20 @@ function POS() {
                             </div>
                         )}
 
-                        {/* Success Message */}
-                        {success && (
-                            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 flex flex-col items-center gap-3 animate-bounce">
+                        {/* Success Message or Last Sale Reprint */}
+                        {(success || (lastSaleId && cart.length === 0)) && (
+                            <div className={`bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex flex-col items-center gap-3 ${success ? 'animate-bounce' : ''}`}>
                                 <div className="text-center">
-                                    <p className="text-green-800 font-black text-sm uppercase tracking-widest">Sale Completed! 🎉</p>
-                                    <p className="text-green-600 text-[10px] font-bold mt-0.5">Transaction ID: #{success.slice(-6).toUpperCase()}</p>
+                                    <p className="text-blue-800 font-black text-sm uppercase tracking-widest">
+                                        {success ? 'Sale Completed! 🎉' : 'Last Sale Information'}
+                                    </p>
+                                    <p className="text-blue-600 text-[10px] font-bold mt-0.5">Receipt ID: #{(success || lastSaleId).slice(-6).toUpperCase()}</p>
                                 </div>
                                 <button
-                                    onClick={() => window.open(`/invoice/${success}`, '_blank')}
-                                    className="bg-green-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-green-700 transition shadow-md flex items-center gap-2"
+                                    onClick={() => window.open(`/invoice/${success || lastSaleId}`, '_blank')}
+                                    className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
                                 >
-                                    <span>📜</span> Print Invoice
+                                    <span>📜</span> Print Receipt
                                 </button>
                             </div>
                         )}
@@ -372,18 +484,74 @@ function POS() {
                             {loading ? 'Processing...' : `Pay ${currency} ${total.toFixed(2)}`}
                         </button>
 
-                        {/* Clear Cart */}
+                        {/* Clear & Hold */}
                         {cart.length > 0 && (
-                            <button
-                                onClick={() => setCart([])}
-                                className="w-full text-red-400 hover:text-red-600 text-sm"
-                            >
-                                Clear Cart
-                            </button>
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    onClick={handleHoldSale}
+                                    disabled={loading}
+                                    className="w-full bg-orange-500 text-white py-2 rounded-lg font-bold text-sm hover:bg-orange-600 transition disabled:opacity-50"
+                                >
+                                    ⏸️ Hold Sale
+                                </button>
+                                <button
+                                    onClick={clearCart}
+                                    className="w-full text-red-400 hover:text-red-600 border border-red-100 rounded-lg py-2 text-sm"
+                                >
+                                    Clear Cart
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {/* Held Sales Modal */}
+            {showHeldSales && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-6">
+                    <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+                        <div className="p-6 border-b flex justify-between items-center bg-orange-50">
+                            <div>
+                                <h3 className="text-xl font-black text-orange-800 uppercase tracking-tight">Suspended Sales</h3>
+                                <p className="text-orange-600 text-xs font-bold">Pick up where you left off</p>
+                            </div>
+                            <button onClick={() => setShowHeldSales(false)} className="text-orange-800 hover:bg-orange-100 p-2 rounded-full transition">✕</button>
+                        </div>
+                        <div className="p-6 max-h-[60vh] overflow-y-auto">
+                            {suspendedSales.length === 0 ? (
+                                <div className="text-center py-12 opacity-50 italic">No held sales found</div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {suspendedSales.map((sale) => (
+                                        <div key={sale.id} className="border rounded-2xl p-5 hover:border-orange-500 transition-all flex justify-between items-center group bg-gray-50/50">
+                                            <div className="space-y-1">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-black text-gray-800">#{sale.id.slice(-6).toUpperCase()}</span>
+                                                    <span className="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-black uppercase">{sale.items?.length} Items</span>
+                                                </div>
+                                                <p className="text-sm font-bold text-gray-600 italic leading-none">{sale.customerName}</p>
+                                                <p className="text-[10px] text-gray-400 font-bold">{sale.createdAt?.toDate().toLocaleString()}</p>
+                                            </div>
+                                            <div className="text-right flex items-center gap-6">
+                                                <div>
+                                                    <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Total</p>
+                                                    <p className="text-xl font-black text-gray-900">{sale.currency} {sale.total?.toFixed(2)}</p>
+                                                </div>
+                                                <button
+                                                    onClick={() => restoreHeldSale(sale)}
+                                                    className="bg-orange-600 text-white px-6 py-2 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-orange-700 transition shadow-lg group-hover:scale-105"
+                                                >
+                                                    Retrieve
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </Layout>
     )
 }

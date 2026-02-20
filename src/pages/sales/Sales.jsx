@@ -1,28 +1,82 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
-import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import { collection, getDocs, orderBy, query, updateDoc, doc, addDoc, serverTimestamp, where, limit } from 'firebase/firestore'
+import useAuthStore from '../../store/authStore'
 
 function Sales() {
     const [sales, setSales] = useState([])
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState(null)
+    const { user } = useAuthStore()
+
+    const fetchSales = async () => {
+        setLoading(true)
+        try {
+            const q = query(collection(db, 'sales'), orderBy('createdAt', 'desc'))
+            const snapshot = await getDocs(q)
+            const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            setSales(list)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchSales = async () => {
-            try {
-                const q = query(collection(db, 'sales'), orderBy('createdAt', 'desc'))
-                const snapshot = await getDocs(q)
-                const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                setSales(list)
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setLoading(false)
-            }
-        }
         fetchSales()
     }, [])
+
+    const handleReturn = async (sale) => {
+        if (!window.confirm('Are you sure you want to return this entire sale? This will restore items to inventory.')) return
+
+        setLoading(true)
+        try {
+            // 1. Create Return Record
+            await addDoc(collection(db, 'sales_returns'), {
+                originalSaleId: sale.id,
+                items: sale.items,
+                totalReturned: sale.total,
+                customerId: sale.customerId,
+                customerName: sale.customerName,
+                createdAt: serverTimestamp()
+            })
+
+            // 2. Update Sale Status
+            await updateDoc(doc(db, 'sales', sale.id), {
+                status: 'returned',
+                returnedAt: serverTimestamp()
+            })
+
+            // 3. Restore Stock in Inventory
+            for (const item of sale.items) {
+                const invQuery = query(
+                    collection(db, 'inventory'),
+                    where('productId', '==', item.productId),
+                    limit(1)
+                )
+                const invSnap = await getDocs(invQuery)
+
+                if (!invSnap.empty) {
+                    const invDoc = invSnap.docs[0]
+                    await updateDoc(doc(db, 'inventory', invDoc.id), {
+                        currentStock: invDoc.data().currentStock + item.quantity,
+                        lastUpdated: serverTimestamp()
+                    })
+                }
+            }
+
+            alert('Sale returned and stock restored successfully!')
+            fetchSales()
+            setSelected(null)
+        } catch (err) {
+            console.error('Return error:', err)
+            alert('Failed to process return.')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const formatDate = (timestamp) => {
         if (!timestamp) return '-'
@@ -100,7 +154,12 @@ function Sales() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 font-bold text-gray-800">
-                                            {sale.currency || 'PKR'} {sale.total?.toFixed(2)}
+                                            <div className="flex flex-col">
+                                                <span>{sale.currency || 'PKR'} {sale.total?.toFixed(2)}</span>
+                                                {sale.status === 'returned' && (
+                                                    <span className="text-[10px] text-red-500 font-black uppercase">Returned</span>
+                                                )}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 flex items-center gap-2">
                                             <button
@@ -185,6 +244,16 @@ function Sales() {
                                 {selected.paymentMethod}
                             </span>
                         </div>
+
+                        {selected.status !== 'returned' && (user?.role === 'admin' || user?.role === 'manager') && (
+                            <button
+                                onClick={() => handleReturn(selected)}
+                                disabled={loading}
+                                className="w-full mt-6 bg-red-50 text-red-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-100 transition border-2 border-red-100 disabled:opacity-50"
+                            >
+                                🔄 Return Sale
+                            </button>
+                        )}
                     </div>
                 )}
             </div>
