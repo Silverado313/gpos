@@ -347,7 +347,21 @@ function POS() {
                             </div>
                         )}
 
-                        {/* Success Message ... */}
+                        {/* Success Message */}
+                        {success && (
+                            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 flex flex-col items-center gap-3 animate-bounce">
+                                <div className="text-center">
+                                    <p className="text-green-800 font-black text-sm uppercase tracking-widest">Sale Completed! 🎉</p>
+                                    <p className="text-green-600 text-[10px] font-bold mt-0.5">Transaction ID: #{success.slice(-6).toUpperCase()}</p>
+                                </div>
+                                <button
+                                    onClick={() => window.open(`/invoice/${success}`, '_blank')}
+                                    className="bg-green-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-green-700 transition shadow-md flex items-center gap-2"
+                                >
+                                    <span>📜</span> Print Invoice
+                                </button>
+                            </div>
+                        )}
 
                         {/* Checkout Button */}
                         <button
