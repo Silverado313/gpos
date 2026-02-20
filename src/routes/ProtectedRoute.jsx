@@ -15,6 +15,10 @@ function ProtectedRoute({ children, allowedRoles }) {
         return <Navigate to="/login" />
     }
 
+    if (user.role === 'pending') {
+        return <Navigate to="/pending" />
+    }
+
     if (allowedRoles && !allowedRoles.includes(user.role)) {
         return <Navigate to="/dashboard" />
     }

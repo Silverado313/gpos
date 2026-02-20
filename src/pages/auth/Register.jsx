@@ -32,7 +32,7 @@ function Register() {
                 updatedAt: serverTimestamp()
             })
 
-            navigate('/dashboard')
+            navigate('/pending')
         } catch (err) {
             console.error(err)
             setError(err.message || 'Failed to create account')

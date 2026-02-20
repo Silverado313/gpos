@@ -20,7 +20,7 @@ function Settings() {
         theme: 'light'
     })
 
-    const settingsId = auth.currentUser?.uid
+    const settingsId = 'global'
 
     useEffect(() => {
         const fetchSettings = async () => {

@@ -21,6 +21,7 @@ function POS() {
     const [success, setSuccess] = useState(false)
     const [customers, setCustomers] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
+    const [settings, setSettings] = useState(null)
 
     // Fetch Initial Data
     useEffect(() => {
@@ -34,8 +35,13 @@ function POS() {
             const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             setCustomers(list)
         }
+        const fetchSettings = async () => {
+            const docSnap = await getDoc(doc(db, 'settings', 'global'))
+            if (docSnap.exists()) setSettings(docSnap.data())
+        }
         fetchProducts()
         fetchCustomers()
+        fetchSettings()
     }, [])
 
     // Add to Cart
@@ -84,7 +90,7 @@ function POS() {
         }
         setLoading(true)
         try {
-            await addDoc(collection(db, 'sales'), {
+            const newSale = await addDoc(collection(db, 'sales'), {
                 items: cart.map(item => ({
                     productId: item.id,
                     name: item.name,
@@ -99,17 +105,18 @@ function POS() {
                 amountPaid: parseFloat(amountPaid) || total,
                 change: change > 0 ? change : 0,
                 cashierId: auth.currentUser?.uid,
+                cashierName: auth.currentUser?.displayName || 'Unknown Staff',
                 customerId: selectedCustomer?.id || 'walk-in',
                 customerName: selectedCustomer?.name || 'Walk-in Customer',
                 status: 'completed',
                 createdAt: serverTimestamp()
             })
 
-            // Update Customer Loyalty & Total Spent if not walk-in
+            // Update Customer Loyalty ...
             if (selectedCustomer && selectedCustomer.id !== 'walk-in') {
                 const customerRef = doc(db, 'customers', selectedCustomer.id)
-                // Loyalty: 1 point per 100 PKR (defaulting, but could be dynamic from settings)
-                const points = Math.floor(total / 100)
+                const pointsPer100 = settings?.loyaltyPointsPerAmount || 1
+                const points = Math.floor((total / 100) * pointsPer100)
                 await updateDoc(customerRef, {
                     totalSpent: increment(total),
                     loyaltyPoints: increment(points),
@@ -121,8 +128,8 @@ function POS() {
             setCart([])
             setAmountPaid('')
             setSelectedCustomer(null)
-            setSuccess(true)
-            setTimeout(() => setSuccess(false), 3000)
+            setSuccess(newSale.id) // Pass ID to show invoice link
+            setTimeout(() => setSuccess(false), 10000) // Keep longer for invoice
         } catch (err) {
             console.error(err)
         } finally {
@@ -296,8 +303,14 @@ function POS() {
 
                         {/* Success Message */}
                         {success && (
-                            <div className="bg-green-50 text-green-600 text-sm p-2 rounded-lg text-center font-medium">
-                                ✅ Sale completed successfully!
+                            <div className="bg-green-50 text-green-600 p-4 rounded-xl text-center space-y-2 border border-green-100 mb-2">
+                                <p className="font-black text-sm uppercase tracking-widest">✅ Sale Success!</p>
+                                <button
+                                    onClick={() => window.open(`/invoice/${success}`, '_blank')}
+                                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-green-700 transition w-full italic"
+                                >
+                                    🖨️ Print Receipt
+                                </button>
                             </div>
                         )}
 

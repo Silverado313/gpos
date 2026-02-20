@@ -8,6 +8,8 @@ import useAuthStore from './store/authStore'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import PendingApproval from './pages/auth/PendingApproval'
+import UserSettings from './pages/auth/UserSettings'
+import Invoice from './pages/sales/Invoice'
 import Dashboard from './pages/dashboard/Dashboard'
 import Products from './pages/products/Products'
 import POS from './pages/pos/POS'
@@ -27,7 +29,7 @@ function App() {
       try {
         if (currentUser) {
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
-          const role = userDoc.exists() ? userDoc.data().role : 'admin'
+          const role = userDoc.exists() ? userDoc.data().role : 'pending' // Default to pending for safety
           setUser({ ...currentUser, role })
         } else {
           setUser(null)
@@ -68,6 +70,8 @@ function App() {
       <Route path="/inventory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Inventory /></ProtectedRoute>} />
       <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
+      <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
+      <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
     </Routes>
   )
 }

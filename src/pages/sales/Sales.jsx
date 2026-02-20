@@ -89,21 +89,27 @@ function Sales() {
                                         <td className="px-6 py-4 text-gray-600 text-sm">{sale.items?.length} items</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${sale.paymentMethod === 'cash'
-                                                    ? 'bg-green-100 text-green-600'
-                                                    : sale.paymentMethod === 'card'
-                                                        ? 'bg-blue-100 text-blue-600'
-                                                        : 'bg-yellow-100 text-yellow-600'
+                                                ? 'bg-green-100 text-green-600'
+                                                : sale.paymentMethod === 'card'
+                                                    ? 'bg-blue-100 text-blue-600'
+                                                    : 'bg-yellow-100 text-yellow-600'
                                                 }`}>
                                                 {sale.paymentMethod}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 font-bold text-gray-800">PKR {sale.total?.toFixed(2)}</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 flex items-center gap-2">
                                             <button
                                                 onClick={() => setSelected(sale)}
                                                 className="text-blue-500 hover:text-blue-700 text-sm font-medium"
                                             >
                                                 View
+                                            </button>
+                                            <button
+                                                onClick={() => window.open(`/invoice/${sale.id}`, '_blank')}
+                                                className="text-blue-600 hover:text-blue-800 font-bold text-[10px] uppercase tracking-widest border-2 border-blue-100 px-2 py-1 rounded-md hover:border-blue-200 transition"
+                                            >
+                                                📜 Invoice
                                             </button>
                                         </td>
                                     </tr>
@@ -161,10 +167,10 @@ function Sales() {
 
                         <div className="mt-4">
                             <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${selected.paymentMethod === 'cash'
-                                    ? 'bg-green-100 text-green-600'
-                                    : selected.paymentMethod === 'card'
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-yellow-100 text-yellow-600'
+                                ? 'bg-green-100 text-green-600'
+                                : selected.paymentMethod === 'card'
+                                    ? 'bg-blue-100 text-blue-600'
+                                    : 'bg-yellow-100 text-yellow-600'
                                 }`}>
                                 {selected.paymentMethod}
                             </span>

@@ -13,6 +13,7 @@ const menuItems = [
     { path: '/employees', icon: '👨‍💼', label: 'Employees', roles: ['admin'] },
     { path: '/reports', icon: '📈', label: 'Reports', roles: ['admin'] },
     { path: '/settings', icon: '⚙️', label: 'Settings', roles: ['admin'] },
+    { path: '/user-settings', icon: '👤', label: 'Profile', roles: ['admin', 'manager', 'cashier'] },
 ]
 
 function Sidebar() {
