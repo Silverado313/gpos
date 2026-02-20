@@ -5,6 +5,9 @@ import {
     collection,
     getDocs,
     addDoc,
+    updateDoc,
+    doc,
+    increment,
     serverTimestamp
 } from 'firebase/firestore'
 
@@ -16,15 +19,23 @@ function POS() {
     const [amountPaid, setAmountPaid] = useState('')
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
+    const [customers, setCustomers] = useState([])
+    const [selectedCustomer, setSelectedCustomer] = useState(null)
 
-    // Fetch Products
+    // Fetch Initial Data
     useEffect(() => {
         const fetchProducts = async () => {
             const snapshot = await getDocs(collection(db, 'products'))
             const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             setProducts(list)
         }
+        const fetchCustomers = async () => {
+            const snapshot = await getDocs(collection(db, 'customers'))
+            const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            setCustomers(list)
+        }
         fetchProducts()
+        fetchCustomers()
     }, [])
 
     // Add to Cart
@@ -88,11 +99,28 @@ function POS() {
                 amountPaid: parseFloat(amountPaid) || total,
                 change: change > 0 ? change : 0,
                 cashierId: auth.currentUser?.uid,
+                customerId: selectedCustomer?.id || 'walk-in',
+                customerName: selectedCustomer?.name || 'Walk-in Customer',
                 status: 'completed',
                 createdAt: serverTimestamp()
             })
+
+            // Update Customer Loyalty & Total Spent if not walk-in
+            if (selectedCustomer && selectedCustomer.id !== 'walk-in') {
+                const customerRef = doc(db, 'customers', selectedCustomer.id)
+                // Loyalty: 1 point per 100 PKR (defaulting, but could be dynamic from settings)
+                const points = Math.floor(total / 100)
+                await updateDoc(customerRef, {
+                    totalSpent: increment(total),
+                    loyaltyPoints: increment(points),
+                    totalVisits: increment(1),
+                    lastVisit: serverTimestamp()
+                })
+            }
+
             setCart([])
             setAmountPaid('')
+            setSelectedCustomer(null)
             setSuccess(true)
             setTimeout(() => setSuccess(false), 3000)
         } catch (err) {
@@ -147,10 +175,28 @@ function POS() {
                 <div className="w-80 bg-white rounded-xl shadow-sm flex flex-col">
 
                     {/* Cart Header */}
-                    <div className="p-4 border-b">
+                    <div className="p-4 border-b space-y-3">
                         <h3 className="font-bold text-gray-800 text-lg">
                             🛒 Cart ({cart.length} items)
                         </h3>
+
+                        {/* Customer Selection */}
+                        <div>
+                            <label className="text-xs text-gray-500 block mb-1">Customer</label>
+                            <select
+                                className="w-full text-sm border rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={selectedCustomer?.id || ''}
+                                onChange={(e) => {
+                                    const customer = customers.find(c => c.id === e.target.value)
+                                    setSelectedCustomer(customer || null)
+                                }}
+                            >
+                                <option value="">Walk-in Customer</option>
+                                {customers.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name} ({c.phone})</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     {/* Cart Items */}

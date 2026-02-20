@@ -83,8 +83,8 @@ function Reports() {
                         key={p}
                         onClick={() => setPeriod(p)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition ${period === p
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white text-gray-600 hover:bg-gray-50 shadow-sm'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white text-gray-600 hover:bg-gray-50 shadow-sm'
                             }`}
                     >
                         {p === 'all' ? 'All Time' : p === 'today' ? 'Today' : p === 'week' ? 'This Week' : 'This Month'}
@@ -168,8 +168,8 @@ function Reports() {
                                 <div key={name} className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${index === 0 ? 'bg-yellow-500' :
-                                                index === 1 ? 'bg-gray-400' :
-                                                    index === 2 ? 'bg-orange-400' : 'bg-blue-400'
+                                            index === 1 ? 'bg-gray-400' :
+                                                index === 2 ? 'bg-orange-400' : 'bg-blue-400'
                                             }`}>{index + 1}</span>
                                         <span className="text-gray-700 text-sm">{name}</span>
                                     </div>
@@ -202,7 +202,7 @@ function Reports() {
                                 <tr>
                                     <td colSpan="4" className="text-center py-8 text-gray-400">Loading...</td>
                                 </tr>
-                            ) : filteredSales.slice(0, 8).map((sale, index) => (
+                            ) : filteredSales.slice(0, 8).map((sale) => (
                                 <tr key={sale.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-3 text-sm text-gray-600">
                                         {sale.createdAt?.toDate().toLocaleString()}
@@ -210,8 +210,8 @@ function Reports() {
                                     <td className="px-6 py-3 text-sm text-gray-600">{sale.items?.length} items</td>
                                     <td className="px-6 py-3">
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${sale.paymentMethod === 'cash' ? 'bg-green-100 text-green-600' :
-                                                sale.paymentMethod === 'card' ? 'bg-blue-100 text-blue-600' :
-                                                    'bg-yellow-100 text-yellow-600'
+                                            sale.paymentMethod === 'card' ? 'bg-blue-100 text-blue-600' :
+                                                'bg-yellow-100 text-yellow-600'
                                             }`}>{sale.paymentMethod}</span>
                                     </td>
                                     <td className="px-6 py-3 font-bold text-gray-800">PKR {sale.total?.toFixed(2)}</td>

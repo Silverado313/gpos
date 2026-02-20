@@ -1,21 +1,27 @@
 import { NavLink } from 'react-router-dom'
 import { logout } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../../store/authStore'
 
 const menuItems = [
-    { path: '/dashboard', icon: '📊', label: 'Dashboard' },
-    { path: '/pos', icon: '🛒', label: 'POS' },
-    { path: '/products', icon: '📦', label: 'Products' },
-    { path: '/inventory', icon: '🏪', label: 'Inventory' },
-    { path: '/sales', icon: '💰', label: 'Sales' },
-    { path: '/customers', icon: '👥', label: 'Customers' },
-    { path: '/employees', icon: '👨‍💼', label: 'Employees' },
-    { path: '/reports', icon: '📈', label: 'Reports' },
-    { path: '/settings', icon: '⚙️', label: 'Settings' },
+    { path: '/dashboard', icon: '📊', label: 'Dashboard', roles: ['admin', 'manager', 'cashier'] },
+    { path: '/pos', icon: '🛒', label: 'POS', roles: ['admin', 'manager', 'cashier'] },
+    { path: '/products', icon: '📦', label: 'Products', roles: ['admin', 'manager'] },
+    { path: '/inventory', icon: '🏪', label: 'Inventory', roles: ['admin', 'manager'] },
+    { path: '/sales', icon: '💰', label: 'Sales', roles: ['admin', 'manager', 'cashier'] },
+    { path: '/customers', icon: '👥', label: 'Customers', roles: ['admin', 'manager', 'cashier'] },
+    { path: '/employees', icon: '👨‍💼', label: 'Employees', roles: ['admin'] },
+    { path: '/reports', icon: '📈', label: 'Reports', roles: ['admin'] },
+    { path: '/settings', icon: '⚙️', label: 'Settings', roles: ['admin'] },
 ]
 
 function Sidebar() {
     const navigate = useNavigate()
+    const { user } = useAuthStore()
+
+    const filteredMenu = menuItems.filter(item =>
+        !item.roles || item.roles.includes(user?.role)
+    )
 
     const handleLogout = async () => {
         await logout()
@@ -33,7 +39,7 @@ function Sidebar() {
 
             {/* Menu */}
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-                {menuItems.map((item) => (
+                {filteredMenu.map((item) => (
                     <NavLink
                         key={item.path}
                         to={item.path}

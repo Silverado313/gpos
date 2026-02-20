@@ -35,7 +35,7 @@ function Settings() {
             }
         }
         fetchSettings()
-    }, [])
+    }, [settingsId])
 
     const handleSave = async () => {
         setLoading(true)

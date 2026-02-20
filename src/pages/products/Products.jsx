@@ -6,6 +6,7 @@ import {
     addDoc,
     getDocs,
     deleteDoc,
+    updateDoc,
     doc,
     serverTimestamp
 } from 'firebase/firestore'
@@ -23,6 +24,7 @@ function Products() {
         unit: 'pcs',
         barcode: '',
     })
+    const [editingProduct, setEditingProduct] = useState(null)
 
     const businessId = auth.currentUser?.uid
 
@@ -52,6 +54,27 @@ function Products() {
             })
             setForm({ name: '', price: '', costPrice: '', category: '', unit: 'pcs', barcode: '' })
             setShowForm(false)
+            fetchProducts()
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // Update Product
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            const productRef = doc(db, 'products', editingProduct.id)
+            await updateDoc(productRef, {
+                ...editingProduct,
+                price: parseFloat(editingProduct.price),
+                costPrice: parseFloat(editingProduct.costPrice),
+                updatedAt: serverTimestamp()
+            })
+            setEditingProduct(null)
             fetchProducts()
         } catch (err) {
             console.error(err)
@@ -172,6 +195,93 @@ function Products() {
                 </div>
             )}
 
+            {/* Edit Product Modal */}
+            {editingProduct && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl p-6 shadow-lg w-full max-w-2xl">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Edit Product</h3>
+                        <form onSubmit={handleUpdate} className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="text-sm text-gray-600">Product Name *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={editingProduct.name}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Category</label>
+                                <input
+                                    type="text"
+                                    value={editingProduct.category}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Sale Price *</label>
+                                <input
+                                    type="number"
+                                    required
+                                    value={editingProduct.price}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, price: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Cost Price</label>
+                                <input
+                                    type="number"
+                                    value={editingProduct.costPrice}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, costPrice: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Barcode</label>
+                                <input
+                                    type="text"
+                                    value={editingProduct.barcode}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, barcode: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Unit</label>
+                                <select
+                                    value={editingProduct.unit}
+                                    onChange={(e) => setEditingProduct({ ...editingProduct, unit: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="pcs">Pieces</option>
+                                    <option value="kg">Kilogram</option>
+                                    <option value="ltr">Liter</option>
+                                    <option value="box">Box</option>
+                                </select>
+                            </div>
+                            <div className="col-span-2 flex gap-3 justify-end mt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingProduct(null)}
+                                    className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                                >
+                                    {loading ? 'Updating...' : 'Update Product'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {/* Products Table */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <table className="w-full">
@@ -201,12 +311,20 @@ function Products() {
                                     <td className="px-6 py-4 text-gray-500">PKR {product.costPrice || '-'}</td>
                                     <td className="px-6 py-4 text-gray-500">{product.unit}</td>
                                     <td className="px-6 py-4">
-                                        <button
-                                            onClick={() => handleDelete(product.id)}
-                                            className="text-red-500 hover:text-red-700 text-sm font-medium"
-                                        >
-                                            Delete
-                                        </button>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => setEditingProduct(product)}
+                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(product.id)}
+                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))

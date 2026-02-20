@@ -6,6 +6,7 @@ import {
     getDocs,
     addDoc,
     deleteDoc,
+    updateDoc,
     doc,
     serverTimestamp
 } from 'firebase/firestore'
@@ -20,6 +21,7 @@ function Customers() {
         email: '',
         address: '',
     })
+    const [editingCustomer, setEditingCustomer] = useState(null)
 
     const fetchCustomers = async () => {
         const snapshot = await getDocs(collection(db, 'customers'))
@@ -44,6 +46,25 @@ function Customers() {
             })
             setForm({ name: '', phone: '', email: '', address: '' })
             setShowForm(false)
+            fetchCustomers()
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // Update Customer
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            const customerRef = doc(db, 'customers', editingCustomer.id)
+            await updateDoc(customerRef, {
+                ...editingCustomer,
+                updatedAt: serverTimestamp()
+            })
+            setEditingCustomer(null)
             fetchCustomers()
         } catch (err) {
             console.error(err)
@@ -140,6 +161,71 @@ function Customers() {
                 </div>
             )}
 
+            {/* Edit Customer Modal */}
+            {editingCustomer && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl p-6 shadow-lg w-full max-w-2xl">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Edit Customer</h3>
+                        <form onSubmit={handleUpdate} className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="text-sm text-gray-600">Full Name *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={editingCustomer.name}
+                                    onChange={(e) => setEditingCustomer({ ...editingCustomer, name: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Phone *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={editingCustomer.phone}
+                                    onChange={(e) => setEditingCustomer({ ...editingCustomer, phone: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Email</label>
+                                <input
+                                    type="email"
+                                    value={editingCustomer.email}
+                                    onChange={(e) => setEditingCustomer({ ...editingCustomer, email: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600">Address</label>
+                                <input
+                                    type="text"
+                                    value={editingCustomer.address}
+                                    onChange={(e) => setEditingCustomer({ ...editingCustomer, address: e.target.value })}
+                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div className="col-span-2 flex gap-3 justify-end mt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingCustomer(null)}
+                                    className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                                >
+                                    {loading ? 'Updating...' : 'Update Customer'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {/* Customers Table */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <table className="w-full">
@@ -180,12 +266,20 @@ function Customers() {
                                     </td>
                                     <td className="px-6 py-4 text-green-600 font-medium">PKR {customer.totalSpent}</td>
                                     <td className="px-6 py-4">
-                                        <button
-                                            onClick={() => handleDelete(customer.id)}
-                                            className="text-red-500 hover:text-red-700 text-sm font-medium"
-                                        >
-                                            Delete
-                                        </button>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => setEditingCustomer(customer)}
+                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(customer.id)}
+                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))
