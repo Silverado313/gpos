@@ -89,8 +89,8 @@ GPOS/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/GPOS.git
-cd GPOS
+git clone https://github.com/Silverado313/gpos.git
+cd gpos
 ```
 
 ### 2. Install Dependencies
