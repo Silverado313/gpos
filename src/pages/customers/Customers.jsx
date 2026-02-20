@@ -10,8 +10,10 @@ import {
     doc,
     serverTimestamp
 } from 'firebase/firestore'
+import useAuthStore from '../../store/authStore'
 
 function Customers() {
+    const { user } = useAuthStore()
     const [customers, setCustomers] = useState([])
     const [showForm, setShowForm] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -266,20 +268,25 @@ function Customers() {
                                     </td>
                                     <td className="px-6 py-4 text-green-600 font-medium">PKR {customer.totalSpent}</td>
                                     <td className="px-6 py-4">
-                                        <div className="flex gap-3">
-                                            <button
-                                                onClick={() => setEditingCustomer(customer)}
-                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(customer.id)}
-                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
+                                        {(user?.role === 'admin' || user?.role === 'manager') && (
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => setEditingCustomer(customer)}
+                                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(customer.id)}
+                                                    className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                        {user?.role === 'cashier' && (
+                                            <span className="text-gray-400 text-xs italic italic font-medium">Read Only</span>
+                                        )}
                                     </td>
                                 </tr>
                             ))

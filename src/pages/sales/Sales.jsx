@@ -43,12 +43,14 @@ function Sales() {
                 </div>
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                     <p className="text-gray-500 text-sm">Total Revenue</p>
-                    <h3 className="text-2xl font-bold text-green-600 mt-1">PKR {totalRevenue.toFixed(2)}</h3>
+                    <h3 className="text-2xl font-bold text-green-600 mt-1">
+                        {sales[0]?.currency || 'PKR'} {totalRevenue.toFixed(2)}
+                    </h3>
                 </div>
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                     <p className="text-gray-500 text-sm">Average Sale</p>
                     <h3 className="text-2xl font-bold text-blue-600 mt-1">
-                        PKR {sales.length ? (totalRevenue / sales.length).toFixed(2) : '0.00'}
+                        {sales[0]?.currency || 'PKR'} {sales.length ? (totalRevenue / sales.length).toFixed(2) : '0.00'}
                     </h3>
                 </div>
             </div>
@@ -97,7 +99,9 @@ function Sales() {
                                                 {sale.paymentMethod}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 font-bold text-gray-800">PKR {sale.total?.toFixed(2)}</td>
+                                        <td className="px-6 py-4 font-bold text-gray-800">
+                                            {sale.currency || 'PKR'} {sale.total?.toFixed(2)}
+                                        </td>
                                         <td className="px-6 py-4 flex items-center gap-2">
                                             <button
                                                 onClick={() => setSelected(sale)}
@@ -137,7 +141,7 @@ function Sales() {
                             {selected.items?.map((item, i) => (
                                 <div key={i} className="flex justify-between text-sm">
                                     <span className="text-gray-600">{item.name} x{item.quantity}</span>
-                                    <span className="font-medium">PKR {item.total}</span>
+                                    <span className="font-medium">{selected.currency || 'PKR'} {item.total}</span>
                                 </div>
                             ))}
                         </div>
@@ -145,23 +149,29 @@ function Sales() {
                         <div className="border-t pt-3 space-y-1">
                             <div className="flex justify-between text-sm text-gray-500">
                                 <span>Subtotal</span>
-                                <span>PKR {selected.subtotal?.toFixed(2)}</span>
+                                <span>{selected.currency || 'PKR'} {selected.subtotal?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-gray-500">
-                                <span>Tax</span>
-                                <span>PKR {selected.tax?.toFixed(2)}</span>
+                                <span>{selected.taxLabel || 'Tax'}</span>
+                                <span>{selected.currency || 'PKR'} {selected.tax?.toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between font-bold text-gray-800 border-t pt-2">
+                            {selected.discount > 0 && (
+                                <div className="flex justify-between text-sm text-blue-600">
+                                    <span>Discount (Redeemed)</span>
+                                    <span>-{selected.currency || 'PKR'} {selected.discount?.toFixed(2)}</span>
+                                </div>
+                            )}
+                            <div className="flex justify-between font-black text-gray-900 border-t pt-2 text-base">
                                 <span>Total</span>
-                                <span>PKR {selected.total?.toFixed(2)}</span>
+                                <span>{selected.currency || 'PKR'} {selected.total?.toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm text-gray-500">
+                            <div className="flex justify-between text-sm text-gray-500 mt-2">
                                 <span>Paid</span>
-                                <span>PKR {selected.amountPaid?.toFixed(2)}</span>
+                                <span>{selected.currency || 'PKR'} {selected.amountPaid?.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-green-600">
                                 <span>Change</span>
-                                <span>PKR {selected.change?.toFixed(2)}</span>
+                                <span>{selected.currency || 'PKR'} {selected.change?.toFixed(2)}</span>
                             </div>
                         </div>
 

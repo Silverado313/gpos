@@ -4,6 +4,7 @@ import { db, auth } from '../../firebase/config'
 import {
     collection,
     getDocs,
+    getDoc,
     addDoc,
     updateDoc,
     doc,
@@ -22,6 +23,10 @@ function POS() {
     const [customers, setCustomers] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
     const [settings, setSettings] = useState(null)
+    const [taxEnabled, setTaxEnabled] = useState(true)
+    const [redeemPoints, setRedeemPoints] = useState(false)
+
+    const currency = settings?.currency || 'PKR'
 
     // Fetch Initial Data
     useEffect(() => {
@@ -73,8 +78,15 @@ function POS() {
 
     // Calculations
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const tax = 0
-    const total = subtotal + tax
+    const activeTaxRate = (settings?.taxEnabled && taxEnabled) ? settings.taxRate : 0
+    const tax = (subtotal * activeTaxRate) / 100
+
+    // Loyalty Redemption Calculation
+    const redemptionValue = (redeemPoints && selectedCustomer)
+        ? selectedCustomer.loyaltyPoints * (settings?.pointsRedemptionRate || 0)
+        : 0
+
+    const total = Math.max(0, subtotal + tax - redemptionValue)
     const change = amountPaid ? parseFloat(amountPaid) - total : 0
 
     // Filtered Products
@@ -100,7 +112,10 @@ function POS() {
                 })),
                 subtotal,
                 tax,
+                taxLabel: settings?.taxLabel || 'Tax',
+                discount: redemptionValue,
                 total,
+                currency,
                 paymentMethod,
                 amountPaid: parseFloat(amountPaid) || total,
                 change: change > 0 ? change : 0,
@@ -112,14 +127,15 @@ function POS() {
                 createdAt: serverTimestamp()
             })
 
-            // Update Customer Loyalty ...
+            // Update Customer Loyalty & Points Redemption
             if (selectedCustomer && selectedCustomer.id !== 'walk-in') {
                 const customerRef = doc(db, 'customers', selectedCustomer.id)
                 const pointsPer100 = settings?.loyaltyPointsPerAmount || 1
-                const points = Math.floor((total / 100) * pointsPer100)
+                const earnedPoints = Math.floor((total / 100) * pointsPer100)
+
                 await updateDoc(customerRef, {
                     totalSpent: increment(total),
-                    loyaltyPoints: increment(points),
+                    loyaltyPoints: increment(earnedPoints - (redeemPoints ? selectedCustomer.loyaltyPoints : 0)),
                     totalVisits: increment(1),
                     lastVisit: serverTimestamp()
                 })
@@ -128,8 +144,9 @@ function POS() {
             setCart([])
             setAmountPaid('')
             setSelectedCustomer(null)
-            setSuccess(newSale.id) // Pass ID to show invoice link
-            setTimeout(() => setSuccess(false), 10000) // Keep longer for invoice
+            setRedeemPoints(false)
+            setSuccess(newSale.id)
+            setTimeout(() => setSuccess(false), 15000)
         } catch (err) {
             console.error(err)
         } finally {
@@ -165,7 +182,7 @@ function POS() {
                                     <span className="text-3xl">📦</span>
                                 </div>
                                 <p className="font-medium text-gray-800 text-sm truncate">{product.name}</p>
-                                <p className="text-blue-600 font-bold mt-1">PKR {product.price}</p>
+                                <p className="text-blue-600 font-bold mt-1">{currency} {product.price}</p>
                                 <p className="text-gray-400 text-xs">{product.category || 'General'}</p>
                             </button>
                         ))}
@@ -217,7 +234,7 @@ function POS() {
                                 <div key={item.id} className="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
                                     <div className="flex-1">
                                         <p className="text-sm font-medium text-gray-800">{item.name}</p>
-                                        <p className="text-blue-600 text-sm">PKR {item.price}</p>
+                                        <p className="text-blue-600 text-sm">{currency} {item.price}</p>
                                     </div>
 
 
@@ -255,15 +272,44 @@ function POS() {
                         <div className="space-y-1">
                             <div className="flex justify-between text-sm text-gray-500">
                                 <span>Subtotal</span>
-                                <span>PKR {subtotal.toFixed(2)}</span>
+                                <span>{currency} {subtotal.toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-sm text-gray-500">
-                                <span>Tax</span>
-                                <span>PKR {tax.toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between font-bold text-lg text-gray-800 border-t pt-2">
+
+                            {/* Dynamic Tax Toggle/Label */}
+                            {settings?.taxEnabled && (
+                                <div className="flex justify-between text-sm text-gray-500 items-center">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => setTaxEnabled(!taxEnabled)}
+                                            className={`w-8 h-4 rounded-full transition ${taxEnabled ? 'bg-blue-600' : 'bg-gray-300'}`}
+                                        >
+                                            <div className={`w-3 h-3 bg-white rounded-full shadow transition-transform ${taxEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
+                                        </button>
+                                        <span>{settings.taxLabel || 'Tax'} ({settings.taxRate}%)</span>
+                                    </div>
+                                    <span>{currency} {tax.toFixed(2)}</span>
+                                </div>
+                            )}
+
+                            {/* Loyalty Redemption UI */}
+                            {settings?.loyaltyEnabled && selectedCustomer && selectedCustomer.loyaltyPoints > 0 && (
+                                <div className="flex justify-between text-sm items-center py-1 bg-blue-50 px-2 rounded-lg border border-blue-100">
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={redeemPoints}
+                                            onChange={(e) => setRedeemPoints(e.target.checked)}
+                                            className="w-4 h-4 rounded text-blue-600"
+                                        />
+                                        <span className="text-blue-700 text-xs font-bold">Redeem {selectedCustomer.loyaltyPoints} pts</span>
+                                    </div>
+                                    <span className="text-blue-700 font-bold">-{currency} {redemptionValue.toFixed(2)}</span>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between font-black text-xl text-gray-900 border-t-2 border-gray-900 pt-3 mt-1">
                                 <span>Total</span>
-                                <span>PKR {total.toFixed(2)}</span>
+                                <span>{currency} {total.toFixed(2)}</span>
                             </div>
                         </div>
 
@@ -295,32 +341,21 @@ function POS() {
                                 />
                                 {change > 0 && (
                                     <p className="text-green-600 text-sm mt-1 font-medium">
-                                        Change: PKR {change.toFixed(2)}
+                                        Change: {currency} {change.toFixed(2)}
                                     </p>
                                 )}
                             </div>
                         )}
 
-                        {/* Success Message */}
-                        {success && (
-                            <div className="bg-green-50 text-green-600 p-4 rounded-xl text-center space-y-2 border border-green-100 mb-2">
-                                <p className="font-black text-sm uppercase tracking-widest">✅ Sale Success!</p>
-                                <button
-                                    onClick={() => window.open(`/invoice/${success}`, '_blank')}
-                                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-green-700 transition w-full italic"
-                                >
-                                    🖨️ Print Receipt
-                                </button>
-                            </div>
-                        )}
+                        {/* Success Message ... */}
 
                         {/* Checkout Button */}
                         <button
                             onClick={handleCheckout}
                             disabled={loading || cart.length === 0}
-                            className="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition disabled:opacity-50"
+                            className="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-green-700 transition shadow-lg disabled:opacity-50"
                         >
-                            {loading ? 'Processing...' : `Checkout — PKR ${total.toFixed(2)}`}
+                            {loading ? 'Processing...' : `Pay ${currency} ${total.toFixed(2)}`}
                         </button>
 
                         {/* Clear Cart */}

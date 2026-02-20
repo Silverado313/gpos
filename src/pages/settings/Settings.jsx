@@ -12,9 +12,11 @@ function Settings() {
         businessType: 'retail',
         currency: 'PKR',
         taxEnabled: false,
+        taxLabel: 'Tax',
         taxRate: 0,
         loyaltyEnabled: false,
         loyaltyPointsPerAmount: 1,
+        pointsRedemptionRate: 0.1, // 1 point = 0.1 currency unit
         receiptFooter: 'Thank you for your business!',
         lowStockAlert: true,
         theme: 'light'
@@ -117,15 +119,27 @@ function Settings() {
                             </button>
                         </div>
                         {settings.taxEnabled && (
-                            <div>
-                                <label className="text-sm text-gray-600">Tax Rate (%)</label>
-                                <input
-                                    type="number"
-                                    value={settings.taxRate}
-                                    onChange={(e) => setSettings({ ...settings, taxRate: parseFloat(e.target.value) })}
-                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="5"
-                                />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-sm text-gray-600">Tax Label (e.g. GST, VAT)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.taxLabel}
+                                        onChange={(e) => setSettings({ ...settings, taxLabel: e.target.value })}
+                                        className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Tax"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm text-gray-600">Tax Rate (%)</label>
+                                    <input
+                                        type="number"
+                                        value={settings.taxRate}
+                                        onChange={(e) => setSettings({ ...settings, taxRate: parseFloat(e.target.value) })}
+                                        className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="5"
+                                    />
+                                </div>
                             </div>
                         )}
                     </div>
@@ -150,15 +164,28 @@ function Settings() {
                             </button>
                         </div>
                         {settings.loyaltyEnabled && (
-                            <div>
-                                <label className="text-sm text-gray-600">Points per 100 PKR spent</label>
-                                <input
-                                    type="number"
-                                    value={settings.loyaltyPointsPerAmount}
-                                    onChange={(e) => setSettings({ ...settings, loyaltyPointsPerAmount: parseInt(e.target.value) })}
-                                    className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="1"
-                                />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-sm text-gray-600">Points per 100 {settings.currency} spent</label>
+                                    <input
+                                        type="number"
+                                        value={settings.loyaltyPointsPerAmount}
+                                        onChange={(e) => setSettings({ ...settings, loyaltyPointsPerAmount: parseInt(e.target.value) })}
+                                        className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="1"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm text-gray-600">Value of 1 Point (in {settings.currency})</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={settings.pointsRedemptionRate}
+                                        onChange={(e) => setSettings({ ...settings, pointsRedemptionRate: parseFloat(e.target.value) })}
+                                        className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="0.10"
+                                    />
+                                </div>
                             </div>
                         )}
                     </div>

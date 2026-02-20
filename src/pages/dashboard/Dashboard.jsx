@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
-import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore'
+import { collection, getDocs, getDoc, query, where, Timestamp, doc } from 'firebase/firestore'
 
 function Dashboard() {
     const [stats, setStats] = useState({
@@ -13,10 +13,16 @@ function Dashboard() {
         totalCustomers: 0,
         loading: true
     })
+    const [settings, setSettings] = useState(null)
+    const currency = settings?.currency || 'PKR'
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
+                // Fetch Settings
+                const settingsSnap = await getDoc(doc(db, 'settings', 'global'))
+                if (settingsSnap.exists()) setSettings(settingsSnap.data())
+
                 // Get Total Products & Customers counts
                 const productsSnap = await getDocs(collection(db, 'products'))
                 const customersSnap = await getDocs(collection(db, 'customers'))
@@ -90,7 +96,7 @@ function Dashboard() {
                 {/* Stat Cards */}
                 <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <p className="text-gray-500 text-sm font-medium">Today's Sales</p>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-1">PKR {stats.todaySales.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-bold text-gray-800 mt-1">{currency} {stats.todaySales.toLocaleString()}</h3>
                     <p className={`text-xs mt-2 font-medium flex items-center gap-1 ${salesGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                         {salesGrowth >= 0 ? '↑' : '↓'} {Math.abs(salesGrowth).toFixed(1)}% <span className="text-gray-400 font-normal">from yesterday</span>
                     </p>

@@ -1,17 +1,23 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
-import { collection, getDocs, query, orderBy } from 'firebase/firestore'
+import { collection, getDocs, getDoc, query, orderBy, doc } from 'firebase/firestore'
 
 function Reports() {
     const [sales, setSales] = useState([])
     const [products, setProducts] = useState([])
+    const [settings, setSettings] = useState(null)
     const [loading, setLoading] = useState(true)
     const [period, setPeriod] = useState('today')
+
+    const currency = settings?.currency || 'PKR'
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const settingsSnap = await getDoc(doc(db, 'settings', 'global'))
+                if (settingsSnap.exists()) setSettings(settingsSnap.data())
+
                 const salesSnap = await getDocs(query(collection(db, 'sales'), orderBy('createdAt', 'desc')))
                 const salesList = salesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
                 setSales(salesList)
@@ -54,7 +60,7 @@ function Reports() {
 
     // CSV Export Logic
     const handleExportCSV = () => {
-        const headers = ['Date', 'Transaction ID', 'Total (PKR)', 'Payment Method', 'Items Count']
+        const headers = ['Date', 'Transaction ID', `Total (${currency})`, 'Payment Method', 'Items Count']
         const csvData = filteredSales.map(sale => [
             sale.createdAt?.toDate().toLocaleString(),
             sale.id,
@@ -154,7 +160,7 @@ function Reports() {
             <div className="grid grid-cols-4 gap-6 mb-6">
                 <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                     <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Total Revenue</p>
-                    <h3 className="text-2xl font-black text-gray-800 mt-1">PKR {totalRevenue.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-black text-gray-800 mt-1">{currency} {totalRevenue.toLocaleString()}</h3>
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                     <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Transactions</p>
@@ -162,7 +168,7 @@ function Reports() {
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                     <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Average Ticket</p>
-                    <h3 className="text-2xl font-black text-blue-600 mt-1">PKR {avgSale.toLocaleString(undefined, { maximumFractionDigits: 0 })}</h3>
+                    <h3 className="text-2xl font-black text-blue-600 mt-1">{currency} {avgSale.toLocaleString(undefined, { maximumFractionDigits: 0 })}</h3>
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                     <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Unique Items</p>
@@ -184,7 +190,7 @@ function Reports() {
                                 <div className="relative w-full flex justify-center items-end h-32">
                                     {/* Tooltip */}
                                     <div className="absolute -top-8 bg-gray-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10">
-                                        PKR {day.revenue.toLocaleString()}
+                                        {currency} {day.revenue.toLocaleString()}
                                     </div>
                                     <div
                                         style={{ height: `${day.percent}%` }}
@@ -243,7 +249,7 @@ function Reports() {
                                     <div key={name} className="space-y-1">
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-gray-700 font-medium truncate max-w-[140px]">{name}</span>
-                                            <span className="font-bold text-gray-900">PKR {data.revenue.toLocaleString()}</span>
+                                            <span className="font-bold text-gray-900">{currency} {data.revenue.toLocaleString()}</span>
                                         </div>
                                         <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
                                             <div
@@ -304,7 +310,9 @@ function Reports() {
                                                 'text-yellow-600 bg-yellow-50'
                                             }`}>{sale.paymentMethod}</span>
                                     </td>
-                                    <td className="px-6 py-3 font-bold text-gray-900 text-right">PKR {sale.total?.toFixed(2)}</td>
+                                    <td className="px-6 py-3 font-bold text-gray-900 text-right">
+                                        {sale.currency || currency} {sale.total?.toFixed(2)}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

@@ -127,17 +127,23 @@ function Invoice() {
                 <div className="border-t-2 border-gray-900 pt-4 space-y-2">
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-500 font-bold uppercase text-[11px]">Subtotal</span>
-                        <span className="font-bold text-gray-800">PKR {sale.subtotal.toFixed(2)}</span>
+                        <span className="font-bold text-gray-800">{sale.currency || 'PKR'} {sale.subtotal.toFixed(2)}</span>
                     </div>
                     {sale.tax > 0 && (
                         <div className="flex justify-between text-sm">
-                            <span className="text-gray-500 font-bold uppercase text-[11px]">Tax Amount</span>
-                            <span className="font-bold text-gray-800">PKR {sale.tax.toFixed(2)}</span>
+                            <span className="text-gray-500 font-bold uppercase text-[11px]">{sale.taxLabel || 'Tax'}</span>
+                            <span className="font-bold text-gray-800">{sale.currency || 'PKR'} {sale.tax.toFixed(2)}</span>
+                        </div>
+                    )}
+                    {sale.discount > 0 && (
+                        <div className="flex justify-between text-sm text-blue-600">
+                            <span className="font-bold uppercase text-[11px]">Loyalty Discount</span>
+                            <span className="font-bold">-{sale.currency || 'PKR'} {sale.discount.toFixed(2)}</span>
                         </div>
                     )}
                     <div className="flex justify-between items-center py-2 bg-gray-50 rounded px-3 border-l-4 border-blue-600">
                         <span className="font-black text-gray-900 text-lg">Total Amount</span>
-                        <span className="font-black text-gray-900 text-2xl">PKR {sale.total.toFixed(2)}</span>
+                        <span className="font-black text-gray-900 text-2xl">{sale.currency || 'PKR'} {sale.total.toFixed(2)}</span>
                     </div>
                 </div>
 
@@ -150,7 +156,7 @@ function Invoice() {
                     {sale.paymentMethod === 'cash' && (
                         <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 text-right">
                             <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Change Returned</p>
-                            <p className="text-sm font-black text-green-600 italic">PKR {sale.change.toFixed(2)}</p>
+                            <p className="text-sm font-black text-green-600 italic">{sale.currency || 'PKR'} {sale.change.toFixed(2)}</p>
                         </div>
                     )}
                 </div>
