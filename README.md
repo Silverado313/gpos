@@ -180,6 +180,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 [![Website](https://img.shields.io/badge/TechPeer-Web-blue?style=for-the-badge&logo=googlechrome&logoColor=white)](https://techpeer.web.app)
 
 ---
+*If you find GPOS helpful, consider giving it a ⭐ to show your support!*
 
 ## ⭐ Support
 
