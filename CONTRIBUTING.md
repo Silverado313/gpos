@@ -9,8 +9,8 @@ Thank you for your interest in contributing to GPOS! 🎉
 ### 1. Fork & Clone
 
 ```bash
-git clone https://github.com/yourusername/GPOS.git
-cd GPOS
+git clone https://github.com/Silverado313/gpos.git
+cd gpos
 ```
 
 ### 2. Setup Project
