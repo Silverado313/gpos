@@ -170,12 +170,17 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
-
 ## 👨‍💻 Author
 
-Made with ❤️ for the open source community.
+**Syed Aneel Raza**
+*Full Stack Developer | Firebase Enthusiast*
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/syedaneelraza)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Silverado313)
+[![Website](https://img.shields.io/badge/TechPeer-Web-blue?style=for-the-badge&logo=googlechrome&logoColor=white)](https://techpeer.web.app)
 
 ---
+*If you find GPOS helpful, consider giving it a ⭐ to show your support!*
 
 ## ⭐ Support
 
