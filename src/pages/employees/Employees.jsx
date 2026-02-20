@@ -59,11 +59,14 @@ function Employees() {
         }
     }
 
+    const pendingUsers = employees.filter(emp => emp.role === 'pending')
+    const activeEmployees = employees.filter(emp => emp.role !== 'pending')
+
     return (
         <Layout title="Employee Management">
 
             <div className="flex justify-between items-center mb-6">
-                <p className="text-gray-500">{employees.length} employees</p>
+                <p className="text-gray-500">{activeEmployees.length} active employees</p>
                 <button
                     onClick={() => setShowForm(!showForm)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -71,6 +74,53 @@ function Employees() {
                     + Add/Update Employee
                 </button>
             </div>
+
+            {/* Pending Approvals Section */}
+            {pendingUsers.length > 0 && (
+                <div className="mb-8">
+                    <h3 className="text-lg font-bold text-yellow-700 mb-4 flex items-center gap-2">
+                        <span>⏳</span> Pending Approvals ({pendingUsers.length})
+                    </h3>
+                    <div className="bg-yellow-50 rounded-xl border border-yellow-100 overflow-hidden shadow-sm">
+                        <table className="w-full text-sm">
+                            <thead className="bg-yellow-100/50 border-b border-yellow-100">
+                                <tr>
+                                    <th className="text-left px-6 py-3 font-semibold text-yellow-800">User</th>
+                                    <th className="text-left px-6 py-3 font-semibold text-yellow-800">Email</th>
+                                    <th className="text-left px-6 py-3 font-semibold text-yellow-800">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-yellow-100">
+                                {pendingUsers.map((user) => (
+                                    <tr key={user.uid} className="hover:bg-yellow-100/30">
+                                        <td className="px-6 py-4 font-medium text-gray-800">{user.name}</td>
+                                        <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => {
+                                                        setForm({ uid: user.uid, name: user.name, email: user.email, role: 'cashier' })
+                                                        setShowForm(true)
+                                                    }}
+                                                    className="bg-blue-600 text-white px-3 py-1 rounded shadow-sm hover:bg-blue-700 transition"
+                                                >
+                                                    Approve
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(user.uid)}
+                                                    className="text-red-600 hover:text-red-800 font-medium"
+                                                >
+                                                    Reject
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
 
             {showForm && (
                 <div className="bg-white rounded-xl p-6 shadow-sm mb-6 max-w-2xl">
@@ -142,6 +192,8 @@ function Employees() {
                 </div>
             )}
 
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Active Staff</h3>
+
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b">
@@ -153,7 +205,7 @@ function Employees() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {employees.map((emp) => (
+                        {activeEmployees.map((emp) => (
                             <tr key={emp.uid} className="hover:bg-gray-50">
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../../firebase/auth'
 
 function Login() {
@@ -78,6 +78,13 @@ function Login() {
                         {loading ? 'Signing in...' : 'Sign In'}
                     </button>
                 </form>
+
+                <div className="mt-8 text-center text-sm text-gray-500">
+                    Need an account?{' '}
+                    <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+                        Register here
+                    </Link>
+                </div>
 
                 <p className="text-center text-gray-400 text-sm mt-6">
                     GPOS v1.0 — Powered by Firebase 🔥

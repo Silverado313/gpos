@@ -6,6 +6,8 @@ import { doc, getDoc } from 'firebase/firestore'
 import ProtectedRoute from './routes/ProtectedRoute'
 import useAuthStore from './store/authStore'
 import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import PendingApproval from './pages/auth/PendingApproval'
 import Dashboard from './pages/dashboard/Dashboard'
 import Products from './pages/products/Products'
 import POS from './pages/pos/POS'
@@ -22,30 +24,41 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthChange(async (currentUser) => {
       setLoading(true)
-      if (currentUser) {
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
-        const role = userDoc.exists() ? userDoc.data().role : 'admin'
-        setUser({ ...currentUser, role })
-      } else {
+      try {
+        if (currentUser) {
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
+          const role = userDoc.exists() ? userDoc.data().role : 'admin'
+          setUser({ ...currentUser, role })
+        } else {
+          setUser(null)
+        }
+      } catch (err) {
+        console.error("Auth sync error:", err)
         setUser(null)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     })
     return () => unsubscribe()
   }, [setUser, setLoading])
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <p className="text-blue-600 text-xl font-semibold">Loading GPOS...</p>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-gray-500 font-medium">Synchronizing GPOS...</p>
       </div>
     )
   }
+  const isPending = user && user.role === 'pending'
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
+      <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+      <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
+
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/products" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Products /></ProtectedRoute>} />
       <Route path="/pos" element={<ProtectedRoute><POS /></ProtectedRoute>} />

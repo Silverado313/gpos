@@ -1,0 +1,113 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth, db } from '../../firebase/config'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+
+function Register() {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const navigate = useNavigate()
+
+    const handleRegister = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        setError('')
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            const user = userCredential.user
+
+            // Update Auth Profile
+            await updateProfile(user, { displayName: name })
+
+            // Create Firestore User Doc with 'pending' role
+            await setDoc(doc(db, 'users', user.uid), {
+                name,
+                email,
+                role: 'pending',
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            })
+
+            navigate('/dashboard')
+        } catch (err) {
+            console.error(err)
+            setError(err.message || 'Failed to create account')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+            <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900">Join GPOS</h1>
+                    <p className="text-gray-500 mt-2">Create your employee account</p>
+                </div>
+
+                {error && (
+                    <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-6">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleRegister} className="space-y-4">
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">Full Name</label>
+                        <input
+                            type="text"
+                            required
+                            className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            placeholder="John Doe"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">Email Address</label>
+                        <input
+                            type="email"
+                            required
+                            className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            placeholder="john@gpos.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">Password</label>
+                        <input
+                            type="password"
+                            required
+                            className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                        disabled={loading}
+                    >
+                        {loading ? 'Registering...' : 'Request Access'}
+                    </button>
+                </form>
+
+                <div className="mt-8 text-center text-sm text-gray-500">
+                    Already have an account?{' '}
+                    <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+                        Log In
+                    </Link>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Register
