@@ -13,10 +13,11 @@ const menuItems = [
     { path: '/employees', icon: '👨‍💼', label: 'Employees', roles: ['admin'] },
     { path: '/reports', icon: '📈', label: 'Reports', roles: ['admin'] },
     { path: '/settings', icon: '⚙️', label: 'Settings', roles: ['admin'] },
+    { path: '/documentation', icon: '📖', label: 'Documentation', roles: ['admin', 'manager', 'cashier'] },
     { path: '/user-settings', icon: '👤', label: 'Profile', roles: ['admin', 'manager', 'cashier'] },
 ]
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsOpen }) {
     const navigate = useNavigate()
     const { user } = useAuthStore()
 
@@ -30,7 +31,7 @@ function Sidebar() {
     }
 
     return (
-        <div className="h-screen w-64 bg-gray-900 text-white flex flex-col fixed left-0 top-0">
+        <div className={`h-screen w-64 bg-gray-900 text-white flex flex-col fixed left-0 top-0 z-[50] transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
             {/* Logo */}
             <div className="p-6 border-b border-gray-700">
@@ -44,6 +45,7 @@ function Sidebar() {
                     <NavLink
                         key={item.path}
                         to={item.path}
+                        onClick={() => setIsOpen(false)}
                         className={({ isActive }) =>
                             `flex items-center gap-3 px-4 py-3 rounded-lg transition text-sm font-medium ${isActive
                                 ? 'bg-blue-600 text-white'

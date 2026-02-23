@@ -91,7 +91,7 @@ function Dashboard() {
 
     return (
         <Layout title="Dashboard">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4 mt-12">
 
                 {/* Stat Cards */}
                 <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -131,7 +131,7 @@ function Dashboard() {
                     <p className="text-blue-100 mb-6 leading-relaxed text-lg">
                         Your business performance is looking great today. You have {stats.todayTransactions} new transactions to review.
                     </p>
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 mb-4">
                         <button onClick={() => window.location.href = '/pos'} className="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold hover:bg-blue-50 transition">
                             Open POS
                         </button>

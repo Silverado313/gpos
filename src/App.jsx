@@ -8,7 +8,6 @@ import useAuthStore from './store/authStore'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import PendingApproval from './pages/auth/PendingApproval'
-import UserSettings from './pages/auth/UserSettings'
 import Invoice from './pages/sales/Invoice'
 import Dashboard from './pages/dashboard/Dashboard'
 import Products from './pages/products/Products'
@@ -19,6 +18,8 @@ import Inventory from './pages/inventory/Inventory'
 import Employees from './pages/employees/Employees'
 import Reports from './pages/reports/Reports'
 import Settings from './pages/settings/Settings'
+import Documentation from './pages/settings/Documentation'
+import UserSettings from './pages/auth/UserSettings'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
@@ -72,6 +73,7 @@ function App() {
       <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
       <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
       <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
+      <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
     </Routes>
   )
 }

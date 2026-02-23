@@ -89,8 +89,8 @@ function Sales() {
     return (
         <Layout title="Sales History">
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-3 gap-6 mb-6">
+            {/* Dashboard Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 mt-12">
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                     <p className="text-gray-500 text-sm">Total Transactions</p>
                     <h3 className="text-2xl font-bold text-gray-800 mt-1">{sales.length}</h3>
@@ -109,82 +109,84 @@ function Sales() {
                 </div>
             </div>
 
-            <div className="flex gap-6">
+            <div className="flex flex-col lg:flex-row gap-6">
 
                 {/* Sales Table */}
-                <div className="flex-1 bg-white rounded-xl shadow-sm overflow-hidden">
-                    <table className="w-full">
-                        <thead className="bg-gray-50 border-b">
-                            <tr>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">#</th>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Date</th>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Items</th>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Payment</th>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Total</th>
-                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {loading ? (
+                <div className="flex-1 bg-white rounded-xl shadow-sm overflow-x-auto">
+                    <div className="min-w-[600px]">
+                        <table className="w-full">
+                            <thead className="bg-gray-50 border-b">
                                 <tr>
-                                    <td colSpan="6" className="text-center py-8 text-gray-400">
-                                        Loading sales...
-                                    </td>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">#</th>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Date</th>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Items</th>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Payment</th>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Total</th>
+                                    <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Action</th>
                                 </tr>
-                            ) : sales.length === 0 ? (
-                                <tr>
-                                    <td colSpan="6" className="text-center py-8 text-gray-400">
-                                        No sales yet. Make your first sale in POS!
-                                    </td>
-                                </tr>
-                            ) : (
-                                sales.map((sale, index) => (
-                                    <tr key={sale.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 text-gray-500 text-sm">#{index + 1}</td>
-                                        <td className="px-6 py-4 text-gray-600 text-sm">{formatDate(sale.createdAt)}</td>
-                                        <td className="px-6 py-4 text-gray-600 text-sm">{sale.items?.length} items</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${sale.paymentMethod === 'cash'
-                                                ? 'bg-green-100 text-green-600'
-                                                : sale.paymentMethod === 'card'
-                                                    ? 'bg-blue-100 text-blue-600'
-                                                    : 'bg-yellow-100 text-yellow-600'
-                                                }`}>
-                                                {sale.paymentMethod}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 font-bold text-gray-800">
-                                            <div className="flex flex-col">
-                                                <span>{sale.currency || 'PKR'} {sale.total?.toFixed(2)}</span>
-                                                {sale.status === 'returned' && (
-                                                    <span className="text-[10px] text-red-500 font-black uppercase">Returned</span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 flex items-center gap-2">
-                                            <button
-                                                onClick={() => setSelected(sale)}
-                                                className="text-blue-500 hover:text-blue-700 text-sm font-medium"
-                                            >
-                                                View
-                                            </button>
-                                            <button
-                                                onClick={() => window.open(`/invoice/${sale.id}`, '_blank')}
-                                                className="text-blue-600 hover:text-blue-800 font-bold text-[10px] uppercase tracking-widest border-2 border-blue-100 px-2 py-1 rounded-md hover:border-blue-200 transition"
-                                            >
-                                                📜 Invoice
-                                            </button>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan="6" className="text-center py-8 text-gray-400">
+                                            Loading sales...
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : sales.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="6" className="text-center py-8 text-gray-400">
+                                            No sales yet. Make your first sale in POS!
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    sales.map((sale, index) => (
+                                        <tr key={sale.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 text-gray-500 text-sm">#{index + 1}</td>
+                                            <td className="px-6 py-4 text-gray-600 text-sm">{formatDate(sale.createdAt)}</td>
+                                            <td className="px-6 py-4 text-gray-600 text-sm">{sale.items?.length} items</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${sale.paymentMethod === 'cash'
+                                                    ? 'bg-green-100 text-green-600'
+                                                    : sale.paymentMethod === 'card'
+                                                        ? 'bg-blue-100 text-blue-600'
+                                                        : 'bg-yellow-100 text-yellow-600'
+                                                    }`}>
+                                                    {sale.paymentMethod}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 font-bold text-gray-800">
+                                                <div className="flex flex-col">
+                                                    <span>{sale.currency || 'PKR'} {sale.total?.toFixed(2)}</span>
+                                                    {sale.status === 'returned' && (
+                                                        <span className="text-[10px] text-red-500 font-black uppercase">Returned</span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 flex items-center gap-2">
+                                                <button
+                                                    onClick={() => setSelected(sale)}
+                                                    className="text-blue-500 hover:text-blue-700 text-sm font-medium"
+                                                >
+                                                    View
+                                                </button>
+                                                <button
+                                                    onClick={() => window.open(`/invoice/${sale.id}`, '_blank')}
+                                                    className="text-blue-600 hover:text-blue-800 font-bold text-[10px] uppercase tracking-widest border-2 border-blue-100 px-2 py-1 rounded-md hover:border-blue-200 transition"
+                                                >
+                                                    📜 Invoice
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {/* Sale Detail Panel */}
                 {selected && (
-                    <div className="w-72 bg-white rounded-xl shadow-sm p-6">
+                    <div className="w-full lg:w-80 bg-white rounded-xl shadow-sm p-6 lg:sticky lg:top-20 lg:h-fit">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-bold text-gray-800">Sale Detail</h3>
                             <button

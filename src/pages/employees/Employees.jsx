@@ -65,7 +65,7 @@ function Employees() {
     return (
         <Layout title="Employee Management">
 
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 mt-12">
                 <p className="text-gray-500">{activeEmployees.length} active employees</p>
                 <button
                     onClick={() => setShowForm(!showForm)}
@@ -218,8 +218,8 @@ function Employees() {
                                 <td className="px-6 py-4 text-gray-500 text-sm">{emp.email}</td>
                                 <td className="px-6 py-4">
                                     <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${emp.role === 'admin' ? 'bg-red-100 text-red-600' :
-                                            emp.role === 'manager' ? 'bg-blue-100 text-blue-600' :
-                                                'bg-green-100 text-green-600'
+                                        emp.role === 'manager' ? 'bg-blue-100 text-blue-600' :
+                                            'bg-green-100 text-green-600'
                                         }`}>
                                         {emp.role}
                                     </span>

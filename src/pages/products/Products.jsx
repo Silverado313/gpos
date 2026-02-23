@@ -8,7 +8,9 @@ import {
     deleteDoc,
     updateDoc,
     doc,
-    serverTimestamp
+    serverTimestamp,
+    query,
+    where
 } from 'firebase/firestore'
 import { auth } from '../../firebase/config'
 
@@ -30,9 +32,21 @@ function Products() {
 
     // Fetch Products
     const fetchProducts = async () => {
-        const snapshot = await getDocs(collection(db, 'products'))
-        const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        setProducts(list)
+        try {
+            const productSnapshot = await getDocs(collection(db, 'products'))
+            const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+            const inventorySnapshot = await getDocs(collection(db, 'inventory'))
+            const inventoryList = inventorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+            const mergedList = productList.map(p => ({
+                ...p,
+                stock: inventoryList.find(i => i.productId === p.id)?.currentStock || 0
+            }))
+            setProducts(mergedList)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     useEffect(() => {
@@ -44,13 +58,22 @@ function Products() {
         e.preventDefault()
         setLoading(true)
         try {
-            await addDoc(collection(db, 'products'), {
+            const productDoc = await addDoc(collection(db, 'products'), {
                 ...form,
                 price: parseFloat(form.price),
                 costPrice: parseFloat(form.costPrice),
                 businessId,
                 active: true,
                 createdAt: serverTimestamp()
+            })
+
+            // Auto-create inventory record
+            await addDoc(collection(db, 'inventory'), {
+                productId: productDoc.id,
+                currentStock: 0,
+                minStock: 10,
+                maxStock: 100,
+                lastUpdated: serverTimestamp()
             })
             setForm({ name: '', price: '', costPrice: '', category: '', unit: 'pcs', barcode: '' })
             setShowForm(false)
@@ -85,8 +108,16 @@ function Products() {
 
     // Delete Product
     const handleDelete = async (id) => {
-        if (window.confirm('Delete this product?')) {
+        if (window.confirm('Delete this product? This will also remove its inventory data.')) {
+            // Delete product
             await deleteDoc(doc(db, 'products', id))
+
+            // Sync deletion with inventory
+            const invSnap = await getDocs(query(collection(db, 'inventory'), where('productId', '==', id)))
+            invSnap.forEach(async (invDoc) => {
+                await deleteDoc(doc(db, 'inventory', invDoc.id))
+            })
+
             fetchProducts()
         }
     }
@@ -95,7 +126,7 @@ function Products() {
         <Layout title="Products">
 
             {/* Header */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 mt-12">
                 <p className="text-gray-500">{products.length} products found</p>
                 <button
                     onClick={() => setShowForm(!showForm)}
@@ -109,7 +140,7 @@ function Products() {
             {showForm && (
                 <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
                     <h3 className="text-lg font-semibold text-gray-700 mb-4">New Product</h3>
-                    <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="text-sm text-gray-600">Product Name *</label>
                             <input
@@ -283,54 +314,66 @@ function Products() {
             )}
 
             {/* Products Table */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <table className="w-full">
-                    <thead className="bg-gray-50 border-b">
-                        <tr>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Name</th>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Category</th>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Price</th>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Cost</th>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Unit</th>
-                            <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {products.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
+                <div className="min-w-[800px]">
+                    <table className="w-full">
+                        <thead className="bg-gray-50 border-b">
                             <tr>
-                                <td colSpan="6" className="text-center py-8 text-gray-400">
-                                    No products yet. Click "Add Product" to start!
-                                </td>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Name</th>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Category</th>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Price</th>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Stock</th>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Unit</th>
+                                <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">Actions</th>
                             </tr>
-                        ) : (
-                            products.map((product) => (
-                                <tr key={product.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-medium text-gray-800">{product.name}</td>
-                                    <td className="px-6 py-4 text-gray-500">{product.category || '-'}</td>
-                                    <td className="px-6 py-4 text-green-600 font-medium">PKR {product.price}</td>
-                                    <td className="px-6 py-4 text-gray-500">PKR {product.costPrice || '-'}</td>
-                                    <td className="px-6 py-4 text-gray-500">{product.unit}</td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex gap-3">
-                                            <button
-                                                onClick={() => setEditingProduct(product)}
-                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(product.id)}
-                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {products.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-8 text-gray-400">
+                                        No products yet. Click "Add Product" to start!
                                     </td>
                                 </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                            ) : (
+                                products.map((product) => (
+                                    <tr key={product.id} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4 font-medium text-gray-800">{product.name}</td>
+                                        <td className="px-6 py-4 text-gray-500">{product.category || '-'}</td>
+                                        <td className="px-6 py-4 text-green-600 font-bold">PKR {product.price}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-2 py-1 rounded-lg text-xs font-bold ${product.stock <= 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
+                                                {product.stock} {product.unit}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-500">{product.unit}</td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex gap-3">
+                                                <button
+                                                    onClick={() => setEditingProduct(product)}
+                                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => window.location.href = '/inventory'}
+                                                    className="text-green-600 hover:text-green-800 text-sm font-medium"
+                                                >
+                                                    Stock
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(product.id)}
+                                                    className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </Layout>

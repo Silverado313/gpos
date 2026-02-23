@@ -253,13 +253,13 @@ function POS() {
 
     return (
         <Layout title="POS">
-            <div className="flex gap-6 h-full">
+            <div className="flex flex-col lg:flex-row gap-6 h-full">
 
                 {/* Left — Products */}
                 <div className="flex-1">
 
                     {/* Search */}
-                    <div className="flex gap-3 mb-4">
+                    <div className="flex gap-3 mb-4 mt-12">
                         <input
                             type="text"
                             placeholder="🔍 Search products..."
@@ -281,7 +281,7 @@ function POS() {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                         {filtered.map(product => (
                             <button
                                 key={product.id}
@@ -298,15 +298,15 @@ function POS() {
                         ))}
 
                         {filtered.length === 0 && (
-                            <div className="col-span-4 text-center py-12 text-gray-400">
-                                No products found
+                            <div className="col-span-full text-center py-12 text-gray-400 bg-white rounded-xl shadow-sm border border-dashed border-gray-200">
+                                🔍 No products found. Try a different search!
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* Right — Cart */}
-                <div className="w-80 bg-white rounded-xl shadow-sm flex flex-col">
+                <div className="w-full lg:w-96 bg-white rounded-xl shadow-sm flex flex-col shrink-0 lg:sticky lg:top-20 lg:h-[calc(100vh-120px)]">
 
                     {/* Cart Header */}
                     <div className="p-4 border-b space-y-3">

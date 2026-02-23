@@ -54,10 +54,10 @@ function Settings() {
 
     return (
         <Layout title="Settings">
-            <div className="max-w-2xl space-y-6">
+            <div className="max-w-4xl mx-auto space-y-6">
 
                 {/* Business Info */}
-                <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="bg-white rounded-xl p-6 shadow-sm mt-12">
                     <h3 className="font-bold text-gray-800 mb-4">🏪 Business Information</h3>
                     <div className="space-y-4">
                         <div>
@@ -119,7 +119,7 @@ function Settings() {
                             </button>
                         </div>
                         {settings.taxEnabled && (
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-sm text-gray-600">Tax Label (e.g. GST, VAT)</label>
                                     <input

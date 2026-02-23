@@ -62,7 +62,7 @@ function UserSettings() {
             <div className="max-w-xl">
 
                 {message && (
-                    <div className={`mb-6 p-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
+                    <div className={`mt-12 p-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
                         }`}>
                         {message.type === 'success' ? '✅' : '❌'} {message.text}
                     </div>
@@ -71,7 +71,7 @@ function UserSettings() {
                 <div className="grid grid-cols-1 gap-6">
 
                     {/* Account Info */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mt-12">
                         <div className="flex items-center gap-4 mb-8">
                             <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl">
                                 👤
