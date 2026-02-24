@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { logout } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import useAuthStore from '../../store/authStore'
 
 const menuItems = [
@@ -27,6 +28,20 @@ function Sidebar({ isOpen, setIsOpen }) {
         !item.roles || item.roles.includes(user?.role)
     )
 
+    const menuGroups = [
+        { title: 'Main', paths: ['/dashboard', '/pos'] },
+        { title: 'Management', paths: ['/products', '/inventory', '/suppliers', '/purchase-orders'] },
+        { title: 'Sales', paths: ['/sales', '/customers'] },
+        { title: 'Administration', paths: ['/employees', '/reports', '/settings'] },
+        { title: 'Help', paths: ['/documentation', '/user-settings'] },
+    ]
+
+    const [openGroups, setOpenGroups] = useState(() => {
+        const initial = {}
+        menuGroups.forEach(g => { initial[g.title] = g.title === 'Main' })
+        return initial
+    })
+
     const handleLogout = async () => {
         await logout()
         navigate('/login')
@@ -41,24 +56,47 @@ function Sidebar({ isOpen, setIsOpen }) {
                 <p className="text-gray-400 text-xs mt-1">General Point of Sale</p>
             </div>
 
-            {/* Menu */}
-            <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-                {filteredMenu.map((item) => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        onClick={() => setIsOpen(false)}
-                        className={({ isActive }) =>
-                            `flex items-center gap-3 px-4 py-3 rounded-lg transition text-sm font-medium ${isActive
-                                ? 'bg-blue-600 text-white'
-                                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                            }`
-                        }
-                    >
-                        <span className="text-lg">{item.icon}</span>
-                        {item.label}
-                    </NavLink>
-                ))}
+            {/* Menu (grouped) */}
+            <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
+                {menuGroups.map((group) => {
+                    const items = filteredMenu.filter(i => group.paths.includes(i.path))
+                    if (!items.length) return null
+                    const open = !!openGroups[group.title]
+                    return (
+                        <div key={group.title}>
+                            <button
+                                type="button"
+                                onClick={() => setOpenGroups(prev => ({ ...prev, [group.title]: !prev[group.title] }))}
+                                className="w-full flex items-center justify-between px-2 mb-2 text-xs uppercase text-gray-400 font-black"
+                                aria-expanded={open}
+                            >
+                                <span>{group.title}</span>
+                                <span className={`transform transition-transform text-gray-300 ${open ? 'rotate-90' : ''}`}>▸</span>
+                            </button>
+
+                            {open && (
+                                <div className="bg-gray-800 rounded-lg p-2 space-y-1">
+                                    {items.map((item) => (
+                                        <NavLink
+                                            key={item.path}
+                                            to={item.path}
+                                            onClick={() => setIsOpen(false)}
+                                            className={({ isActive }) =>
+                                                `flex items-center gap-3 px-4 py-3 rounded-md transition text-sm font-medium ${isActive
+                                                    ? 'bg-blue-600 text-white'
+                                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                                }`
+                                            }
+                                        >
+                                            <span className="text-lg">{item.icon}</span>
+                                            {item.label}
+                                        </NavLink>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
             </nav>
 
             {/* Logout */}
