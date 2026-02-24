@@ -58,26 +58,36 @@ function Products() {
         e.preventDefault()
         setLoading(true)
         try {
-            const productDoc = await addDoc(collection(db, 'products'), {
+            const productData = {
                 ...form,
                 price: parseFloat(form.price),
                 costPrice: parseFloat(form.costPrice),
                 businessId,
                 active: true,
                 createdAt: serverTimestamp()
+            }
+
+            // Non-blocking add
+            const productDocPromise = addDoc(collection(db, 'products'), productData)
+
+            // UI Feedback: Optimistically add to local state
+            const tempId = Date.now().toString()
+            setProducts([{ id: tempId, ...productData, stock: 0 }, ...products])
+
+            // Auto-create inventory record (Non-blocking)
+            productDocPromise.then(docRef => {
+                addDoc(collection(db, 'inventory'), {
+                    productId: docRef.id,
+                    currentStock: 0,
+                    minStock: 10,
+                    maxStock: 100,
+                    lastUpdated: serverTimestamp()
+                })
             })
 
-            // Auto-create inventory record
-            await addDoc(collection(db, 'inventory'), {
-                productId: productDoc.id,
-                currentStock: 0,
-                minStock: 10,
-                maxStock: 100,
-                lastUpdated: serverTimestamp()
-            })
             setForm({ name: '', price: '', costPrice: '', category: '', unit: 'pcs', barcode: '' })
             setShowForm(false)
-            fetchProducts()
+            fetchProducts() // Sync with Firestore local cache
         } catch (err) {
             console.error(err)
         } finally {
@@ -91,14 +101,21 @@ function Products() {
         setLoading(true)
         try {
             const productRef = doc(db, 'products', editingProduct.id)
-            await updateDoc(productRef, {
+            const updatedData = {
                 ...editingProduct,
                 price: parseFloat(editingProduct.price),
                 costPrice: parseFloat(editingProduct.costPrice),
                 updatedAt: serverTimestamp()
-            })
+            }
+
+            // Non-blocking update
+            updateDoc(productRef, updatedData)
+
+            // UI Feedback: Optimistically update local state
+            setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...updatedData } : p))
+
             setEditingProduct(null)
-            fetchProducts()
+            fetchProducts() // Sync with Firestore local cache
         } catch (err) {
             console.error(err)
         } finally {

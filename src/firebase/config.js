@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { initializeFirestore, enableIndexedDbPersistence } from 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,6 +14,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 export const auth = getAuth(app)
-export const db = getFirestore(app)
+
+// Initialize Firestore with specific settings
+export const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true, // Better for some strict firewall/proxy environments
+})
+
+// Enable Persistence
+enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code === 'failed-precondition') {
+        // Multiple tabs open, persistence can only be enabled in one tab at a time.
+        console.warn('Firestore persistence failed: Multiple tabs open')
+    } else if (err.code === 'unimplemented') {
+        // The current browser does not support all of the features required to enable persistence
+        console.warn('Firestore persistence failed: Browser not supported')
+    }
+})
 
 export default app

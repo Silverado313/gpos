@@ -20,6 +20,8 @@ import Reports from './pages/reports/Reports'
 import Settings from './pages/settings/Settings'
 import Documentation from './pages/settings/Documentation'
 import UserSettings from './pages/auth/UserSettings'
+import Suppliers from './pages/inventory/Suppliers'
+import PurchaseOrders from './pages/inventory/PurchaseOrders'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
@@ -29,11 +31,28 @@ function App() {
       setLoading(true)
       try {
         if (currentUser) {
-          const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
-          const role = userDoc.exists() ? userDoc.data().role : 'pending' // Default to pending for safety
-          setUser({ ...currentUser, role })
+          // Use the authStore to update role once fetched
+          const { setRole, role: cachedRole } = useAuthStore.getState()
+
+          try {
+            const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
+            if (userDoc.exists()) {
+              const freshRole = userDoc.data().role
+              setRole(freshRole)
+              setUser({ ...currentUser, role: freshRole })
+            } else {
+              // Fallback to cached role or default
+              const finalRole = cachedRole || 'pending'
+              setUser({ ...currentUser, role: finalRole })
+            }
+          } catch (dbErr) {
+            console.warn("Firestore role fetch failed (likely offline):", dbErr)
+            // If offline, trust the cachedRole from authStore (localStorage)
+            setUser({ ...currentUser, role: cachedRole || 'pending' })
+          }
         } else {
           setUser(null)
+          localStorage.removeItem('gpos_user_role')
         }
       } catch (err) {
         console.error("Auth sync error:", err)
@@ -72,6 +91,8 @@ function App() {
       <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
       <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
+      <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
+      <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
       <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
       <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
     </Routes>

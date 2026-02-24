@@ -117,7 +117,9 @@ function POS() {
         }
         setLoading(true)
         try {
-            const newSale = await addDoc(collection(db, 'sales'), {
+            // Perform Firestore operations (these will be queued if offline)
+            const salesRef = collection(db, 'sales')
+            const saleData = {
                 items: cart.map(item => ({
                     productId: item.id,
                     name: item.name,
@@ -140,15 +142,17 @@ function POS() {
                 customerName: selectedCustomer?.name || 'Walk-in Customer',
                 status: 'completed',
                 createdAt: serverTimestamp()
-            })
+            }
 
-            // Update Customer Loyalty & Points Redemption
+            // We don't await every single update to keep UI snappy
+            const newSalePromise = addDoc(salesRef, saleData)
+
+            // Update Customer Loyalty & Points Redemption (Non-blocking)
             if (selectedCustomer && selectedCustomer.id !== 'walk-in') {
                 const customerRef = doc(db, 'customers', selectedCustomer.id)
                 const pointsPer100 = settings?.loyaltyPointsPerAmount || 1
                 const earnedPoints = Math.floor((total / 100) * pointsPer100)
-
-                await updateDoc(customerRef, {
+                updateDoc(customerRef, {
                     totalSpent: increment(total),
                     loyaltyPoints: increment(earnedPoints - (redeemPoints ? selectedCustomer.loyaltyPoints : 0)),
                     totalVisits: increment(1),
@@ -156,23 +160,26 @@ function POS() {
                 })
             }
 
-            // 3. Decrement Inventory Stock
+            // Decrement Inventory Stock (Non-blocking)
             for (const item of cart) {
                 const invQuery = query(
                     collection(db, 'inventory'),
                     where('productId', '==', item.id),
                     limit(1)
                 )
-                const invSnap = await getDocs(invQuery)
-
-                if (!invSnap.empty) {
-                    const invDoc = invSnap.docs[0]
-                    await updateDoc(doc(db, 'inventory', invDoc.id), {
-                        currentStock: increment(-item.quantity),
-                        lastUpdated: serverTimestamp()
-                    })
-                }
+                // We fetch the doc to get the ID, but the update is queued
+                getDocs(invQuery).then(invSnap => {
+                    if (!invSnap.empty) {
+                        updateDoc(doc(db, 'inventory', invSnap.docs[0].id), {
+                            currentStock: increment(-item.quantity),
+                            lastUpdated: serverTimestamp()
+                        })
+                    }
+                })
             }
+
+            // Wait for the sale ID just to show it in the UI
+            const newSale = await newSalePromise
 
             setCart([])
             setAmountPaid('')
@@ -466,12 +473,26 @@ function POS() {
                                     </p>
                                     <p className="text-blue-600 text-[10px] font-bold mt-0.5">Receipt ID: #{(success || lastSaleId).slice(-6).toUpperCase()}</p>
                                 </div>
-                                <button
-                                    onClick={() => window.open(`/invoice/${success || lastSaleId}`, '_blank')}
-                                    className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
-                                >
-                                    <span>📜</span> Print Receipt
-                                </button>
+                                <div className="flex flex-col gap-2 w-full">
+                                    <button
+                                        onClick={() => {
+                                            window.open(`/invoice/${success || lastSaleId}`, '_self')
+                                            // Automatically clear success state after opening print window
+                                            if (success) clearCart()
+                                        }}
+                                        className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
+                                    >
+                                        <span>📜</span> Print Receipt
+                                    </button>
+                                    {success && (
+                                        <button
+                                            onClick={clearCart}
+                                            className="bg-white text-blue-600 border-2 border-blue-100 px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition flex items-center gap-2 w-full justify-center"
+                                        >
+                                            ➕ New Sale
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         )}
 

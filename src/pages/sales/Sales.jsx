@@ -170,7 +170,7 @@ function Sales() {
                                                     View
                                                 </button>
                                                 <button
-                                                    onClick={() => window.open(`/invoice/${sale.id}`, '_blank')}
+                                                    onClick={() => window.open(`/invoice/${sale.id}`, '_self')}
                                                     className="text-blue-600 hover:text-blue-800 font-bold text-[10px] uppercase tracking-widest border-2 border-blue-100 px-2 py-1 rounded-md hover:border-blue-200 transition"
                                                 >
                                                     📜 Invoice

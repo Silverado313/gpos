@@ -2,10 +2,13 @@ import { create } from 'zustand'
 
 const useAuthStore = create((set) => ({
     user: null,
-    role: null,
+    role: localStorage.getItem('gpos_user_role') || null,
     loading: true,
     setUser: (user) => set({ user }),
-    setRole: (role) => set({ role }),
+    setRole: (role) => {
+        localStorage.setItem('gpos_user_role', role)
+        set({ role })
+    },
     setLoading: (loading) => set({ loading }),
 }))
 

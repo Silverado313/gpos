@@ -8,6 +8,8 @@ const menuItems = [
     { path: '/pos', icon: '🛒', label: 'POS', roles: ['admin', 'manager', 'cashier'] },
     { path: '/products', icon: '📦', label: 'Products', roles: ['admin', 'manager'] },
     { path: '/inventory', icon: '🏪', label: 'Inventory', roles: ['admin', 'manager'] },
+    { path: '/suppliers', icon: '🏭', label: 'Suppliers', roles: ['admin', 'manager'] },
+    { path: '/purchase-orders', icon: '📝', label: 'PO', roles: ['admin', 'manager'] },
     { path: '/sales', icon: '💰', label: 'Sales', roles: ['admin', 'manager', 'cashier'] },
     { path: '/customers', icon: '👥', label: 'Customers', roles: ['admin', 'manager', 'cashier'] },
     { path: '/employees', icon: '👨‍💼', label: 'Employees', roles: ['admin'] },
