@@ -22,6 +22,8 @@ function Inventory() {
         maxStock: '',
     })
 
+    const [initialLoading, setInitialLoading] = useState(true)
+
     const [searchTerm, setSearchTerm] = useState('')
 
     const fetchData = async () => {
@@ -35,7 +37,11 @@ function Inventory() {
     }
 
     useEffect(() => {
-        fetchData()
+        const init = async () => {
+            await fetchData()
+            setInitialLoading(false)
+        }
+        init()
     }, [])
 
     const getProductName = (productId) => {
@@ -84,6 +90,17 @@ function Inventory() {
 
     const lowStockCount = inventory.filter(i => i.currentStock <= i.minStock).length
     const outOfStockCount = inventory.filter(i => i.currentStock <= 0).length
+
+    if (initialLoading) {
+        return (
+            <Layout title="Inventory">
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading inventory...</p>
+                </div>
+            </Layout>
+        )
+    }
 
     return (
         <Layout title="Inventory">

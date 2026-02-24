@@ -24,6 +24,7 @@ function Suppliers() {
         category: '',
     })
     const [editingSupplier, setEditingSupplier] = useState(null)
+    const [initialLoading, setInitialLoading] = useState(true)
 
     // Fetch Suppliers
     const fetchSuppliers = async () => {
@@ -36,7 +37,11 @@ function Suppliers() {
     }
 
     useEffect(() => {
-        fetchSuppliers()
+        const init = async () => {
+            await fetchSuppliers()
+            setInitialLoading(false)
+        }
+        init()
     }, [])
 
     const handleSubmit = async (e) => {
@@ -84,6 +89,13 @@ function Suppliers() {
 
     return (
         <Layout title="Suppliers">
+
+            {initialLoading && (
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading suppliers...</p>
+                </div>
+            )}
 
             <div className="flex justify-between items-center mb-6 mt-12">
                 <p className="text-gray-500">{suppliers.length} vendors registered</p>

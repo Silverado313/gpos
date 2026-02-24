@@ -8,6 +8,7 @@ function Sales() {
     const [sales, setSales] = useState([])
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState(null)
+    const [initialLoading, setInitialLoading] = useState(true)
     const { user } = useAuthStore()
 
     const fetchSales = async () => {
@@ -25,8 +26,16 @@ function Sales() {
     }
 
     useEffect(() => {
-        fetchSales()
+        const init = async () => {
+            await fetchSales()
+            setInitialLoading(false)
+        }
+        init()
     }, [])
+
+
+    
+
 
     const handleReturn = async (sale) => {
         if (!window.confirm('Are you sure you want to return this entire sale? This will restore items to inventory.')) return
@@ -85,6 +94,17 @@ function Sales() {
     }
 
     const totalRevenue = sales.reduce((sum, sale) => sum + sale.total, 0)
+
+    if (initialLoading) {
+        return (
+            <Layout title="Sales History">
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading sales...</p>
+                </div>
+            </Layout>
+        )
+    }
 
     return (
         <Layout title="Sales History">

@@ -27,6 +27,7 @@ function Products() {
         barcode: '',
     })
     const [editingProduct, setEditingProduct] = useState(null)
+    const [initialLoading, setInitialLoading] = useState(true)
 
     const businessId = auth.currentUser?.uid
 
@@ -50,7 +51,11 @@ function Products() {
     }
 
     useEffect(() => {
-        fetchProducts()
+        const init = async () => {
+            await fetchProducts()
+            setInitialLoading(false)
+        }
+        init()
     }, [])
 
     // Add Product
@@ -141,6 +146,13 @@ function Products() {
 
     return (
         <Layout title="Products">
+
+            {initialLoading && (
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading products...</p>
+                </div>
+            )}
 
             {/* Header */}
             <div className="flex justify-between items-center mb-6 mt-12">

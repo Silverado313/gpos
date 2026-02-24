@@ -68,7 +68,7 @@ function App() {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
-        <p className="text-gray-500 font-medium">Synchronizing GPOS...</p>
+        <p className="text-gray-500 font-medium">GPOS Loading...</p>
       </div>
     )
   }

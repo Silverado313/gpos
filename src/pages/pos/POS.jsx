@@ -27,6 +27,7 @@ function POS() {
     const [customers, setCustomers] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
     const [settings, setSettings] = useState(null)
+    const [initialLoading, setInitialLoading] = useState(true)
     const [taxEnabled, setTaxEnabled] = useState(true)
     const [redeemPoints, setRedeemPoints] = useState(false)
     const [suspendedSales, setSuspendedSales] = useState([])
@@ -34,6 +35,8 @@ function POS() {
     const [lastSaleId, setLastSaleId] = useState(null)
 
     const currency = settings?.currency || 'PKR'
+
+    
 
     // Fetch Initial Data
     useEffect(() => {
@@ -56,11 +59,33 @@ function POS() {
             const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             setSuspendedSales(list)
         }
-        fetchProducts()
-        fetchCustomers()
-        fetchSettings()
-        fetchSuspendedSales()
+
+        const fetchInitial = async () => {
+            try {
+                await fetchProducts()
+                await fetchCustomers()
+                await fetchSettings()
+                await fetchSuspendedSales()
+            } catch (err) {
+                console.error('POS initial fetch error:', err)
+            } finally {
+                setInitialLoading(false)
+            }
+        }
+
+        fetchInitial()
     }, [])
+
+    if (initialLoading) {
+        return (
+            <Layout title="POS">
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading POS data...</p>
+                </div>
+            </Layout>
+        )
+    }
 
     // Add to Cart
     const addToCart = (product) => {

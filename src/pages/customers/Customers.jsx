@@ -24,6 +24,7 @@ function Customers() {
         address: '',
     })
     const [editingCustomer, setEditingCustomer] = useState(null)
+    const [initialLoading, setInitialLoading] = useState(true)
 
     const fetchCustomers = async () => {
         const snapshot = await getDocs(collection(db, 'customers'))
@@ -32,8 +33,23 @@ function Customers() {
     }
 
     useEffect(() => {
-        fetchCustomers()
+        const init = async () => {
+            await fetchCustomers()
+            setInitialLoading(false)
+        }
+        init()
     }, [])
+
+    if (initialLoading) {
+        return (
+            <Layout title="Customers">
+                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-500 font-medium">Loading customers...</p>
+                </div>
+            </Layout>
+        )
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
