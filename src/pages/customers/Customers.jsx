@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 import {
     collection,
     getDocs,
@@ -64,9 +65,10 @@ function Customers() {
             })
             setForm({ name: '', phone: '', email: '', address: '' })
             setShowForm(false)
+            showSuccess('Customer added successfully')
             fetchCustomers()
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Add Customer', 'Failed to add customer')
         } finally {
             setLoading(false)
         }
@@ -83,9 +85,10 @@ function Customers() {
                 updatedAt: serverTimestamp()
             })
             setEditingCustomer(null)
+            showSuccess('Customer updated successfully')
             fetchCustomers()
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Update Customer', 'Failed to update customer')
         } finally {
             setLoading(false)
         }

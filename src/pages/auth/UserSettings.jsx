@@ -4,6 +4,7 @@ import { auth, db } from '../../firebase/config'
 import { updateProfile, updatePassword } from 'firebase/auth'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import useAuthStore from '../../store/authStore'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 
 function UserSettings() {
     const { user, setUser } = useAuthStore()
@@ -31,10 +32,9 @@ function UserSettings() {
             // Update Global State
             setUser({ ...user, displayName: name })
 
-            setMessage({ type: 'success', text: 'Profile updated successfully!' })
+            showSuccess('Profile updated successfully')
         } catch (err) {
-            console.error(err)
-            setMessage({ type: 'error', text: 'Failed to update profile.' })
+            handleError(err, 'Update Profile', 'Failed to update profile')
         } finally {
             setLoading(false)
         }
@@ -48,10 +48,9 @@ function UserSettings() {
         try {
             await updatePassword(auth.currentUser, newPassword)
             setNewPassword('')
-            setMessage({ type: 'success', text: 'Password changed successfully!' })
+            showSuccess('Password changed successfully')
         } catch (err) {
-            console.error(err)
-            setMessage({ type: 'error', text: 'Failed to change password. You may need to re-login first.' })
+            handleError(err, 'Change Password', 'Failed to change password. You may need to re-login first.')
         } finally {
             setLoading(false)
         }

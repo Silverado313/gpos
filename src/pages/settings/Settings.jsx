@@ -3,6 +3,7 @@ import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 
 function Settings() {
     const [loading, setLoading] = useState(false)
@@ -33,7 +34,7 @@ function Settings() {
                     setSettings(docSnap.data())
                 }
             } catch (err) {
-                console.error(err)
+                handleError(err, 'Fetch Settings', 'Failed to load settings')
             }
         }
         fetchSettings()
@@ -44,9 +45,10 @@ function Settings() {
         try {
             await setDoc(doc(db, 'settings', settingsId), settings)
             setSaved(true)
+            showSuccess('Settings saved successfully')
             setTimeout(() => setSaved(false), 3000)
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Save Settings', 'Failed to save settings')
         } finally {
             setLoading(false)
         }

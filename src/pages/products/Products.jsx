@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 import {
     collection,
     addDoc,
@@ -16,6 +17,7 @@ import { auth } from '../../firebase/config'
 
 function Products() {
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
     const [showForm, setShowForm] = useState(false)
     const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({
@@ -31,14 +33,27 @@ function Products() {
 
     const businessId = auth.currentUser?.uid
 
-    // Fetch Products
+    // Resolve category ID to name
+    const getCategoryName = (catId) => {
+        if (!catId) return '-'
+        const cat = categories.find(c => c.id === catId)
+        return cat ? cat.name : catId
+    }
+
+    // Fetch Products + Categories
     const fetchProducts = async () => {
         try {
-            const productSnapshot = await getDocs(collection(db, 'products'))
-            const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            const [productSnapshot, inventorySnapshot, categorySnapshot] = await Promise.all([
+                getDocs(collection(db, 'products')),
+                getDocs(collection(db, 'inventory')),
+                getDocs(collection(db, 'categories')),
+            ])
 
-            const inventorySnapshot = await getDocs(collection(db, 'inventory'))
+            const productList = productSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             const inventoryList = inventorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            const categoryList = categorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+            setCategories(categoryList)
 
             const mergedList = productList.map(p => ({
                 ...p,
@@ -46,7 +61,7 @@ function Products() {
             }))
             setProducts(mergedList)
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Fetch Products', 'Failed to load products')
         }
     }
 
@@ -92,9 +107,10 @@ function Products() {
 
             setForm({ name: '', price: '', costPrice: '', category: '', unit: 'pcs', barcode: '' })
             setShowForm(false)
+            showSuccess('Product added successfully')
             fetchProducts() // Sync with Firestore local cache
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Add Product', 'Failed to add product')
         } finally {
             setLoading(false)
         }
@@ -120,9 +136,10 @@ function Products() {
             setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...updatedData } : p))
 
             setEditingProduct(null)
+            showSuccess('Product updated successfully')
             fetchProducts() // Sync with Firestore local cache
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Update Product', 'Failed to update product')
         } finally {
             setLoading(false)
         }
@@ -183,13 +200,16 @@ function Products() {
                         </div>
                         <div>
                             <label className="text-sm text-gray-600">Category</label>
-                            <input
-                                type="text"
+                            <select
                                 value={form.category}
                                 onChange={(e) => setForm({ ...form, category: e.target.value })}
                                 className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="e.g. Beverages"
-                            />
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map(cat => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <label className="text-sm text-gray-600">Sale Price *</label>
@@ -273,12 +293,16 @@ function Products() {
                             </div>
                             <div>
                                 <label className="text-sm text-gray-600">Category</label>
-                                <input
-                                    type="text"
+                                <select
                                     value={editingProduct.category}
                                     onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                                     className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.map(cat => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
                                 <label className="text-sm text-gray-600">Sale Price *</label>
@@ -367,7 +391,7 @@ function Products() {
                                 products.map((product) => (
                                     <tr key={product.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 font-medium text-gray-800">{product.name}</td>
-                                        <td className="px-6 py-4 text-gray-500">{product.category || '-'}</td>
+                                        <td className="px-6 py-4 text-gray-500">{getCategoryName(product.category)}</td>
                                         <td className="px-6 py-4 text-green-600 font-bold">PKR {product.price}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 rounded-lg text-xs font-bold ${product.stock <= 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>

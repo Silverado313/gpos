@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
 import { collection, getDocs, getDoc, query, orderBy, doc } from 'firebase/firestore'
+import { handleError } from '../../utils/errorHandler'
 
 function Reports() {
     const [sales, setSales] = useState([])
@@ -32,7 +33,7 @@ function Reports() {
                 const poList = poSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
                 setPurchaseOrders(poList)
             } catch (err) {
-                console.error(err)
+                handleError(err, 'Fetch Reports', 'Failed to load reports data')
             } finally {
                 setLoading(false)
             }

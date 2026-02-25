@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db, auth } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 import {
     collection,
     getDocs,
@@ -18,6 +19,8 @@ import {
 
 function POS() {
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
+    const [activeCategory, setActiveCategory] = useState('all')
     const [cart, setCart] = useState([])
     const [search, setSearch] = useState('')
     const [paymentMethod, setPaymentMethod] = useState('cash')
@@ -41,9 +44,20 @@ function POS() {
     // Fetch Initial Data
     useEffect(() => {
         const fetchProducts = async () => {
-            const snapshot = await getDocs(collection(db, 'products'))
-            const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            const [productSnap, inventorySnap, categorySnap] = await Promise.all([
+                getDocs(collection(db, 'products')),
+                getDocs(collection(db, 'inventory')),
+                getDocs(collection(db, 'categories')),
+            ])
+            const inventoryList = inventorySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            const categoryList = categorySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            const list = productSnap.docs.map(doc => {
+                const p = { id: doc.id, ...doc.data() }
+                const inv = inventoryList.find(i => i.productId === p.id)
+                return { ...p, stock: inv?.currentStock ?? null }
+            })
             setProducts(list)
+            setCategories(categoryList)
         }
         const fetchCustomers = async () => {
             const snapshot = await getDocs(collection(db, 'customers'))
@@ -129,10 +143,19 @@ function POS() {
     const total = Math.max(0, subtotal + tax - redemptionValue)
     const change = amountPaid ? parseFloat(amountPaid) - total : 0
 
+    // Resolve category ID to name
+    const getCategoryName = (catId) => {
+        if (!catId) return 'General'
+        const cat = categories.find(c => c.id === catId)
+        return cat ? cat.name : catId
+    }
+
     // Filtered Products
-    const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-    )
+    const filtered = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || (p.barcode && p.barcode.includes(search))
+        const matchesCategory = activeCategory === 'all' || p.category === activeCategory
+        return matchesSearch && matchesCategory
+    })
 
     // Checkout
     const handleCheckout = async () => {
@@ -212,9 +235,10 @@ function POS() {
             setRedeemPoints(false)
             setSuccess(newSale.id)
             setLastSaleId(newSale.id)
+            showSuccess('Sale completed successfully')
             setTimeout(() => setSuccess(false), 15000)
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Process Sale', 'Failed to complete sale')
         } finally {
             setLoading(false)
         }
@@ -271,8 +295,9 @@ function POS() {
             await deleteDoc(doc(db, 'suspended_sales', heldSale.id))
             setSuspendedSales(suspendedSales.filter(s => s.id !== heldSale.id))
             setShowHeldSales(false)
+            showSuccess('Sale resumed')
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Resume Sale', 'Failed to resume sale')
         }
     }
 
@@ -283,18 +308,19 @@ function POS() {
         setSuccess(false)
     }
 
+
     return (
         <Layout title="POS">
-            <div className="flex flex-col lg:flex-row gap-6 h-full">
+            <div className="flex flex-col lg:flex-row gap-6 lg:h-[calc(100vh-80px)] mt-12">
 
                 {/* Left — Products */}
-                <div className="flex-1">
+                <div className="flex-1 lg:overflow-y-auto min-w-0">
 
                     {/* Search */}
-                    <div className="flex gap-3 mb-4 mt-12">
+                    <div className="flex gap-3 mb-4 pt-2">
                         <input
                             type="text"
-                            placeholder="🔍 Search products..."
+                            placeholder="🔍 Search by name or barcode..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -312,6 +338,27 @@ function POS() {
                         </button>
                     </div>
 
+                    {/* Category Filter Tabs */}
+                    {categories.length > 0 && (
+                        <div className="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-hide">
+                            <button
+                                onClick={() => setActiveCategory('all')}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 border hover:border-blue-400'}`}
+                            >
+                                {categories.find(c => c.icon)?.icon || '🏪'} All
+                            </button>
+                            {categories.map(cat => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setActiveCategory(cat.id)}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 border hover:border-blue-400'}`}
+                                >
+                                    {cat.icon} {cat.name}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
                     {/* Product Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                         {filtered.map(product => (
@@ -325,7 +372,14 @@ function POS() {
                                 </div>
                                 <p className="font-medium text-gray-800 text-sm truncate">{product.name}</p>
                                 <p className="text-blue-600 font-bold mt-1">{currency} {product.price}</p>
-                                <p className="text-gray-400 text-xs">{product.category || 'General'}</p>
+                                <div className="flex items-center justify-between mt-1">
+                                    <p className="text-gray-400 text-xs">{getCategoryName(product.category)}</p>
+                                    {product.stock !== null && (
+                                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${product.stock <= 0 ? 'bg-red-100 text-red-500' : product.stock <= 10 ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'}`}>
+                                            {product.stock <= 0 ? 'Out' : `${product.stock} left`}
+                                        </span>
+                                    )}
+                                </div>
                             </button>
                         ))}
 
@@ -338,7 +392,7 @@ function POS() {
                 </div>
 
                 {/* Right — Cart */}
-                <div className="w-full lg:w-96 bg-white rounded-xl shadow-sm flex flex-col shrink-0 lg:sticky lg:top-20 lg:h-[calc(100vh-120px)]">
+                <div className="w-full lg:w-96 bg-white rounded-xl shadow-sm flex flex-col shrink-0 lg:h-full overflow-hidden">
 
                     {/* Cart Header */}
                     <div className="p-4 border-b space-y-3">

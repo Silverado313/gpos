@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { auth, db } from '../../firebase/config'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { handleError } from '../../utils/errorHandler'
 
 function Register() {
     const [name, setName] = useState('')
@@ -34,7 +35,7 @@ function Register() {
 
             navigate('/pending')
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Register', 'Failed to create account')
             setError(err.message || 'Failed to create account')
         } finally {
             setLoading(false)

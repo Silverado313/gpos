@@ -3,6 +3,7 @@ import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
 import { collection, getDocs, orderBy, query, updateDoc, doc, addDoc, serverTimestamp, where, limit } from 'firebase/firestore'
 import useAuthStore from '../../store/authStore'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 
 function Sales() {
     const [sales, setSales] = useState([])
@@ -19,7 +20,7 @@ function Sales() {
             const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             setSales(list)
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Fetch Sales', 'Failed to load sales history')
         } finally {
             setLoading(false)
         }
@@ -76,12 +77,11 @@ function Sales() {
                 }
             }
 
-            alert('Sale returned and stock restored successfully!')
+            showSuccess('Sale returned and stock restored successfully')
             fetchSales()
             setSelected(null)
         } catch (err) {
-            console.error('Return error:', err)
-            alert('Failed to process return.')
+            handleError(err, 'Process Return', 'Failed to process return')
         } finally {
             setLoading(false)
         }

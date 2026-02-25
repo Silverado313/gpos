@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 import {
     collection,
     getDocs,
@@ -43,10 +44,10 @@ function Employees() {
             }, { merge: true })
             setForm({ uid: '', name: '', email: '', role: 'cashier' })
             setShowForm(false)
+            showSuccess('Employee saved successfully')
             fetchEmployees()
         } catch (err) {
-            console.error(err)
-            alert('Failed to save employee. Make sure the UID is correct.')
+            handleError(err, 'Save Employee', 'Failed to save employee. Make sure the UID is correct.')
         } finally {
             setLoading(false)
         }

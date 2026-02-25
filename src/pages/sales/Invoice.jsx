@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { db } from '../../firebase/config'
 import { doc, getDoc } from 'firebase/firestore'
+import { handleError } from '../../utils/errorHandler'
 
 function Invoice() {
     const { id } = useParams()
@@ -26,7 +27,7 @@ function Invoice() {
                     setSettings(settingsSnap.data())
                 }
             } catch (err) {
-                console.error("Invoice fetch error:", err)
+                handleError(err, 'Fetch Invoice', 'Failed to load invoice')
             } finally {
                 setLoading(false)
             }

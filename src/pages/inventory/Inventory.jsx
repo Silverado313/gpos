@@ -13,6 +13,7 @@ import {
 function Inventory() {
     const [inventory, setInventory] = useState([])
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
     const [showForm, setShowForm] = useState(false)
     const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({
@@ -27,13 +28,39 @@ function Inventory() {
     const [searchTerm, setSearchTerm] = useState('')
 
     const fetchData = async () => {
-        const productSnap = await getDocs(collection(db, 'products'))
-        const productList = productSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        setProducts(productList)
+        const [productSnap, inventorySnap, categorySnap] = await Promise.all([
+            getDocs(collection(db, 'products')),
+            getDocs(collection(db, 'inventory')),
+            getDocs(collection(db, 'categories')),
+        ])
 
-        const inventorySnap = await getDocs(collection(db, 'inventory'))
+        const productList = productSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
         const inventoryList = inventorySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        setInventory(inventoryList)
+        const categoryList = categorySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+        setProducts(productList)
+        setCategories(categoryList)
+
+        // Auto-create missing inventory records for imported products
+        const inventoryProductIds = new Set(inventoryList.map(i => i.productId))
+        const missing = productList.filter(p => !inventoryProductIds.has(p.id))
+        if (missing.length > 0) {
+            await Promise.all(missing.map(p =>
+                addDoc(collection(db, 'inventory'), {
+                    productId: p.id,
+                    currentStock: 0,
+                    minStock: 10,
+                    maxStock: 100,
+                    lastUpdated: serverTimestamp()
+                })
+            ))
+            // Refetch after creating missing records
+            const freshSnap = await getDocs(collection(db, 'inventory'))
+            const freshList = freshSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            setInventory(freshList)
+        } else {
+            setInventory(inventoryList)
+        }
     }
 
     useEffect(() => {
@@ -47,6 +74,13 @@ function Inventory() {
     const getProductName = (productId) => {
         const product = products.find(p => p.id === productId)
         return product ? product.name : 'Unknown Product'
+    }
+
+    const getProductCategory = (productId) => {
+        const product = products.find(p => p.id === productId)
+        if (!product?.category) return ''
+        const cat = categories.find(c => c.id === product.category)
+        return cat ? cat.name : product.category
     }
 
     const getStockStatus = (current, min) => {
@@ -239,7 +273,7 @@ function Inventory() {
                                         <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
                                             <td className="px-6 py-5">
                                                 <p className="font-black text-gray-800">{getProductName(item.productId)}</p>
-                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1">ID: {item.productId.slice(-8)}</p>
+                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1">{getProductCategory(item.productId) || `ID: ${item.productId.slice(-8)}`}</p>
                                             </td>
                                             <td className="px-6 py-5">
                                                 <span className="text-xl font-black text-gray-900">{item.currentStock}</span>

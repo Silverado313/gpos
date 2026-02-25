@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
+import { handleError } from '../../utils/errorHandler'
 import { collection, getDocs, getDoc, query, where, Timestamp, doc } from 'firebase/firestore'
 
 function Dashboard() {
@@ -63,7 +64,7 @@ function Dashboard() {
                     loading: false
                 })
             } catch (err) {
-                console.error("Dashboard fetch error:", err)
+                handleError(err, 'Dashboard Stats', 'Failed to load dashboard data')
                 setStats(prev => ({ ...prev, loading: false }))
             }
         }

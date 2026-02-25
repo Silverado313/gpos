@@ -16,6 +16,7 @@ const menuItems = [
     { path: '/employees', icon: '👨‍💼', label: 'Employees', roles: ['admin'] },
     { path: '/reports', icon: '📈', label: 'Reports', roles: ['admin'] },
     { path: '/settings', icon: '⚙️', label: 'Settings', roles: ['admin'] },
+    { path: '/import', icon: '⬆️', label: 'Import Data', roles: ['admin'] },
     { path: '/documentation', icon: '📖', label: 'Documentation', roles: ['admin', 'manager', 'cashier'] },
     { path: '/user-settings', icon: '👤', label: 'Profile', roles: ['admin', 'manager', 'cashier'] },
 ]
@@ -32,7 +33,7 @@ function Sidebar({ isOpen, setIsOpen }) {
         { title: 'Main', paths: ['/dashboard', '/pos'] },
         { title: 'Management', paths: ['/products', '/inventory', '/suppliers', '/purchase-orders'] },
         { title: 'Sales', paths: ['/sales', '/customers'] },
-        { title: 'Administration', paths: ['/employees', '/reports', '/settings'] },
+        { title: 'Administration', paths: ['/employees', '/reports', '/settings', '/import'] },
         { title: 'Help', paths: ['/documentation', '/user-settings'] },
     ]
 
