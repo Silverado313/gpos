@@ -1,11 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
-import ErrorBoundary from './components/common/ErrorBoundary'
 import { onAuthChange } from './firebase/auth'
 import { db } from './firebase/config'
 import { doc, getDoc } from 'firebase/firestore'
-import { handleError } from './utils/errorHandler'
 import ProtectedRoute from './routes/ProtectedRoute'
 import useAuthStore from './store/authStore'
 import Login from './pages/auth/Login'
@@ -26,6 +23,7 @@ import UserSettings from './pages/auth/UserSettings'
 import Suppliers from './pages/inventory/Suppliers'
 import PurchaseOrders from './pages/inventory/PurchaseOrders'
 import Import from './pages/settings/Import'
+import Backup from './pages/settings/Backup'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
@@ -50,8 +48,7 @@ function App() {
               setUser({ ...currentUser, role: finalRole })
             }
           } catch (dbErr) {
-            // Offline or network error - log for debugging, use cached role
-            console.debug("Firestore role fetch failed (likely offline):", dbErr)
+            console.warn("Firestore role fetch failed (likely offline):", dbErr)
             // If offline, trust the cachedRole from authStore (localStorage)
             setUser({ ...currentUser, role: cachedRole || 'pending' })
           }
@@ -60,7 +57,7 @@ function App() {
           localStorage.removeItem('gpos_user_role')
         }
       } catch (err) {
-        handleError(err, 'Auth Sync', 'Failed to sync authentication')
+        console.error("Auth sync error:", err)
         setUser(null)
       } finally {
         setLoading(false)
@@ -80,30 +77,29 @@ function App() {
   const isPending = user && user.role === 'pending'
 
   return (
-    <ErrorBoundary>
-      <Toaster position="top-right" reverseOrder={false} />
-      <Routes>
-        <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
-        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-        <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/products" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Products /></ProtectedRoute>} />
-        <Route path="/pos" element={<ProtectedRoute><POS /></ProtectedRoute>} />
-        <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
-        <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
-        <Route path="/employees" element={<ProtectedRoute allowedRoles={['admin']}><Employees /></ProtectedRoute>} />
-        <Route path="/inventory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Inventory /></ProtectedRoute>} />
-        <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
-        <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
-        <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
-        <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
-        <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
-        <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
-        <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />
-      </Routes>
-    </ErrorBoundary>
+    <Routes>
+      <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
+      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+      <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+      <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
+
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/products" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Products /></ProtectedRoute>} />
+      <Route path="/pos" element={<ProtectedRoute><POS /></ProtectedRoute>} />
+      <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
+      <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
+      <Route path="/employees" element={<ProtectedRoute allowedRoles={['admin']}><Employees /></ProtectedRoute>} />
+      <Route path="/inventory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Inventory /></ProtectedRoute>} />
+      <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
+      <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
+      <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
+      <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
+      <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
+      <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
+      <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />
+      <Route path="/backup" element={<ProtectedRoute allowedRoles={['admin']}><Backup /></ProtectedRoute>} />
+    </Routes>
   )
 }
 
