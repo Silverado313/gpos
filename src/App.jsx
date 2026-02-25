@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { Toaster } from 'react-hot-toast'
+import ErrorBoundary from './components/common/ErrorBoundary'
 import { onAuthChange } from './firebase/auth'
 import { db } from './firebase/config'
 import { doc, getDoc } from 'firebase/firestore'
@@ -19,6 +21,7 @@ import Employees from './pages/employees/Employees'
 import Reports from './pages/reports/Reports'
 import Settings from './pages/settings/Settings'
 import Documentation from './pages/settings/Documentation'
+import Help from './pages/settings/Help'
 import UserSettings from './pages/auth/UserSettings'
 import Suppliers from './pages/inventory/Suppliers'
 import PurchaseOrders from './pages/inventory/PurchaseOrders'
@@ -77,7 +80,9 @@ function App() {
   const isPending = user && user.role === 'pending'
 
   return (
-    <Routes>
+    <ErrorBoundary>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Routes>
       <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
@@ -97,9 +102,11 @@ function App() {
       <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
       <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
       <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
+      <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
       <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />
       <Route path="/backup" element={<ProtectedRoute allowedRoles={['admin']}><Backup /></ProtectedRoute>} />
-    </Routes>
+      </Routes>
+    </ErrorBoundary>
   )
 }
 

@@ -19,6 +19,7 @@ const menuItems = [
     { path: '/import', icon: '⬆️', label: 'Import Data', roles: ['admin'] },
     { path: '/backup', icon: '🗄️', label: 'Backup & Restore', roles: ['admin'] },
     { path: '/documentation', icon: '📖', label: 'Documentation', roles: ['admin', 'manager', 'cashier'] },
+    { path: '/help', icon: '❓', label: 'Help & Support', roles: ['admin', 'manager', 'cashier'] },
     { path: '/user-settings', icon: '👤', label: 'Profile', roles: ['admin', 'manager', 'cashier'] },
 ]
 
@@ -35,7 +36,7 @@ function Sidebar({ isOpen, setIsOpen }) {
         { title: 'Management', paths: ['/products', '/inventory', '/suppliers', '/purchase-orders'] },
         { title: 'Sales', paths: ['/sales', '/customers'] },
         { title: 'Administration', paths: ['/employees', '/reports', '/settings', '/import', '/backup'] },
-        { title: 'Help', paths: ['/documentation', '/user-settings'] },
+        { title: 'Help', paths: ['/documentation', '/help', '/user-settings'] },
     ]
 
     const [openGroups, setOpenGroups] = useState(() => {
