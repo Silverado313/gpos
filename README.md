@@ -486,6 +486,10 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before
 
 ---
 
+There is also Step-by-Step Guide for beginners. Please read [SBS_Guide.md](SBS_Guide.md)
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
