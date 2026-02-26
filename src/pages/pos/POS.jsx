@@ -36,10 +36,36 @@ function POS() {
     const [suspendedSales, setSuspendedSales] = useState([])
     const [showHeldSales, setShowHeldSales] = useState(false)
     const [lastSaleId, setLastSaleId] = useState(null)
+    const [mobileCartOpen, setMobileCartOpen] = useState(false)
+    const [barcodeFlash, setBarcodeFlash] = useState(false)
 
     const currency = settings?.currency || 'PKR'
 
-    
+    // Barcode scan handler — fires on Enter key
+    const handleBarcodeSearch = (e) => {
+        if (e.key === 'Enter') {
+            const barcode = search.trim()
+            if (!barcode) return
+
+            // Find product by exact barcode match first, then name
+            const found = products.find(p =>
+                p.barcode && p.barcode.trim() === barcode
+            ) || products.find(p =>
+                p.name.toLowerCase() === barcode.toLowerCase()
+            )
+
+            if (found) {
+                addToCart(found)
+                setSearch('')
+                // Flash effect to confirm scan
+                setBarcodeFlash(true)
+                setTimeout(() => setBarcodeFlash(false), 500)
+            } else {
+                // No match — keep search text so cashier can see what was scanned
+                setBarcodeFlash(false)
+            }
+        }
+    }
 
     // Fetch Initial Data
     useEffect(() => {
@@ -160,12 +186,14 @@ function POS() {
     // Checkout
     const handleCheckout = async () => {
         if (cart.length === 0) return alert('Cart is empty!')
+        if (paymentMethod === 'cash' && (!amountPaid || parseFloat(amountPaid) <= 0)) {
+            return alert('Please enter amount paid!')
+        }
         if (paymentMethod === 'cash' && parseFloat(amountPaid) < total) {
-            return alert('Amount paid is less than total!')
+            return alert(`Amount paid is less than total! Minimum: ${currency} ${total.toFixed(2)}`)
         }
         setLoading(true)
         try {
-            // Perform Firestore operations (these will be queued if offline)
             const salesRef = collection(db, 'sales')
             const saleData = {
                 items: cart.map(item => ({
@@ -192,7 +220,6 @@ function POS() {
                 createdAt: serverTimestamp()
             }
 
-            // We don't await every single update to keep UI snappy
             const newSalePromise = addDoc(salesRef, saleData)
 
             // Update Customer Loyalty & Points Redemption (Non-blocking)
@@ -215,7 +242,6 @@ function POS() {
                     where('productId', '==', item.id),
                     limit(1)
                 )
-                // We fetch the doc to get the ID, but the update is queued
                 getDocs(invQuery).then(invSnap => {
                     if (!invSnap.empty) {
                         updateDoc(doc(db, 'inventory', invSnap.docs[0].id), {
@@ -226,7 +252,6 @@ function POS() {
                 })
             }
 
-            // Wait for the sale ID just to show it in the UI
             const newSale = await newSalePromise
 
             setCart([])
@@ -235,6 +260,7 @@ function POS() {
             setRedeemPoints(false)
             setSuccess(newSale.id)
             setLastSaleId(newSale.id)
+            setMobileCartOpen(true)
             showSuccess('Sale completed successfully')
             setTimeout(() => setSuccess(false), 15000)
         } catch (err) {
@@ -267,8 +293,8 @@ function POS() {
             setCart([])
             setSelectedCustomer(null)
             setRedeemPoints(false)
+            setMobileCartOpen(false)
 
-            // Refresh suspended sales list
             const snapshot = await getDocs(collection(db, 'suspended_sales'))
             setSuspendedSales(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 
@@ -301,17 +327,234 @@ function POS() {
         }
     }
 
-    // Clear cart and Reset last sale print
+    // Clear cart
     const clearCart = () => {
         setCart([])
         setLastSaleId(null)
         setSuccess(false)
+        setMobileCartOpen(false)
     }
 
+    // Cart Panel JSX (shared between desktop and mobile)
+    const CartPanel = () => (
+        <>
+            {/* Cart Header */}
+            <div className="p-4 border-b space-y-3">
+                <div className="flex justify-between items-center">
+                    <h3 className="font-bold text-gray-800 text-lg">
+                        🛒 Cart ({cart.length} items)
+                    </h3>
+                    {/* Close button for mobile only */}
+                    <button
+                        className="lg:hidden text-gray-400 hover:text-gray-600 text-xl"
+                        onClick={() => setMobileCartOpen(false)}
+                    >✕</button>
+                </div>
+
+                {/* Customer Selection */}
+                <div>
+                    <label className="text-xs text-gray-500 block mb-1">Customer</label>
+                    <select
+                        className="w-full text-sm border rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={selectedCustomer?.id || ''}
+                        onChange={(e) => {
+                            const customer = customers.find(c => c.id === e.target.value)
+                            setSelectedCustomer(customer || null)
+                        }}
+                    >
+                        <option value="">Walk-in Customer</option>
+                        {customers.map(c => (
+                            <option key={c.id} value={c.id}>{c.name} ({c.phone})</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                {cart.length === 0 ? (
+                    <p className="text-gray-400 text-center mt-8">
+                        Click products to add them here
+                    </p>
+                ) : (
+                    cart.map(item => (
+                        <div key={item.id} className="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-800">{item.name}</p>
+                                <p className="text-blue-600 text-sm">{currency} {item.price}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => updateQty(item.id, item.quantity - 1)}
+                                    className="w-6 h-6 bg-gray-200 rounded-full text-sm hover:bg-gray-300"
+                                >-</button>
+                                <input
+                                    type="number"
+                                    value={item.quantity}
+                                    onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
+                                    className="w-12 text-center border rounded-lg text-sm py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    min="1"
+                                />
+                                <button
+                                    onClick={() => updateQty(item.id, item.quantity + 1)}
+                                    className="w-6 h-6 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700"
+                                >+</button>
+                            </div>
+                            <button
+                                onClick={() => removeFromCart(item.id)}
+                                className="text-red-400 hover:text-red-600 text-xs"
+                            >✕</button>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Cart Footer */}
+            <div className="p-4 border-t space-y-3">
+
+                {/* Totals */}
+                <div className="space-y-1">
+                    <div className="flex justify-between text-sm text-gray-500">
+                        <span>Subtotal</span>
+                        <span>{currency} {subtotal.toFixed(2)}</span>
+                    </div>
+
+                    {/* Dynamic Tax Toggle */}
+                    {settings?.taxEnabled && (
+                        <div className="flex justify-between text-sm text-gray-500 items-center">
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setTaxEnabled(!taxEnabled)}
+                                    className={`w-8 h-4 rounded-full transition ${taxEnabled ? 'bg-blue-600' : 'bg-gray-300'}`}
+                                >
+                                    <div className={`w-3 h-3 bg-white rounded-full shadow transition-transform ${taxEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
+                                </button>
+                                <span>{settings.taxLabel || 'Tax'} ({settings.taxRate}%)</span>
+                            </div>
+                            <span>{currency} {tax.toFixed(2)}</span>
+                        </div>
+                    )}
+
+                    {/* Loyalty Redemption */}
+                    {settings?.loyaltyEnabled && selectedCustomer && selectedCustomer.loyaltyPoints > 0 && (
+                        <div className="flex justify-between text-sm items-center py-1 bg-blue-50 px-2 rounded-lg border border-blue-100">
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={redeemPoints}
+                                    onChange={(e) => setRedeemPoints(e.target.checked)}
+                                    className="w-4 h-4 rounded text-blue-600"
+                                />
+                                <span className="text-blue-700 text-xs font-bold">Redeem {selectedCustomer.loyaltyPoints} pts</span>
+                            </div>
+                            <span className="text-blue-700 font-bold">-{currency} {redemptionValue.toFixed(2)}</span>
+                        </div>
+                    )}
+
+                    <div className="flex justify-between font-black text-xl text-gray-900 border-t-2 border-gray-900 pt-3 mt-1">
+                        <span>Total</span>
+                        <span>{currency} {total.toFixed(2)}</span>
+                    </div>
+                </div>
+
+                {/* Payment Method */}
+                <div className="grid grid-cols-3 gap-2">
+                    {['cash', 'card', 'credit'].map(method => (
+                        <button
+                            key={method}
+                            onClick={() => setPaymentMethod(method)}
+                            className={`py-2 rounded-lg text-xs font-medium capitalize transition ${paymentMethod === method
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                }`}
+                        >
+                            {method}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Amount Paid */}
+                {paymentMethod === 'cash' && (
+                    <div>
+                        <input
+                            type="number"
+                            placeholder="Amount paid"
+                            value={amountPaid}
+                            onChange={(e) => setAmountPaid(e.target.value)}
+                            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        {change > 0 && (
+                            <p className="text-green-600 text-sm mt-1 font-medium">
+                                Change: {currency} {change.toFixed(2)}
+                            </p>
+                        )}
+                    </div>
+                )}
+
+                {/* Success Message or Last Sale Reprint */}
+                {(lastSaleId && cart.length === 0) && (
+                    <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex flex-col items-center gap-3">
+                        <div className="text-center">
+                            <p className="text-blue-800 font-black text-sm uppercase tracking-widest">
+                                {success ? 'Sale Completed! 🎉' : 'Last Sale Information'}
+                            </p>
+                            <p className="text-blue-600 text-[10px] font-bold mt-0.5">
+                                Receipt ID: #{lastSaleId.slice(-6).toUpperCase()}
+                            </p>
+                        </div>
+                        <div className="flex flex-col gap-2 w-full">
+                            <button
+                                onClick={() => {
+                                    window.open(`/invoice/${lastSaleId}`, '_self')
+                                }}
+                                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
+                            >
+                                <span>📜</span> Print Receipt
+                            </button>
+                            <button
+                                onClick={clearCart}
+                                className="bg-white text-blue-600 border-2 border-blue-100 px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition flex items-center gap-2 w-full justify-center"
+                            >
+                                ➕ New Sale
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Checkout Button */}
+                <button
+                    onClick={handleCheckout}
+                    disabled={loading || cart.length === 0}
+                    className="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-green-700 transition shadow-lg disabled:opacity-50"
+                >
+                    {loading ? 'Processing...' : `Pay ${currency} ${total.toFixed(2)}`}
+                </button>
+
+                {/* Clear & Hold */}
+                {cart.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            onClick={handleHoldSale}
+                            disabled={loading}
+                            className="w-full bg-orange-500 text-white py-2 rounded-lg font-bold text-sm hover:bg-orange-600 transition disabled:opacity-50"
+                        >
+                            ⏸️ Hold Sale
+                        </button>
+                        <button
+                            onClick={clearCart}
+                            className="w-full text-red-400 hover:text-red-600 border border-red-100 rounded-lg py-2 text-sm"
+                        >
+                            Clear Cart
+                        </button>
+                    </div>
+                )}
+            </div>
+        </>
+    )
 
     return (
         <Layout title="POS">
-            <div className="flex flex-col lg:flex-row gap-6 lg:h-[calc(100vh-80px)] mt-12">
+            <div className="flex flex-col lg:flex-row gap-6 lg:h-[calc(100vh-80px)] mt-12 relative">
 
                 {/* Left — Products */}
                 <div className="flex-1 lg:overflow-y-auto min-w-0">
@@ -323,7 +566,8 @@ function POS() {
                             placeholder="🔍 Search by name or barcode..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                            onKeyDown={handleBarcodeSearch}
+                            className={`flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white transition-all ${barcodeFlash ? 'bg-green-50 border-green-400 ring-2 ring-green-400' : ''}`}
                         />
                         <button
                             onClick={() => setShowHeldSales(true)}
@@ -360,7 +604,7 @@ function POS() {
                     )}
 
                     {/* Product Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 pb-24 lg:pb-4">
                         {filtered.map(product => (
                             <button
                                 key={product.id}
@@ -391,225 +635,54 @@ function POS() {
                     </div>
                 </div>
 
-                {/* Right — Cart */}
-                <div className="w-full lg:w-96 bg-white rounded-xl shadow-sm flex flex-col shrink-0 lg:h-full overflow-hidden">
+                {/* Desktop Cart — hidden on mobile */}
+                <div className="hidden lg:flex w-96 bg-white rounded-xl shadow-sm flex-col shrink-0 h-full overflow-hidden">
+                    <CartPanel />
+                </div>
 
-                    {/* Cart Header */}
-                    <div className="p-4 border-b space-y-3">
-                        <h3 className="font-bold text-gray-800 text-lg">
-                            🛒 Cart ({cart.length} items)
-                        </h3>
-
-                        {/* Customer Selection */}
-                        <div>
-                            <label className="text-xs text-gray-500 block mb-1">Customer</label>
-                            <select
-                                className="w-full text-sm border rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={selectedCustomer?.id || ''}
-                                onChange={(e) => {
-                                    const customer = customers.find(c => c.id === e.target.value)
-                                    setSelectedCustomer(customer || null)
-                                }}
-                            >
-                                <option value="">Walk-in Customer</option>
-                                {customers.map(c => (
-                                    <option key={c.id} value={c.id}>{c.name} ({c.phone})</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* Cart Items */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                        {cart.length === 0 ? (
-                            <p className="text-gray-400 text-center mt-8">
-                                Click products to add them here
-                            </p>
-                        ) : (
-                            cart.map(item => (
-                                <div key={item.id} className="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
-                                    <div className="flex-1">
-                                        <p className="text-sm font-medium text-gray-800">{item.name}</p>
-                                        <p className="text-blue-600 text-sm">{currency} {item.price}</p>
-                                    </div>
-
-
-                                    <div className="flex items-center gap-2">
-                                        <button
-                                            onClick={() => updateQty(item.id, item.quantity - 1)}
-                                            className="w-6 h-6 bg-gray-200 rounded-full text-sm hover:bg-gray-300"
-                                        >-</button>
-                                        <input
-                                            type="number"
-                                            value={item.quantity}
-                                            onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
-                                            className="w-12 text-center border rounded-lg text-sm py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            min="1"
-                                        />
-                                        <button
-                                            onClick={() => updateQty(item.id, item.quantity + 1)}
-                                            className="w-6 h-6 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700"
-                                        >+</button>
-                                    </div>
-
-                                    <button
-                                        onClick={() => removeFromCart(item.id)}
-                                        className="text-red-400 hover:text-red-600 text-xs"
-                                    >✕</button>
-                                </div>
-                            ))
-                        )}
-                    </div>
-
-                    {/* Cart Footer */}
-                    <div className="p-4 border-t space-y-3">
-
-                        {/* Totals */}
-                        <div className="space-y-1">
-                            <div className="flex justify-between text-sm text-gray-500">
-                                <span>Subtotal</span>
-                                <span>{currency} {subtotal.toFixed(2)}</span>
-                            </div>
-
-                            {/* Dynamic Tax Toggle/Label */}
-                            {settings?.taxEnabled && (
-                                <div className="flex justify-between text-sm text-gray-500 items-center">
-                                    <div className="flex items-center gap-2">
-                                        <button
-                                            onClick={() => setTaxEnabled(!taxEnabled)}
-                                            className={`w-8 h-4 rounded-full transition ${taxEnabled ? 'bg-blue-600' : 'bg-gray-300'}`}
-                                        >
-                                            <div className={`w-3 h-3 bg-white rounded-full shadow transition-transform ${taxEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
-                                        </button>
-                                        <span>{settings.taxLabel || 'Tax'} ({settings.taxRate}%)</span>
-                                    </div>
-                                    <span>{currency} {tax.toFixed(2)}</span>
-                                </div>
-                            )}
-
-                            {/* Loyalty Redemption UI */}
-                            {settings?.loyaltyEnabled && selectedCustomer && selectedCustomer.loyaltyPoints > 0 && (
-                                <div className="flex justify-between text-sm items-center py-1 bg-blue-50 px-2 rounded-lg border border-blue-100">
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={redeemPoints}
-                                            onChange={(e) => setRedeemPoints(e.target.checked)}
-                                            className="w-4 h-4 rounded text-blue-600"
-                                        />
-                                        <span className="text-blue-700 text-xs font-bold">Redeem {selectedCustomer.loyaltyPoints} pts</span>
-                                    </div>
-                                    <span className="text-blue-700 font-bold">-{currency} {redemptionValue.toFixed(2)}</span>
-                                </div>
-                            )}
-
-                            <div className="flex justify-between font-black text-xl text-gray-900 border-t-2 border-gray-900 pt-3 mt-1">
-                                <span>Total</span>
-                                <span>{currency} {total.toFixed(2)}</span>
-                            </div>
-                        </div>
-
-                        {/* Payment Method */}
-                        <div className="grid grid-cols-3 gap-2">
-                            {['cash', 'card', 'credit'].map(method => (
-                                <button
-                                    key={method}
-                                    onClick={() => setPaymentMethod(method)}
-                                    className={`py-2 rounded-lg text-xs font-medium capitalize transition ${paymentMethod === method
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                        }`}
-                                >
-                                    {method}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Amount Paid */}
-                        {paymentMethod === 'cash' && (
-                            <div>
-                                <input
-                                    type="number"
-                                    placeholder="Amount paid"
-                                    value={amountPaid}
-                                    onChange={(e) => setAmountPaid(e.target.value)}
-                                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                {change > 0 && (
-                                    <p className="text-green-600 text-sm mt-1 font-medium">
-                                        Change: {currency} {change.toFixed(2)}
-                                    </p>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Success Message or Last Sale Reprint */}
-                        {(success || (lastSaleId && cart.length === 0)) && (
-                            <div className={`bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex flex-col items-center gap-3 ${success ? 'animate-bounce' : ''}`}>
-                                <div className="text-center">
-                                    <p className="text-blue-800 font-black text-sm uppercase tracking-widest">
-                                        {success ? 'Sale Completed! 🎉' : 'Last Sale Information'}
-                                    </p>
-                                    <p className="text-blue-600 text-[10px] font-bold mt-0.5">Receipt ID: #{(success || lastSaleId).slice(-6).toUpperCase()}</p>
-                                </div>
-                                <div className="flex flex-col gap-2 w-full">
-                                    <button
-                                        onClick={() => {
-                                            window.open(`/invoice/${success || lastSaleId}`, '_self')
-                                            // Automatically clear success state after opening print window
-                                            if (success) clearCart()
-                                        }}
-                                        className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
-                                    >
-                                        <span>📜</span> Print Receipt
-                                    </button>
-                                    {success && (
-                                        <button
-                                            onClick={clearCart}
-                                            className="bg-white text-blue-600 border-2 border-blue-100 px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition flex items-center gap-2 w-full justify-center"
-                                        >
-                                            ➕ New Sale
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Checkout Button */}
-                        <button
-                            onClick={handleCheckout}
-                            disabled={loading || cart.length === 0}
-                            className="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-green-700 transition shadow-lg disabled:opacity-50"
-                        >
-                            {loading ? 'Processing...' : `Pay ${currency} ${total.toFixed(2)}`}
-                        </button>
-
-                        {/* Clear & Hold */}
+                {/* Mobile — Floating Cart Button */}
+                <div className="lg:hidden">
+                    <button
+                        onClick={() => setMobileCartOpen(true)}
+                        className="fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-full shadow-xl font-bold flex items-center gap-2 z-[999]"
+                    >
+                        🛒 Cart
                         {cart.length > 0 && (
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={handleHoldSale}
-                                    disabled={loading}
-                                    className="w-full bg-orange-500 text-white py-2 rounded-lg font-bold text-sm hover:bg-orange-600 transition disabled:opacity-50"
-                                >
-                                    ⏸️ Hold Sale
-                                </button>
-                                <button
-                                    onClick={clearCart}
-                                    className="w-full text-red-400 hover:text-red-600 border border-red-100 rounded-lg py-2 text-sm"
-                                >
-                                    Clear Cart
-                                </button>
-                            </div>
+                            <span className="bg-white text-green-600 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">
+                                {cart.length}
+                            </span>
                         )}
+                        {cart.length > 0 && (
+                            <span className="text-sm font-black">{currency} {total.toFixed(2)}</span>
+                        )}
+                    </button>
+
+                    {/* Overlay */}
+                    {mobileCartOpen && (
+                        <div
+                            className="fixed inset-0 bg-black/50 z-[998]"
+                            onClick={() => setMobileCartOpen(false)}
+                        />
+                    )}
+
+                    {/* Mobile Cart Bottom Sheet */}
+                    <div
+                        className={`fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-[999] transition-transform duration-300 max-h-[90vh] flex flex-col ${mobileCartOpen ? 'translate-y-0' : 'translate-y-full'}`}
+                    >
+                        {/* Handle */}
+                        <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
+                            <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+                        </div>
+                        <CartPanel />
                     </div>
                 </div>
+
             </div>
 
             {/* Held Sales Modal */}
             {showHeldSales && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-6">
-                    <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+                    <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl">
                         <div className="p-6 border-b flex justify-between items-center bg-orange-50">
                             <div>
                                 <h3 className="text-xl font-black text-orange-800 uppercase tracking-tight">Suspended Sales</h3>

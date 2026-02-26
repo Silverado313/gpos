@@ -1,0 +1,3794 @@
+{
+  "__meta__": {
+    "exportedAt": "2026-02-26T06:24:37.556Z",
+    "project": "GPOS",
+    "collections": [
+      "inventory"
+    ],
+    "version": "1.0"
+  },
+  "__collections__": {
+    "inventory": {
+      "0LbAjIcCPZ64ZBxX6m5h": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772013017,
+          "nanoseconds": 164000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_f010",
+        "__collections__": {}
+      },
+      "0N63kIQ2l6GqOZUpVosG": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772013020,
+          "nanoseconds": 506000000
+        },
+        "currentStock": 100,
+        "productId": "prod_b023",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "0jmjuRVY9YcXCWuBhy5a": {
+        "minStock": 10,
+        "productId": "prod_d025",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007599,
+          "nanoseconds": 477000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "0tQ2O50cobhAsuOCO67m": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 91000000
+        },
+        "productId": "prod_h040",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "19m2Sr7Ez3CI0Frylegr": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_st003",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007602,
+          "nanoseconds": 29000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "1EdKnZJs3orRtXDsNuVZ": {
+        "currentStock": 0,
+        "productId": "prod_b041",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 588000000
+        },
+        "__collections__": {}
+      },
+      "1gqzgrtTkBTgS466BRZb": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 182000000
+        },
+        "currentStock": 98,
+        "productId": "prod_b027",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "1vcpbJvpVpIh4b9uFzLw": {
+        "currentStock": 100,
+        "productId": "prod_d003",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007605,
+          "nanoseconds": 637000000
+        },
+        "__collections__": {}
+      },
+      "1zjCZ4H37V2WTMgUP002": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007607,
+          "nanoseconds": 273000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_d022",
+        "__collections__": {}
+      },
+      "26szLwFhDeSlWrekO36c": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 338000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_d042",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "28s2GiWIptqKwws6u3Ta": {
+        "productId": "prod_pc016",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007609,
+          "nanoseconds": 723000000
+        },
+        "__collections__": {}
+      },
+      "2JLQIBenLYJp1iDfBpGp": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 726000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s055",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "2LhpS5M4o3SDlxZvECZB": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_s033",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 144000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "2Yi7CWPr44HYOegifSvB": {
+        "productId": "prod_s019",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007610,
+          "nanoseconds": 873000000
+        },
+        "__collections__": {}
+      },
+      "2ccsjJT1Sp1I7XY44jkD": {
+        "productId": "prod_b011",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086408,
+          "nanoseconds": 909000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 99,
+        "__collections__": {}
+      },
+      "2ejl2bHMSBRDsdzkZ7Rn": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 930000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_pc036",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "2oAhgohZZcCjr0QDolyR": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772030882,
+          "nanoseconds": 421000000
+        },
+        "productId": "prod_st044",
+        "currentStock": -1,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "2pZOs4naoWq3SdLdziGU": {
+        "minStock": 10,
+        "productId": "prod_pc009",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007613,
+          "nanoseconds": 166000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "2qsgafNtHskH8gimlhOV": {
+        "productId": "prod_b010",
+        "minStock": 10,
+        "currentStock": 97,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086730,
+          "nanoseconds": 793000000
+        },
+        "__collections__": {}
+      },
+      "2x97RkMx8qCsue8JPfKD": {
+        "currentStock": 0,
+        "productId": "prod_st026",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 159000000
+        },
+        "__collections__": {}
+      },
+      "32ycE2ZgaXnA8Z71aJ1N": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007615,
+          "nanoseconds": 373000000
+        },
+        "currentStock": 100,
+        "productId": "prod_f012",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "3mSGAMUboar76NokrlHM": {
+        "currentStock": 100,
+        "productId": "prod_st015",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007618,
+          "nanoseconds": 184000000
+        },
+        "__collections__": {}
+      },
+      "3tiKZ6j3WwKTa2ntonA4": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 208000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f029",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "42b8fPtaRL4SEinCNFRy": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007619,
+          "nanoseconds": 381000000
+        },
+        "currentStock": 100,
+        "productId": "prod_s011",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "4LYb31lxcGRUVqnulYs6": {
+        "minStock": 10,
+        "productId": "prod_h021",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 513000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "4P2v2mgY66E852sZBCEI": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 807000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b052",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "4rWvTCDEE1PD07d6xZul": {
+        "productId": "prod_h003",
+        "currentStock": 64,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772025191,
+          "nanoseconds": 716000000
+        },
+        "__collections__": {}
+      },
+      "50zeuo4qRboKeM646wup": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086772,
+          "nanoseconds": 566000000
+        },
+        "maxStock": 100,
+        "currentStock": 98,
+        "minStock": 10,
+        "productId": "prod_b016",
+        "__collections__": {}
+      },
+      "5Ma2EQ69ZFofEjK6Dh7p": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 271000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_h030",
+        "__collections__": {}
+      },
+      "5nDOj0UIDo6vYNtR7z2x": {
+        "productId": "prod_b028",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007622,
+          "nanoseconds": 898000000
+        },
+        "__collections__": {}
+      },
+      "5zbiB3JNDn6ofQ6T4t1T": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 373000000
+        },
+        "productId": "prod_b048",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "6ArZYgvRpoDgXjzdJT6C": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 578000000
+        },
+        "productId": "prod_st031",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "6EAzTIIjgG7oWVXxwwkH": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 580000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_d032",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "6FPNBUcHgY2LrGNRs6Ws": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007624,
+          "nanoseconds": 320000000
+        },
+        "currentStock": 100,
+        "productId": "prod_s008",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "6NWLd9kKInAuwkz73DNg": {
+        "productId": "prod_s050",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 329000000
+        },
+        "__collections__": {}
+      },
+      "6XNZRW7Rp2Y28zt0JqpH": {
+        "productId": "prod_d039",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 685000000
+        },
+        "__collections__": {}
+      },
+      "6YI8yOYvqNRTOublrvC0": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 318000000
+        },
+        "productId": "prod_pc039",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "735YEZ6IP7LzLVJ5odCu": {
+        "minStock": 10,
+        "productId": "prod_b015",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007627,
+          "nanoseconds": 714000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "73rp89qeJ5WJWm7lX6YA": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_pc017",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007628,
+          "nanoseconds": 996000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "77ybfsO3X6Y4C5TGLgLt": {
+        "productId": "prod_d036",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 647000000
+        },
+        "__collections__": {}
+      },
+      "7DRSbdmhCgRtsumxWZJO": {
+        "productId": "prod_b003",
+        "currentStock": 97,
+        "maxStock": 100,
+        "minStock": 10,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086707,
+          "nanoseconds": 525000000
+        },
+        "__collections__": {}
+      },
+      "7NHazSUVUlrc0YyCpFSR": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 178000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s036",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "7U9E9dTVSoU9EjrCfgeB": {
+        "minStock": 10,
+        "productId": "prod_st037",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 295000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "7b03itcnpXMwe05g4zMN": {
+        "productId": "prod_b026",
+        "currentStock": 98,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 166000000
+        },
+        "__collections__": {}
+      },
+      "7mLaNP6AhcUDtZWbLFlJ": {
+        "currentStock": 100,
+        "productId": "prod_st020",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007632,
+          "nanoseconds": 844000000
+        },
+        "__collections__": {}
+      },
+      "7xoVzZHvoJCr7Pk6rSFj": {
+        "productId": "prod_pc038",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 308000000
+        },
+        "__collections__": {}
+      },
+      "84ISDeVS7qOI6I9GzdbY": {
+        "currentStock": 100,
+        "productId": "prod_b014",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007633,
+          "nanoseconds": 863000000
+        },
+        "__collections__": {}
+      },
+      "8Duy7yTVpaxvIlcGirId": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007634,
+          "nanoseconds": 887000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s022",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "8LDQ5YZVN2kgVGEOPLwl": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007635,
+          "nanoseconds": 991000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_f004",
+        "__collections__": {}
+      },
+      "8RKchMQqTmokBmfr0lz7": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 550000000
+        },
+        "productId": "prod_st029",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "8SemxI2j05bkgyYE0Yqt": {
+        "currentStock": 100,
+        "productId": "prod_h007",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007637,
+          "nanoseconds": 117000000
+        },
+        "__collections__": {}
+      },
+      "8d9H9nqFKpfjA3KH3NxB": {
+        "currentStock": 100,
+        "productId": "prod_st011",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007642,
+          "nanoseconds": 277000000
+        },
+        "__collections__": {}
+      },
+      "9ITHCRS4zRc6aFBPPWuL": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc030",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 484000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "9J4hmHC2MSgYAwfCpexN": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 637000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_d035",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "9Y79lLrnbM6jSWmqLMIA": {
+        "currentStock": 0,
+        "productId": "prod_h032",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 634000000
+        },
+        "__collections__": {}
+      },
+      "9ovzGhX1pnF4T4WkJXwS": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 356000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b039",
+        "__collections__": {}
+      },
+      "A0VBf1m1lwkHekZQbpMd": {
+        "minStock": 10,
+        "productId": "prod_s053",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 705000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "AXMxLj7GP7Ix3drS2q9z": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 841000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b053",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "AbdMqohXWsfRnOxrlWC8": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b049",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 387000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "BFGkE2PtPA0RH6KPBd7C": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007643,
+          "nanoseconds": 959000000
+        },
+        "currentStock": 100,
+        "productId": "prod_f003",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "BLG0iY2nvvMzHocWzFlZ": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 313000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b038",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "CEkUGeySwBEJR18EkzdD": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007645,
+          "nanoseconds": 692000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_pc001",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "CXAcXlmZFgsCEFxEYKUb": {
+        "currentStock": 97,
+        "productId": "prod_b022",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 154000000
+        },
+        "__collections__": {}
+      },
+      "Ctj2Xc6My4vXTtezvMbi": {
+        "minStock": 10,
+        "productId": "prod_d024",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007648,
+          "nanoseconds": 205000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "CvBQVu8bMpIrnWwahKoR": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007649,
+          "nanoseconds": 457000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s024",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "Cykqbs6nQJ6IiGwF2zvN": {
+        "minStock": 10,
+        "productId": "prod_f019",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 472000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "D76h6LRbYCo5TJo0zicA": {
+        "productId": "prod_s045",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 939000000
+        },
+        "__collections__": {}
+      },
+      "DCVXGLJ9gK9knIfQKpsV": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 738000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f021",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "DFa8KoLfXkZaPTKJcvUR": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d026",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 899000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "DK3wAKkeaKDVIJH61i8x": {
+        "productId": "prod_b008",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086408,
+          "nanoseconds": 879000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 97,
+        "__collections__": {}
+      },
+      "DTg9Q9gbtjsb3FeQSwVY": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc037",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 294000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "DYZjWNcdM0LmHhVwDC4d": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 126000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f023",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "DloFeIjEOdGTLNsWcmSj": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007652,
+          "nanoseconds": 41000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s018",
+        "__collections__": {}
+      },
+      "E9tPQmmy93992E1dSRd6": {
+        "minStock": 10,
+        "productId": "prod_pc013",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007653,
+          "nanoseconds": 972000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "EG7ElkslSjy3u2vYrZ5N": {
+        "currentStock": 0,
+        "productId": "prod_s047",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 288000000
+        },
+        "__collections__": {}
+      },
+      "EsMsoWAgSSwDW6J4ukK6": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007655,
+          "nanoseconds": 201000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s009",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "F0ULF5RJPIXLpGhGBpt8": {
+        "productId": "prod_pc040",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 328000000
+        },
+        "__collections__": {}
+      },
+      "FErFCJO45g5inWdyhJ4O": {
+        "currentStock": 100,
+        "productId": "prod_h010",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007656,
+          "nanoseconds": 374000000
+        },
+        "__collections__": {}
+      },
+      "FNzSmgLm0ScV1PMhV0sv": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 87000000
+        },
+        "currentStock": 98,
+        "productId": "prod_b012",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "FUZ5ECiKrgVaLxsewFMZ": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st035",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 946000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "FgZEPjAtF0SmryNjkBMW": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 116000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 98,
+        "productId": "prod_b018",
+        "__collections__": {}
+      },
+      "FkXQ7B5RIUWIc3uBGJUa": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 769000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s031",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "GDgizbLH3N52wBscDcnw": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc027",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 451000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "GSWyl5Ko17sCPxS5AdkI": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 498000000
+        },
+        "productId": "prod_pc031",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "GUqW31JuCeyZJ38eTEii": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st042",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 693000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "GeKZIXEoJ3rJZYrw3qYq": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 231000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b034",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "Gp9eeGHiqDrLtMsV73PH": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007671,
+          "nanoseconds": 549000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_d002",
+        "__collections__": {}
+      },
+      "H2zYDQdXIibckgDcuaaT": {
+        "productId": "prod_st007",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007672,
+          "nanoseconds": 749000000
+        },
+        "__collections__": {}
+      },
+      "HCIaPhEMnigvivuB9xS8": {
+        "minStock": 10,
+        "productId": "prod_h022",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 871000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "HE6IdKRrWbUxey37hS4M": {
+        "currentStock": 100,
+        "productId": "prod_d008",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007674,
+          "nanoseconds": 4000000
+        },
+        "__collections__": {}
+      },
+      "HHLlkBMunmVZ98FgqOWs": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_h009",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007675,
+          "nanoseconds": 202000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "HYcaJuwvBh09TUdu8svT": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 910000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_h023",
+        "__collections__": {}
+      },
+      "HqwVUz72HTjjcJKBccz3": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 659000000
+        },
+        "productId": "prod_d037",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "HxuAyzSOS14mOfEJHvai": {
+        "productId": "prod_d029",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 968000000
+        },
+        "__collections__": {}
+      },
+      "HzlGSNpbSeq0sRJAn6Vh": {
+        "minStock": 10,
+        "productId": "prod_d005",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007677,
+          "nanoseconds": 300000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "IG4ukEAtMvhLqtDMdEI8": {
+        "minStock": 10,
+        "productId": "prod_b055",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 886000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "IX9O5TyLSH0t6gJEGcPh": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d043",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 352000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Ie35W0ar6fMRRQbyZynK": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007679,
+          "nanoseconds": 678000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s004",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "ItNaQi1EpxBsG6HRRuTG": {
+        "currentStock": 100,
+        "productId": "prod_d021",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007681,
+          "nanoseconds": 364000000
+        },
+        "__collections__": {}
+      },
+      "JCZVk8VUXmYKbJtsQTNY": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007688,
+          "nanoseconds": 632000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s012",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "JOXqFPzFKve1By6UiBE8": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b035",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 242000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "JgHkh4adqhEYoTUAYoGL": {
+        "productId": "prod_b001",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086827,
+          "nanoseconds": 11000000
+        },
+        "minStock": 10,
+        "currentStock": 88,
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "JgkXwyDjBg32y4M8FbEe": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_b013",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007691,
+          "nanoseconds": 62000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "JkxgLZPmvDB6Pt27ESWU": {
+        "productId": "prod_h014",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007692,
+          "nanoseconds": 296000000
+        },
+        "__collections__": {}
+      },
+      "JsDoTnnbIwQkk8ur8nuc": {
+        "productId": "prod_d023",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007693,
+          "nanoseconds": 641000000
+        },
+        "__collections__": {}
+      },
+      "K0q8sCCLStj0K4CD9zAi": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007695,
+          "nanoseconds": 57000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h013",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "K9N0x3SUydX6h4FV33Th": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007697,
+          "nanoseconds": 369000000
+        },
+        "productId": "prod_st019",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "KXgzF3zDH4rWBzIeWJMD": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 195000000
+        },
+        "productId": "prod_f028",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "KrB2TMtoSA9mPOIwEs9Y": {
+        "minStock": 10,
+        "productId": "prod_f026",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 172000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "L4p6h0I7hJ7gfUjbjKhd": {
+        "productId": "prod_s014",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007698,
+          "nanoseconds": 473000000
+        },
+        "__collections__": {}
+      },
+      "LGFSrhl95P03nOCFDGc5": {
+        "productId": "prod_f002",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007699,
+          "nanoseconds": 697000000
+        },
+        "__collections__": {}
+      },
+      "LGVWnC7SmG56tICnloeT": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007701,
+          "nanoseconds": 173000000
+        },
+        "currentStock": 100,
+        "productId": "prod_st014",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "LQ0m8DvUbaAbnEYSBPeN": {
+        "currentStock": 0,
+        "productId": "prod_b043",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 12000000
+        },
+        "__collections__": {}
+      },
+      "LUbk8vryiS4yylcWSnQG": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007702,
+          "nanoseconds": 372000000
+        },
+        "currentStock": 100,
+        "productId": "prod_b017",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "LZIgwMRNYIR4vlUMe881": {
+        "productId": "prod_b006",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086408,
+          "nanoseconds": 869000000
+        },
+        "currentStock": 98,
+        "maxStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "MCejj4nDSiLRq5808CNq": {
+        "currentStock": 0,
+        "productId": "prod_pc042",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 710000000
+        },
+        "__collections__": {}
+      },
+      "MQIQCiTnRJS93gIeC0zl": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 914000000
+        },
+        "productId": "prod_s043",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "MTdiT18vmXcAiiyRkjUV": {
+        "productId": "prod_pc020",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007705,
+          "nanoseconds": 699000000
+        },
+        "__collections__": {}
+      },
+      "MnF80TsluFAPlZfIMMH9": {
+        "minStock": 10,
+        "productId": "prod_pc008",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007707,
+          "nanoseconds": 59000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "MqxZpGJkWHZuR4Xofkow": {
+        "productId": "prod_d041",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 976000000
+        },
+        "__collections__": {}
+      },
+      "MyWUVh8PIUAN07QJEXpm": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007708,
+          "nanoseconds": 136000000
+        },
+        "currentStock": 100,
+        "productId": "prod_st017",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "OXlnWi8BGh7b39BwzPvd": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 514000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st027",
+        "__collections__": {}
+      },
+      "OY2ygUWB9CDk3JjyD3sQ": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s028",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007709,
+          "nanoseconds": 901000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "OhNhLrleXbzXhAl3e948": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s001",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007712,
+          "nanoseconds": 333000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Ok0l58BVeEDEDM5HFJFW": {
+        "minStock": 10,
+        "productId": "prod_pc004",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007715,
+          "nanoseconds": 869000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "OpoEAcBeODhRizL5hY5F": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007717,
+          "nanoseconds": 720000000
+        },
+        "currentStock": 100,
+        "productId": "prod_d009",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "OzXBsdjV74qdRyuPQ8Y7": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007719,
+          "nanoseconds": 81000000
+        },
+        "productId": "prod_h006",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "PCxxgRqmAv08I3HqJri9": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st034",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 936000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "PWR1P0QPTgAE7gDxCVth": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 212000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h026",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "Pk1BtYZFme5hhAlBFksN": {
+        "minStock": 10,
+        "productId": "prod_st024",
+        "currentStock": -1,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012185,
+          "nanoseconds": 89000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Pt4eQvRmzacSzyt4ZKKr": {
+        "currentStock": 100,
+        "productId": "prod_f014",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007720,
+          "nanoseconds": 332000000
+        },
+        "__collections__": {}
+      },
+      "PvYRKgMom8N3V4JEtjU0": {
+        "minStock": 10,
+        "productId": "prod_s010",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007722,
+          "nanoseconds": 46000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "QDZdk0mlIhv98wLMrS9M": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st036",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 957000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "QPuF1nP81JLaPEpGwCat": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 397000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d045",
+        "__collections__": {}
+      },
+      "QRC2pn6VOSr7DOFo9wH1": {
+        "productId": "prod_d018",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007723,
+          "nanoseconds": 315000000
+        },
+        "__collections__": {}
+      },
+      "QSjWVQPYOWwC5lJNtlvX": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007724,
+          "nanoseconds": 583000000
+        },
+        "productId": "prod_s016",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "Qde55qAjnhvKaS19me3o": {
+        "currentStock": 0,
+        "productId": "prod_s040",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 549000000
+        },
+        "__collections__": {}
+      },
+      "Qe4VuGYeX2TdtC89gdZj": {
+        "minStock": 10,
+        "productId": "prod_st040",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 336000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Qgz2OqcnGFmP2CP1mriu": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007726,
+          "nanoseconds": 133000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_d017",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "RFAaoDCe1tuhJwJQzunx": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007727,
+          "nanoseconds": 198000000
+        },
+        "currentStock": 100,
+        "productId": "prod_f007",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "RFwyYtX0mtYqi77PKapm": {
+        "productId": "prod_d013",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007728,
+          "nanoseconds": 831000000
+        },
+        "__collections__": {}
+      },
+      "RFxW6ZuUeKOLxTmlmy5i": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007730,
+          "nanoseconds": 212000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s015",
+        "__collections__": {}
+      },
+      "RKGWTSnI4P8WV94iflRF": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_h018",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007731,
+          "nanoseconds": 512000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "RNWlDvYiBsZ5WzPYx6FN": {
+        "currentStock": 100,
+        "productId": "prod_s020",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007732,
+          "nanoseconds": 911000000
+        },
+        "__collections__": {}
+      },
+      "RY1BrNfvMbYPk5XGa5ii": {
+        "currentStock": 0,
+        "productId": "prod_st039",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 323000000
+        },
+        "__collections__": {}
+      },
+      "RmmdPxvz82rcFcxTajE0": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 389000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b040",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "SBddVIvXdRbMOly14KiH": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_st004",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007734,
+          "nanoseconds": 46000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "SWCf1zQBSxGXEw2zWnfB": {
+        "minStock": 10,
+        "productId": "prod_pc034",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 897000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "SWWE5csG7ii2hTQ4U9ux": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 925000000
+        },
+        "currentStock": 0,
+        "productId": "prod_d027",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "Sd6kQbONYNHhhu7MkxbB": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007735,
+          "nanoseconds": 800000000
+        },
+        "currentStock": 100,
+        "productId": "prod_pc024",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "SnlGqUcMtPQMUL0VCIrT": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007740,
+          "nanoseconds": 177000000
+        },
+        "currentStock": 100,
+        "productId": "prod_h011",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "SryfXMzoZaEztc3vlUrk": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007741,
+          "nanoseconds": 909000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_d006",
+        "__collections__": {}
+      },
+      "TMI6me2LlgEV9tULCi7M": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 715000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_s054",
+        "__collections__": {}
+      },
+      "TiWH2nrsFNCpgMPZ9K40": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007743,
+          "nanoseconds": 253000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_pc006",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "TpigGEKTP6KAcTYVtGND": {
+        "productId": "prod_s038",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 530000000
+        },
+        "__collections__": {}
+      },
+      "U6rJml1a0HsA4OGg8kBT": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 110000000
+        },
+        "currentStock": 0,
+        "productId": "prod_st022",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "UY95xAPeiKDquYOY69sg": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007744,
+          "nanoseconds": 208000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s005",
+        "__collections__": {}
+      },
+      "UnkhBc2XcSyxQJ9MSsna": {
+        "minStock": 10,
+        "productId": "prod_b044",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 300000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "UzoYclDrnV7s8sx1MryM": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 101000000
+        },
+        "currentStock": 0,
+        "productId": "prod_pc026",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "VMdpDJUBwvGIPQicAygV": {
+        "productId": "prod_st012",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007745,
+          "nanoseconds": 42000000
+        },
+        "__collections__": {}
+      },
+      "VUz0qQXJStfAd3m6b65f": {
+        "productId": "prod_d044",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 386000000
+        },
+        "__collections__": {}
+      },
+      "VVRa3kgtV7pSQ7EOnRxl": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007745,
+          "nanoseconds": 941000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s006",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "VWs7Ua2hfHrUHWcyxPEj": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007747,
+          "nanoseconds": 175000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_h017",
+        "__collections__": {}
+      },
+      "Vt0NYdyOM8kX0ymp9e4d": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 959000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d040",
+        "__collections__": {}
+      },
+      "VzuKBiRFa5f48vo6i709": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007747,
+          "nanoseconds": 970000000
+        },
+        "currentStock": 100,
+        "productId": "prod_pc022",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "W2JfNyMgn2wBhltH7Rum": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 693000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_h035",
+        "__collections__": {}
+      },
+      "W2wKywUSTgFe19JPS3Q9": {
+        "currentStock": 0,
+        "productId": "prod_h025",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 197000000
+        },
+        "__collections__": {}
+      },
+      "W5Q4qqtJ7TIGOgSa7PI3": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 517000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_s037",
+        "__collections__": {}
+      },
+      "WBBLXhfhJIUkD7ymJYum": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_st008",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007748,
+          "nanoseconds": 827000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "WGsDIN9rPuDdGPsksaOx": {
+        "productId": "prod_st023",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 128000000
+        },
+        "__collections__": {}
+      },
+      "WPpQuoTbtdVIYbCQs7Db": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007749,
+          "nanoseconds": 719000000
+        },
+        "currentStock": 100,
+        "productId": "prod_h015",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "Wd550Ki4M7VqWhp6omMw": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc029",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 475000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "X1Atoodj4HLX2ip78VHa": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 973000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b042",
+        "__collections__": {}
+      },
+      "X3phVzhPqY7Q6qPZBfA8": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 908000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_st032",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "XROXLV26fXkaCzIfhMpt": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 558000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s041",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "XTFyFmMUeLLjMjFwo0IJ": {
+        "minStock": 10,
+        "productId": "prod_pc003",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007750,
+          "nanoseconds": 563000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Xfn14A8B8M8Rnuf4UJFi": {
+        "currentStock": 98,
+        "productId": "prod_b007",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 49000000
+        },
+        "__collections__": {}
+      },
+      "XvDYtvRsoRSWZyY743Ja": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc041",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 345000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "YAjCFLpNoHb9YepPiz0y": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 902000000
+        },
+        "productId": "prod_s042",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "YDnXbsFqN8POLurRtchk": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b037",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 273000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "YIdtm2ckHe4feBNz8etn": {
+        "productId": "prod_s003",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007752,
+          "nanoseconds": 214000000
+        },
+        "__collections__": {}
+      },
+      "YLMhnydmeapVa4kMPOG6": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 436000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_f017",
+        "__collections__": {}
+      },
+      "Yyf18hRomrPGqn55jdzG": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007752,
+          "nanoseconds": 990000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_b021",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "ZGrICFfkeEeTxE9p5DFC": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007753,
+          "nanoseconds": 622000000
+        },
+        "productId": "prod_pc023",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "ZGuumbs4mdM6bMOK7zZi": {
+        "productId": "prod_b024",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007754,
+          "nanoseconds": 302000000
+        },
+        "__collections__": {}
+      },
+      "ZSPDAanQmiDaoWwnRFyc": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s026",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007754,
+          "nanoseconds": 994000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "Za23H8UUsRw8mzVhkHbC": {
+        "minStock": 10,
+        "productId": "prod_h036",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 719000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "ZemUfFyZgZWtEEtzGZYG": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007755,
+          "nanoseconds": 709000000
+        },
+        "productId": "prod_st016",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "ZuFrpJOD9ZbWrErCscUn": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007756,
+          "nanoseconds": 418000000
+        },
+        "currentStock": 100,
+        "productId": "prod_st018",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "ZvowFZg6kjFWddSsiGYX": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 679000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s052",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "a9ffTfAgNC0Brse3nVN8": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 203000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b033",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "aPtOtRvBpa1sWtplOMFr": {
+        "currentStock": 0,
+        "productId": "prod_b036",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 251000000
+        },
+        "__collections__": {}
+      },
+      "aZAiubTbaoIAotr1nU2y": {
+        "productId": "prod_pc005",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007757,
+          "nanoseconds": 37000000
+        },
+        "__collections__": {}
+      },
+      "azt2ICsTH6PZoMOVKTby": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007757,
+          "nanoseconds": 737000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_pc015",
+        "__collections__": {}
+      },
+      "b8wDNeHwz4UFpwfhfrw4": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772025191,
+          "nanoseconds": 677000000
+        },
+        "currentStock": 82,
+        "productId": "prod_h001",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "bFxvsufAHSu6y2PWfQF3": {
+        "productId": "prod_b004",
+        "minStock": 10,
+        "currentStock": 98,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086707,
+          "nanoseconds": 555000000
+        },
+        "__collections__": {}
+      },
+      "bNhfYuDngW0loy7v6a3H": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st033",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 923000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "biwIQf3uXw3xSS5HAGLA": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 876000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_b054",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "bk6yHSB8eKJmXb6yLplH": {
+        "productId": "prod_d004",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007759,
+          "nanoseconds": 772000000
+        },
+        "__collections__": {}
+      },
+      "buyklA75Qvw5XUASBaIX": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_f027",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 183000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "cMcBJVcdHOJPPeP9SJns": {
+        "minStock": 10,
+        "productId": "prod_s007",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007760,
+          "nanoseconds": 469000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "cZ6RthmS98mXzdAjuk60": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007761,
+          "nanoseconds": 150000000
+        },
+        "currentStock": 100,
+        "productId": "prod_pc010",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "dub1N5SpHTNSRvczjVQo": {
+        "productId": "prod_f009",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007761,
+          "nanoseconds": 833000000
+        },
+        "__collections__": {}
+      },
+      "e2SLOq8StjYKg2UZlSlT": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007762,
+          "nanoseconds": 536000000
+        },
+        "productId": "prod_d007",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "e8FOXEZwLC0G3ia6LLVK": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d034",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 621000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "eV9LpeLZ1OPRh5JEjAP4": {
+        "currentStock": 100,
+        "productId": "prod_b030",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007763,
+          "nanoseconds": 192000000
+        },
+        "__collections__": {}
+      },
+      "eZ96GuCKSWeD8NfPE22O": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 172000000
+        },
+        "currentStock": 0,
+        "productId": "prod_b031",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "ekd3k50BjmtfDoMFijIB": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 873000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc032",
+        "__collections__": {}
+      },
+      "f99t3LEimGCIUGvRWzoo": {
+        "minStock": 10,
+        "productId": "prod_s017",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007763,
+          "nanoseconds": 886000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "fX4pSrB8HsXbSWW7d5Pt": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007764,
+          "nanoseconds": 548000000
+        },
+        "productId": "prod_s027",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "fkPoqhk4OrHe0LxR8Yg7": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772025191,
+          "nanoseconds": 727000000
+        },
+        "productId": "prod_h004",
+        "currentStock": 69,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "gAcdDLvdwJXZk3M8xbhQ": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 201000000
+        },
+        "currentStock": 0,
+        "productId": "prod_d030",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "gMYQspusWSgeA3yenGJx": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 169000000
+        },
+        "productId": "prod_s035",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "go2655Bo1nyGJqdjNH5g": {
+        "minStock": 10,
+        "productId": "prod_d012",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007765,
+          "nanoseconds": 721000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "hGFS1latSVo71gckWPvl": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007769,
+          "nanoseconds": 307000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h016",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "hNa8f9O8Ql8fZ95ZEMnv": {
+        "minStock": 10,
+        "productId": "prod_st038",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 311000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "hVj0WkZ2BgX4sxbanGMK": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007770,
+          "nanoseconds": 246000000
+        },
+        "currentStock": 100,
+        "productId": "prod_st013",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "hXrA1NtdlNOX8Kzhsslz": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 108000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_f022",
+        "__collections__": {}
+      },
+      "hgzift5mu35PuZpMa6ro": {
+        "minStock": 10,
+        "productId": "prod_f020",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 719000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "hh06USikON8npzWkx4Kc": {
+        "productId": "prod_st045",
+        "currentStock": -1,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772030882,
+          "nanoseconds": 431000000
+        },
+        "__collections__": {}
+      },
+      "hj1hxqUl3IbUe8ELpPcp": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_s029",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007771,
+          "nanoseconds": 68000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "hm1e8HMJ9VHHqZgOR6FD": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 140000000
+        },
+        "currentStock": 0,
+        "productId": "prod_f024",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "hsK1CxFx0WTCgSycAIPY": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012185,
+          "nanoseconds": 57000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 99,
+        "productId": "prod_d011",
+        "__collections__": {}
+      },
+      "hysO7t9O7Eis9Yg4N5AK": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 234000000
+        },
+        "productId": "prod_d031",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "iGbT4m4IXEQW243t7QqQ": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007772,
+          "nanoseconds": 484000000
+        },
+        "currentStock": 100,
+        "productId": "prod_d001",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "iHWgrQup3Qih3OdWyG8H": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 302000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s048",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "idgxtXAK7B6VWddFSzXk": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007773,
+          "nanoseconds": 155000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s023",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "iftU3CrEUSDWH3Apkpsi": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 449000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_f018",
+        "__collections__": {}
+      },
+      "j8qAo9Z3aCQqxPLvYnR7": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st021",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 737000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "jSCgUAYuZrsns8rZoxJE": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 319000000
+        },
+        "productId": "prod_b045",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "jebFL2CLEwVwfn8uDwz1": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086408,
+          "nanoseconds": 814000000
+        },
+        "productId": "prod_b002",
+        "currentStock": 96,
+        "minStock": 10,
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "jvGreD74k6coIERXYJ3u": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 406000000
+        },
+        "productId": "prod_b050",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "jvLBfmVgBSdlbABPKDKj": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 537000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st028",
+        "__collections__": {}
+      },
+      "jyl7x1cTEKTw5kv2Z0qD": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 956000000
+        },
+        "currentStock": 0,
+        "productId": "prod_d028",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "kDAN0CNzu71QFoBg9UAH": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007777,
+          "nanoseconds": 43000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_b025",
+        "__collections__": {}
+      },
+      "kUOzY2osZFIrGUuKTf6K": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 153000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f025",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "kdLbJ890enXwnsLKEywV": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_h038",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 65000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "khFkesC7P6v5TVXykt2D": {
+        "minStock": 10,
+        "productId": "prod_s002",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007777,
+          "nanoseconds": 952000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "kjIFDDFK9oi5C5SpbdNe": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_d010",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007778,
+          "nanoseconds": 644000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "lKgq8BohU15XjaWFzvpp": {
+        "minStock": 10,
+        "productId": "prod_b029",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007782,
+          "nanoseconds": 231000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "lP68o7ewuRyBtvcXp0k0": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 115000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s032",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "lTtSQnTjjepCC8UsXzfE": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007783,
+          "nanoseconds": 111000000
+        },
+        "productId": "prod_st010",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "mBkAXGOTKC3XLLxKtbeb": {
+        "productId": "prod_h033",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 651000000
+        },
+        "__collections__": {}
+      },
+      "mUOW6I6lwIQlZM36VvIw": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st030",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 565000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "n9oEnAhh9MRJqY3jSuAO": {
+        "currentStock": 100,
+        "productId": "prod_b009",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007783,
+          "nanoseconds": 847000000
+        },
+        "__collections__": {}
+      },
+      "nIQsiiwklnA1OTzWYNYm": {
+        "currentStock": 100,
+        "productId": "prod_d016",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007784,
+          "nanoseconds": 627000000
+        },
+        "__collections__": {}
+      },
+      "npC7XtPSva0UWytzjOK3": {
+        "minStock": 10,
+        "productId": "prod_pc021",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007785,
+          "nanoseconds": 248000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "nvTwI0o8ttoI6NgTM3wn": {
+        "currentStock": 100,
+        "productId": "prod_f005",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007786,
+          "nanoseconds": 260000000
+        },
+        "__collections__": {}
+      },
+      "ojsFfmI4jVtAFBcKmDJ7": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007787,
+          "nanoseconds": 746000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s013",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "onkqMHPFTYZlx1hZNAf3": {
+        "currentStock": 100,
+        "productId": "prod_d015",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007788,
+          "nanoseconds": 743000000
+        },
+        "__collections__": {}
+      },
+      "ov90Crk36VyzJpEsGYVT": {
+        "currentStock": 0,
+        "productId": "prod_b046",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 344000000
+        },
+        "__collections__": {}
+      },
+      "p1Dwn7G2HxKmQ4FgL83o": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 921000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_h024",
+        "__collections__": {}
+      },
+      "pAD3gK3MyH0kDiVZtAeP": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772025191,
+          "nanoseconds": 737000000
+        },
+        "currentStock": 73,
+        "productId": "prod_h005",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "pLR6jBtHsLCjPH2IqNGv": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 906000000
+        },
+        "productId": "prod_pc035",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "pSK1lclRRhUyh6BCqOTL": {
+        "minStock": 10,
+        "productId": "prod_s039",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 539000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "pf30aqacD6IMtlhS1IuZ": {
+        "productId": "prod_st002",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007790,
+          "nanoseconds": 778000000
+        },
+        "__collections__": {}
+      },
+      "pzCigLmRnGhmkgZXd91s": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 596000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_d033",
+        "__collections__": {}
+      },
+      "pzCvgqNpGTPUVjedLjuY": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008613,
+          "nanoseconds": 492000000
+        },
+        "currentStock": 0,
+        "productId": "prod_f030",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "q05PoV8y814Bj6rhOiIf": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007791,
+          "nanoseconds": 629000000
+        },
+        "productId": "prod_d019",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "qJCfnbbY09RXNknRw9Og": {
+        "currentStock": 0,
+        "productId": "prod_h031",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 289000000
+        },
+        "__collections__": {}
+      },
+      "qzCcK6auxahTqgEamuGx": {
+        "minStock": 10,
+        "productId": "prod_f013",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007792,
+          "nanoseconds": 526000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "r1cxip5fsjWNIu0z2VVu": {
+        "productId": "prod_h019",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007793,
+          "nanoseconds": 324000000
+        },
+        "__collections__": {}
+      },
+      "rJdrTH5O1OkvzJRManFh": {
+        "currentStock": 0,
+        "productId": "prod_h029",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 256000000
+        },
+        "__collections__": {}
+      },
+      "rV57XdEWgnMbUGv0xONT": {
+        "currentStock": 100,
+        "productId": "prod_d014",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007794,
+          "nanoseconds": 329000000
+        },
+        "__collections__": {}
+      },
+      "rooqfD3JTtFq7G1zCAKu": {
+        "productId": "prod_st043",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 706000000
+        },
+        "__collections__": {}
+      },
+      "rq3A3By50b0uPzpP7P6r": {
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_pc025",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007795,
+          "nanoseconds": 263000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "rqgeX5FNrUdbTPJhkNsF": {
+        "currentStock": 0,
+        "productId": "prod_h039",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 78000000
+        },
+        "__collections__": {}
+      },
+      "ru33ST2dFYhBkKHBieFV": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007796,
+          "nanoseconds": 138000000
+        },
+        "productId": "prod_pc007",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "sMcFYUSSNVSaiCFT3wu4": {
+        "productId": "prod_b032",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008609,
+          "nanoseconds": 191000000
+        },
+        "__collections__": {}
+      },
+      "sqUeEKddvqSno4F0L1G5": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007797,
+          "nanoseconds": 117000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_pc018",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "squ6Xn4MA2zXNeI2N4zb": {
+        "currentStock": 100,
+        "productId": "prod_pc014",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007798,
+          "nanoseconds": 574000000
+        },
+        "__collections__": {}
+      },
+      "t8AyAhXISCq5dUtBID9O": {
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_s044",
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 926000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "t9gGwQcbRnktXmhPSV6J": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007799,
+          "nanoseconds": 468000000
+        },
+        "currentStock": 100,
+        "productId": "prod_st009",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "tCykqa55Qv76pkK7iv3k": {
+        "minStock": 10,
+        "maxStock": 100,
+        "currentStock": 99,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772086408,
+          "nanoseconds": 849000000
+        },
+        "productId": "prod_b005",
+        "__collections__": {}
+      },
+      "tk22ZEz5Sd0Kld7i2v46": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008611,
+          "nanoseconds": 672000000
+        },
+        "currentStock": 0,
+        "productId": "prod_d038",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "twyRNSswH7glZdKULM09": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007801,
+          "nanoseconds": 121000000
+        },
+        "currentStock": 100,
+        "productId": "prod_s025",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "u3M3jdXMFSuaLBo9I8Lw": {
+        "productId": "prod_pc033",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 882000000
+        },
+        "__collections__": {}
+      },
+      "uHgzd0k9atjfuHPZTq9U": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007801,
+          "nanoseconds": 924000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_st006",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "ueoHBxVCQMQiFV5zgQOf": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 233000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h027",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "uhP7nZFOTgnKyvs92d89": {
+        "minStock": 10,
+        "productId": "prod_d020",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007802,
+          "nanoseconds": 713000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "ukfcAgGZUpNIAZyRsGjk": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007803,
+          "nanoseconds": 551000000
+        },
+        "productId": "prod_f008",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "ulG56H6N81iKSWUc8HBM": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007804,
+          "nanoseconds": 506000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_st001",
+        "__collections__": {}
+      },
+      "unpwpXx8dZvAF1ZzSFXe": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 741000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc044",
+        "__collections__": {}
+      },
+      "utg30xioyLz1duvYhQ9Q": {
+        "currentStock": -29,
+        "productId": "prod_h002",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772025191,
+          "nanoseconds": 702000000
+        },
+        "__collections__": {}
+      },
+      "uvh9NvFnakWYvJj2itAJ": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 359000000
+        },
+        "productId": "prod_b047",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "vEO46pinx0DmsKu5w9H4": {
+        "minStock": 10,
+        "productId": "prod_st025",
+        "currentStock": 0,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008619,
+          "nanoseconds": 150000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "vQA7jB9V2DVPqiS0qoAU": {
+        "productId": "prod_st005",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007805,
+          "nanoseconds": 939000000
+        },
+        "__collections__": {}
+      },
+      "vfSNIgmY346YoWuzQe8e": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 42000000
+        },
+        "productId": "prod_h037",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "vggsU0qJtxpdNcRGdOiV": {
+        "productId": "prod_f011",
+        "currentStock": 100,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007806,
+          "nanoseconds": 608000000
+        },
+        "__collections__": {}
+      },
+      "voXaNbiOsGfMbpZmXmsN": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 247000000
+        },
+        "productId": "prod_h028",
+        "currentStock": 0,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "vxD2GlnkXvKKHT8wjgCX": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 756000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_pc045",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "wd5vMaP0XtsstUEzk4uu": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008612,
+          "nanoseconds": 426000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f016",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "wdp3qzzDyKVVll2NA56t": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007807,
+          "nanoseconds": 311000000
+        },
+        "productId": "prod_pc019",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "wgwLhchJW2JzBfhxSR8h": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007808,
+          "nanoseconds": 155000000
+        },
+        "productId": "prod_pc002",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "wokmXpXnGDNoMeOumABi": {
+        "productId": "prod_s046",
+        "currentStock": 0,
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 953000000
+        },
+        "__collections__": {}
+      },
+      "x2TErMkDt5RRsVf0Z9pS": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007808,
+          "nanoseconds": 836000000
+        },
+        "productId": "prod_pc012",
+        "currentStock": 100,
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "xTk780wlkDlAnalunltm": {
+        "currentStock": 0,
+        "productId": "prod_h034",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008614,
+          "nanoseconds": 662000000
+        },
+        "__collections__": {}
+      },
+      "xWBpd9pSb5fm68ILhMf1": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 337000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s051",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "xdo7SucKDUIVnJubr3gT": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007809,
+          "nanoseconds": 430000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_f015",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "xm2aDZPzEKCAZx1INoTc": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008618,
+          "nanoseconds": 317000000
+        },
+        "currentStock": 0,
+        "productId": "prod_s049",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "xs0MslYS83wl6VRNJxKt": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008616,
+          "nanoseconds": 729000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_pc043",
+        "__collections__": {}
+      },
+      "yKBzYJHVmUlA3KWXgslR": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008620,
+          "nanoseconds": 347000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_st041",
+        "__collections__": {}
+      },
+      "yLmP1z4mFi0i5r0uSYCb": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772012808,
+          "nanoseconds": 136000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_b019",
+        "currentStock": 98,
+        "__collections__": {}
+      },
+      "yYKNMuz6LaEQnE5wX0qG": {
+        "minStock": 10,
+        "productId": "prod_s021",
+        "currentStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007813,
+          "nanoseconds": 807000000
+        },
+        "maxStock": 100,
+        "__collections__": {}
+      },
+      "yd8iRPoWyVaZPcOsmLrG": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008610,
+          "nanoseconds": 419000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 0,
+        "productId": "prod_b051",
+        "__collections__": {}
+      },
+      "zCCt7OWmjDozFrorSBKT": {
+        "currentStock": 100,
+        "productId": "prod_f001",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007814,
+          "nanoseconds": 538000000
+        },
+        "__collections__": {}
+      },
+      "zLvD37lJ6g44L2Jh0HoG": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007815,
+          "nanoseconds": 291000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h008",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "zO33RVymbqkTvO0a3JUh": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008615,
+          "nanoseconds": 463000000
+        },
+        "currentStock": 0,
+        "productId": "prod_pc028",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "zWi85w3xciie0jdUOSo8": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007816,
+          "nanoseconds": 267000000
+        },
+        "currentStock": 100,
+        "productId": "prod_pc011",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "zWnOX5WGN5zyVGVGM1O6": {
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007817,
+          "nanoseconds": 6000000
+        },
+        "currentStock": 100,
+        "productId": "prod_b020",
+        "minStock": 10,
+        "__collections__": {}
+      },
+      "zhi6SRtqHfmXg1feClEU": {
+        "currentStock": 100,
+        "productId": "prod_s030",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007817,
+          "nanoseconds": 685000000
+        },
+        "__collections__": {}
+      },
+      "zjpinfDnsQ5a2XdYNvqR": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007818,
+          "nanoseconds": 439000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "currentStock": 100,
+        "productId": "prod_f006",
+        "__collections__": {}
+      },
+      "zpHlSfwDZl4ckChIx8E3": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772008617,
+          "nanoseconds": 157000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_s034",
+        "currentStock": 0,
+        "__collections__": {}
+      },
+      "zqNyhKHhwReBwbB68xH1": {
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007819,
+          "nanoseconds": 290000000
+        },
+        "maxStock": 100,
+        "minStock": 10,
+        "productId": "prod_h012",
+        "currentStock": 100,
+        "__collections__": {}
+      },
+      "zyqBxQCThMvr4kDzXx82": {
+        "currentStock": 100,
+        "productId": "prod_h020",
+        "minStock": 10,
+        "maxStock": 100,
+        "lastUpdated": {
+          "type": "firestore/timestamp/1.0",
+          "seconds": 1772007821,
+          "nanoseconds": 16000000
+        },
+        "__collections__": {}
+      }
+    }
+  }
+}
