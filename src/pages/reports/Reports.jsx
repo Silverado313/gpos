@@ -355,7 +355,7 @@ function Reports() {
                 <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Total Spend</p>
+                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Total Purchase Spend</p>
                             <h3 className="text-2xl font-black text-gray-800 mt-1">
                                 {currency} {purchaseOrders.filter(po => po.status === 'received').reduce((sum, po) => sum + (po.totalAmount || 0), 0).toLocaleString()}
                             </h3>
@@ -371,6 +371,37 @@ function Reports() {
                             <h3 className="text-2xl font-black text-gray-800 mt-1">
                                 {[...new Set(purchaseOrders.map(po => po.supplierId))].length}
                             </h3>
+                        </div>
+                    </div>
+
+                    {/* Stock Valuation Section */}
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+                            <span className="text-8xl">📦</span>
+                        </div>
+                        <h3 className="font-black text-xs uppercase tracking-[0.2em] opacity-70 mb-6">Inventory Valuation (Live)</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                            <div>
+                                <p className="text-[10px] font-black uppercase opacity-60 mb-1">Total Asset Value</p>
+                                <p className="text-3xl font-black">
+                                    {currency} {products.reduce((sum, p) => sum + ((p.costPrice || 0) * (p.stock || 0)), 0).toLocaleString()}
+                                </p>
+                                <p className="text-[10px] opacity-40 mt-1">Total capital tied in current stock</p>
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black uppercase opacity-60 mb-1">Est. Store Value</p>
+                                <p className="text-3xl font-black">
+                                    {currency} {products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0).toLocaleString()}
+                                </p>
+                                <p className="text-[10px] opacity-40 mt-1">Potential revenue if all sold</p>
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black uppercase opacity-60 mb-1">Potential Profit</p>
+                                <p className="text-3xl font-black text-green-300">
+                                    {currency} {products.reduce((sum, p) => sum + (((p.price || 0) - (p.costPrice || 0)) * (p.stock || 0)), 0).toLocaleString()}
+                                </p>
+                                <p className="text-[10px] opacity-40 mt-1">Gross profit margin in stock</p>
+                            </div>
                         </div>
                     </div>
 

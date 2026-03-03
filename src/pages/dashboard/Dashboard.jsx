@@ -25,8 +25,12 @@ function Dashboard() {
                 if (settingsSnap.exists()) setSettings(settingsSnap.data())
 
                 // Get Total Products & Customers counts
-                const productsSnap = await getDocs(collection(db, 'products'))
-                const customersSnap = await getDocs(collection(db, 'customers'))
+                const [productsSnap, customersSnap, inventorySnap] = await Promise.all([
+                    getDocs(collection(db, 'products')),
+                    getDocs(collection(db, 'customers')),
+                    getDocs(collection(db, 'inventory'))
+                ])
+                const inventoryList = inventorySnap.docs.map(d => ({ id: d.id, ...d.data() }))
 
                 // Define time ranges
                 const now = new Date()
@@ -61,6 +65,13 @@ function Dashboard() {
                     yesterdayTransactions: yesterdaySnap.size,
                     totalProducts: productsSnap.size,
                     totalCustomers: customersSnap.size,
+                    lowStockItems: productsSnap.docs
+                        .map(d => {
+                            const p = { id: d.id, ...d.data() }
+                            const inv = inventoryList.find(i => i.productId === p.id)
+                            return { ...p, currentStock: inv?.currentStock || 0, minStock: inv?.minStock || 10 }
+                        })
+                        .filter(p => p.currentStock <= p.minStock),
                     loading: false
                 })
             } catch (err) {
@@ -142,6 +153,38 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
+
+            {/* Low Stock Alerts */}
+            {stats.lowStockItems?.length > 0 && (
+                <div className="mt-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-black text-gray-800 uppercase tracking-widest text-sm flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                            Low Stock Alerts
+                        </h3>
+                        <span className="text-[10px] font-black text-red-500 bg-red-50 px-2 py-1 rounded-full uppercase italic">Action Required</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {stats.lowStockItems.map(item => (
+                            <div key={item.id} className="bg-white rounded-2xl p-4 border border-red-100 shadow-sm flex items-center justify-between group hover:border-red-400 transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 font-bold">
+                                        ⚠️
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold text-gray-800 group-hover:text-red-600 transition-colors">{item.name}</p>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase">Current: {item.currentStock} {item.unit || 'pcs'}</p>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Threshold</p>
+                                    <p className="text-xs font-black text-gray-500">{item.minStock}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
         </Layout>
     )

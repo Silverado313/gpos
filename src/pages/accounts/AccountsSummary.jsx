@@ -54,9 +54,20 @@ function AccountsSummary() {
     const filteredExpenses = filterByPeriod(expenses, 'date')
     const filteredCashFlow = filterByPeriod(cashFlow)
 
+    // Advanced Financial Logic
     const totalRevenue = filteredSales.reduce((sum, s) => sum + (s.total || 0), 0)
+
+    // Calculate COGS: Sum of (item.costPrice * item.quantity) for all items in filtered sales
+    const totalCOGS = filteredSales.reduce((sum, sale) => {
+        const saleCOGS = (sale.items || []).reduce((itemSum, item) => {
+            return itemSum + ((item.costPrice || 0) * (item.quantity || 0))
+        }, 0)
+        return sum + saleCOGS
+    }, 0)
+
+    const grossProfit = totalRevenue - totalCOGS
     const totalExpenses = filteredExpenses.reduce((sum, e) => sum + (e.amount || 0), 0)
-    const netProfit = totalRevenue - totalExpenses
+    const netProfit = grossProfit - totalExpenses
 
     // Total cash balance is always cumulative
     const cashBalance = cashFlow.reduce((sum, c) => sum + (c.amount || 0), 0)
@@ -97,10 +108,21 @@ function AccountsSummary() {
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
                                     <span className="text-8xl">💰</span>
                                 </div>
-                                <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">Total Revenue</p>
+                                <div className="flex justify-between items-start mb-2">
+                                    <p className="text-xs font-black uppercase tracking-widest opacity-70">Total Revenue</p>
+                                    <div className="text-right">
+                                        <p className="text-[10px] font-bold opacity-50 uppercase tracking-tighter text-white">COGS: {currency} {totalCOGS.toLocaleString()}</p>
+                                    </div>
+                                </div>
                                 <h3 className="text-4xl font-black">{currency} {totalRevenue.toLocaleString()}</h3>
-                                <div className="mt-6 flex items-center gap-2 text-xs font-bold bg-white/10 w-fit px-3 py-1 rounded-full border border-white/10">
-                                    <span>↑</span> From sales records
+                                <div className="mt-6 flex items-center justify-between">
+                                    <div className="flex items-center gap-2 text-xs font-bold bg-white/10 w-fit px-3 py-1 rounded-full border border-white/10">
+                                        <span>↑</span> From sales
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Gross Profit</p>
+                                        <p className="text-sm font-black">{currency} {grossProfit.toLocaleString()}</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -124,33 +146,44 @@ function AccountsSummary() {
                         <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 overflow-hidden relative">
                             <div className="flex justify-between items-end mb-6">
                                 <div>
-                                    <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Net Profit</p>
+                                    <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">True Net Profit</p>
                                     <h3 className={`text-5xl font-black tracking-tight ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                         {currency} {netProfit.toLocaleString()}
                                     </h3>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Profit Margin</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Net Margin</p>
                                     <p className="text-xl font-black text-gray-800">
                                         {totalRevenue ? ((netProfit / totalRevenue) * 100).toFixed(1) : 0}%
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Progress bar visual */}
-                            <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden flex">
+                            {/* Progress bar visual - COGS vs Expenses vs Profit */}
+                            <div className="w-full bg-gray-100 h-4 rounded-full overflow-hidden flex shadow-inner">
                                 <div
-                                    className="bg-green-500 h-full transition-all duration-1000"
-                                    style={{ width: `${totalRevenue ? (Math.max(0, netProfit) / totalRevenue) * 100 : 0}%` }}
+                                    className="bg-orange-400 h-full transition-all duration-1000 border-r border-white/20"
+                                    style={{ width: `${totalRevenue ? (totalCOGS / totalRevenue) * 100 : 0}%` }}
+                                    title="Cost of Goods Sold"
                                 ></div>
                                 <div
-                                    className="bg-red-500 h-full transition-all duration-1000"
+                                    className="bg-red-500 h-full transition-all duration-1000 border-r border-white/20"
                                     style={{ width: `${totalRevenue ? (totalExpenses / totalRevenue) * 100 : 0}%` }}
+                                    title="Expenses"
+                                ></div>
+                                <div
+                                    className={`h-full transition-all duration-1000 ${netProfit >= 0 ? 'bg-green-500' : 'bg-red-800'}`}
+                                    style={{ width: `${totalRevenue ? (Math.max(0, netProfit) / totalRevenue) * 100 : 0}%` }}
+                                    title="Net Profit"
                                 ></div>
                             </div>
-                            <div className="flex justify-between mt-2 text-[10px] font-black text-gray-400 uppercase">
-                                <span>Profitability Visualizer</span>
-                                <span>Exp. Ratio</span>
+                            <div className="flex justify-between mt-3 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                <div className="flex items-center gap-4">
+                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400"></span> COGS</span>
+                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> Exp</span>
+                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500"></span> Profit</span>
+                                </div>
+                                <span className="text-gray-300 italic">Financial Efficiency Visualizer</span>
                             </div>
                         </div>
                     </div>
