@@ -10,16 +10,20 @@ import {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const ALL_COLLECTIONS = [
-    { id: 'products',         label: 'Products',          icon: '📦', defaultOn: true },
-    { id: 'categories',       label: 'Categories',        icon: '🏷️', defaultOn: true },
-    { id: 'inventory',        label: 'Inventory',         icon: '🏪', defaultOn: true },
-    { id: 'customers',        label: 'Customers',         icon: '👥', defaultOn: true },
-    { id: 'suppliers',        label: 'Suppliers',         icon: '🏭', defaultOn: true },
-    { id: 'employees',        label: 'Employees',         icon: '👨‍💼', defaultOn: false },
-    { id: 'sales',            label: 'Sales',             icon: '💰', defaultOn: false },
-    { id: 'purchase_orders',  label: 'Purchase Orders',   icon: '📝', defaultOn: false },
-    { id: 'suspended_sales',  label: 'Suspended Sales',   icon: '⏸️', defaultOn: false },
-    { id: 'settings',         label: 'Settings',          icon: '⚙️', defaultOn: false },
+    { id: 'products', label: 'Products', icon: '📦', defaultOn: true },
+    { id: 'categories', label: 'Categories', icon: '🏷️', defaultOn: true },
+    { id: 'inventory', label: 'Inventory', icon: '🏪', defaultOn: true },
+    { id: 'customers', label: 'Customers', icon: '👥', defaultOn: true },
+    { id: 'suppliers', label: 'Suppliers', icon: '🏭', defaultOn: false },
+    { id: 'users', label: 'Users/Staff', icon: '👨‍💼', defaultOn: false },
+    { id: 'sales', label: 'Sales', icon: '💰', defaultOn: false },
+    { id: 'sales_returns', label: 'Sales Returns', icon: '🔄', defaultOn: false },
+    { id: 'purchase_orders', label: 'Purchase Orders', icon: '📝', defaultOn: false },
+    { id: 'expenses', label: 'Expenses', icon: '💸', defaultOn: false },
+    { id: 'cash_flow', label: 'Cash Flow', icon: '🏧', defaultOn: false },
+    { id: 'reconciliations', label: 'Reconciliations', icon: '📋', defaultOn: false },
+    { id: 'suspended_sales', label: 'Suspended Sales', icon: '⏸️', defaultOn: false },
+    { id: 'settings', label: 'Settings', icon: '⚙️', defaultOn: false },
 ]
 
 const BATCH_SIZE = 499
@@ -38,7 +42,7 @@ function formatBytes(bytes) {
 function nowFilename() {
     const d = new Date()
     const pad = n => String(n).padStart(2, '0')
-    return `gpos-backup-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}.json`
+    return `gpos-backup-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}.json`
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -55,11 +59,11 @@ export default function Backup() {
     const fileRef = useRef()
 
     // Shared operation state
-    const [running, setRunning]     = useState(false)
-    const [logs, setLogs]           = useState([])
-    const [progress, setProgress]   = useState({ done: 0, total: 0 })
-    const [status, setStatus]       = useState('idle') // idle | running | done | error
-    const [history, setHistory]     = useState([])
+    const [running, setRunning] = useState(false)
+    const [logs, setLogs] = useState([])
+    const [progress, setProgress] = useState({ done: 0, total: 0 })
+    const [status, setStatus] = useState('idle') // idle | running | done | error
+    const [history, setHistory] = useState([])
 
     const logRef = useRef()
 
@@ -131,7 +135,7 @@ export default function Backup() {
             // Download
             const json = JSON.stringify(backup, null, 2)
             const blob = new Blob([json], { type: 'application/json' })
-            const url  = URL.createObjectURL(blob)
+            const url = URL.createObjectURL(blob)
             const filename = nowFilename()
             const a = document.createElement('a')
             a.href = url; a.download = filename; a.click()
@@ -207,8 +211,8 @@ export default function Backup() {
         resetLog()
 
         const collections = importData.__collections__ || importData
-        const colNames    = Object.keys(collections)
-        const totalDocs   = Object.values(collections).reduce((s, c) => s + Object.keys(c).length, 0)
+        const colNames = Object.keys(collections)
+        const totalDocs = Object.values(collections).reduce((s, c) => s + Object.keys(c).length, 0)
 
         addLog('info', `🚀 Starting import — ${colNames.length} collections, ${totalDocs} documents`)
         addLog('info', `   Mode: ${mergeMode ? 'Merge (safe)' : 'Overwrite'}`)
@@ -218,7 +222,7 @@ export default function Backup() {
 
         try {
             for (const colName of colNames) {
-                const docs   = collections[colName]
+                const docs = collections[colName]
                 const docIds = Object.keys(docs)
                 addLog('info', `  ↳ [${colName}] — ${docIds.length} docs`)
 
@@ -253,8 +257,8 @@ export default function Backup() {
     // ── Re-download from history ──────────────────────────────────────────────
     function reDownload(item) {
         const blob = new Blob([item.data], { type: 'application/json' })
-        const url  = URL.createObjectURL(blob)
-        const a    = document.createElement('a')
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
         a.href = url; a.download = item.filename; a.click()
         URL.revokeObjectURL(url)
     }
@@ -263,18 +267,18 @@ export default function Backup() {
     const pct = progress.total ? Math.round((progress.done / progress.total) * 100) : 0
 
     const logColors = {
-        info:  'text-gray-400',
-        ok:    'text-green-400',
-        warn:  'text-yellow-400',
+        info: 'text-gray-400',
+        ok: 'text-green-400',
+        warn: 'text-yellow-400',
         error: 'text-red-400',
-        done:  'text-green-300 font-bold',
+        done: 'text-green-300 font-bold',
     }
 
     const statusUI = {
-        idle:    { label: 'Idle',    dot: 'bg-gray-400',              badge: 'bg-gray-100 text-gray-500' },
+        idle: { label: 'Idle', dot: 'bg-gray-400', badge: 'bg-gray-100 text-gray-500' },
         running: { label: 'Running', dot: 'bg-yellow-400 animate-pulse', badge: 'bg-yellow-50 text-yellow-600' },
-        done:    { label: 'Done',    dot: 'bg-green-500',             badge: 'bg-green-50 text-green-600' },
-        error:   { label: 'Error',   dot: 'bg-red-500',               badge: 'bg-red-50 text-red-600' },
+        done: { label: 'Done', dot: 'bg-green-500', badge: 'bg-green-50 text-green-600' },
+        error: { label: 'Error', dot: 'bg-red-500', badge: 'bg-red-50 text-red-600' },
     }
 
     const sc = statusUI[status]

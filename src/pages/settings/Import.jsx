@@ -21,13 +21,13 @@ const BATCH_SIZE = 499
 
 // ── component ─────────────────────────────────────────────────────────────────
 export default function Import() {
-  const [jsonText, setJsonText]       = useState('')
-  const [logs, setLogs]               = useState([])
-  const [status, setStatus]           = useState('idle') // idle | running | done | error
-  const [progress, setProgress]       = useState({ done: 0, total: 0 })
-  const [importing, setImporting]     = useState(false)
-  const fileRef                       = useRef()
-  const logRef                        = useRef()
+  const [jsonText, setJsonText] = useState('')
+  const [logs, setLogs] = useState([])
+  const [status, setStatus] = useState('idle') // idle | running | done | error
+  const [progress, setProgress] = useState({ done: 0, total: 0 })
+  const [importing, setImporting] = useState(false)
+  const fileRef = useRef()
+  const logRef = useRef()
 
   function addLog(type, msg) {
     const entry = { type, msg, time: new Date().toLocaleTimeString() }
@@ -61,7 +61,7 @@ export default function Import() {
 
   async function importCollections(colObj, parentRef, state) {
     for (const colName of Object.keys(colObj)) {
-      const docs   = colObj[colName]
+      const docs = colObj[colName]
       const docIds = Object.keys(docs)
       addLog('info', `  ↳ [${colName}] — ${docIds.length} docs`)
 
@@ -135,18 +135,18 @@ export default function Import() {
   const pct = progress.total ? Math.round((progress.done / progress.total) * 100) : 0
 
   const statusConfig = {
-    idle:    { label: 'Idle',    dot: 'bg-gray-400',   badge: 'bg-gray-100 text-gray-500' },
+    idle: { label: 'Idle', dot: 'bg-gray-400', badge: 'bg-gray-100 text-gray-500' },
     running: { label: 'Running', dot: 'bg-yellow-400 animate-pulse', badge: 'bg-yellow-50 text-yellow-600' },
-    done:    { label: 'Done',    dot: 'bg-green-500',  badge: 'bg-green-50 text-green-600' },
-    error:   { label: 'Error',   dot: 'bg-red-500',    badge: 'bg-red-50 text-red-600' },
+    done: { label: 'Done', dot: 'bg-green-500', badge: 'bg-green-50 text-green-600' },
+    error: { label: 'Error', dot: 'bg-red-500', badge: 'bg-red-50 text-red-600' },
   }
 
   const logColors = {
-    info:  'text-gray-400',
-    ok:    'text-green-400',
-    warn:  'text-yellow-400',
+    info: 'text-gray-400',
+    ok: 'text-green-400',
+    warn: 'text-yellow-400',
     error: 'text-red-400',
-    done:  'text-orange-400 font-bold',
+    done: 'text-orange-400 font-bold',
   }
 
   const sc = statusConfig[status]
@@ -195,7 +195,7 @@ export default function Import() {
             value={jsonText}
             onChange={e => setJsonText(e.target.value)}
             rows={6}
-            placeholder='{"__collections__": {"categories": {...}, "products": {...}}}'
+            placeholder='{"__collections__": {"categories": {...}, "products": {...}, "inventory": {...}, "customers": {...}}}'
             className="w-full border border-gray-200 rounded-lg p-3 text-xs font-mono text-gray-700 bg-gray-50 resize-y focus:outline-none focus:border-blue-400"
           />
         </div>

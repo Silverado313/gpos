@@ -1,79 +1,94 @@
-# GPOS Feature Documentation
+# 🚀 GPOS | Enterprise Point of Sale Ecosystem
 
-**GPOS (General Point of Sale)** is a comprehensive, cloud-based retail management system designed for small to medium-sized businesses. It integrates sales, inventory, financials, and staff management into a single, unified interface.
-
----
-
-## 1. Core POS & Sales Management
-The heart of GPOS provides a fast, reliable, and feature-rich checkout experience.
-
-- **Dynamic Cart Management**: Add products via search or categories, adjust quantities, and apply line-item or global discounts.
-- **Flexible Payments**: Support for **Cash**, **Card**, and **Credit** (Customer Balances).
-- **Tax Management**: Fully configurable tax labels and percentage rates with a one-click toggle in the POS.
-- **Loyalty Program**: Auto-track customer points based on spend. One-click redemption during checkout.
-- **Held Sales (Suspended Sales)**: Save a current cart to the cloud and retrieve it later to serve other customers in the queue.
-- **Sales Returns**: Process returns for completed sales with automatic inventory restoration (Restricted to Admins/Managers).
-- **Printable Receipts**: Professional, branded HTML/CSS receipts generated instantly after every sale.
+**GPOS (General Point of Sale)** is a high-performance, cloud-integrated retail management ecosystem. It transforms standard point-of-sale operations into a data-driven business intelligence platform.
 
 ---
 
-## 2. Inventory & Product Management
-Granular control over products and real-time stock tracking.
-
-- **Centralized Product Catalog**: Manage pricing, cost prices, units, barcodes, and categories.
-- **Live Inventory Sync**: Stocks are automatically deducted upon sale and restored upon return.
-- **Automatic Adjustments**: Manual stock-in/stock-out shortcuts for quick corrections.
-- **Multi-Category Support**: Organize products for faster discovery in POS and Reports.
-- **Stock Valuation**: Real-time calculation of **Total Asset Value** and potential profit based on current stock levels.
-
----
-
-## 3. Supplier & Purchase Order (PO) Management
-Streamline your supply chain and restock operations.
-
-- **Vendor Database**: Store supplier contact details and incoming stock history.
-- **Manual PO Creation**: Build purchase orders, track their status (Pending/Received), and print order documents.
-- **"Receive Order" Workflow**: One-click confirmation of incoming orders that automatically updates inventory levels.
-- **PO CRUD**: Full ability to edit or delete pending orders to fix mistakes before they hit the books.
+## 📑 Table of Contents
+1. [Core Sales & POS](#-core-sales--pos)
+2. [Inventory & Procurement](#-inventory--procurement)
+3. [Financial Intelligence](#-financial-intelligence)
+4. [Staff & Security](#-staff--security)
+5. [Technical Resilience](#-technical-resilience)
+6. [System Utilities](#-system-utilities)
 
 ---
 
-## 4. Accounts & Financial Intelligence
-True business health tracking beyond simple revenue numbers.
+## 🛒 Core Sales & POS
+*The primary interface for customer interactions and revenue generation.*
 
-- **Cash Flow Register**: Monitor everyday till movements (Cash In/Out) for non-sale events like "Buying Tea" or "Register Float".
-- **Expense Tracking**: Categorized expense management (Rent, Salaries, Utilities) to track overhead.
-- **P&L Summary**: A centralized dashboard showing:
-    - **Total Revenue**: Gross intake.
-    - **COGS (Cost of Goods Sold)**: The actual cost of items sold, captured at the time of sale.
-    - **Gross Profit**: Revenue minus COGS.
-    - **True Net Profit**: Gross profit minus all expenses.
-- **Register Reconciliation**: A shift-end workflow that compares "Expected Cash" (system) vs. "Actual Cash" (drawer) with over/short reporting.
-
----
-
-## 5. Administration & Reporting
-Data-driven insights for business owners.
-
-- **Advanced Dashboard**: Real-time sales trends, growth comparisons (vs yesterday), and **Low Stock Alerts**.
-- **Comprehensive Reports**: 
-    - Sales composition (Cash vs Card vs Credit).
-    - Top Selling Products by units and revenue.
-    - Weekly revenue trends via interactive charts.
-- **Export Capabilities**: Download reports to **CSV** or print professional **PDF** views for offline auditing.
+- **✨ Dynamic Cart Management**: Real-time price calculation, tax application, and line-item/global discount controls.
+- **💳 Multi-Channel Payments**: support for **Cash**, **Card**, and **Credit** (linking sales to customer balances).
+- **⚖️ Tax Intelligence**: Configurable tax labels and dynamic toggles to include/exclude tax during checkout.
+- **⏸️ Held Sales (Parked Orders)**: "Hold" up to 20 active carts to the cloud, allowing cashiers to serve other customers without losing progress.
+- **🔄 Sales Return System**: Professional return workflow with manager-override security. Automatically restocks inventory upon return.
+- **🏆 Loyalty & Rewards**: Integrated point accumulation system with instant "Redemption" during checkout.
+- **📄 Digital Receipts**: Branded, printable HTML receipts generated for every transaction with a built-in "Print Receipt" feature for history.
+- **👥 Customer CRM**: Centralized database to track purchase history, outstanding balances (Credit), and contact preferences.
 
 ---
 
-## 6. Technical & Governance
-Enterprise-grade security and reliability features.
+## 📦 Inventory & Procurement
+*Moving beyond simple tracking to automated asset management.*
 
-- **Role-Based Access Control (RBAC)**:
-    - **Admin**: Full access.
-    - **Manager**: Management of products, inventory, and accounts.
-    - **Cashier**: Restricted to POS, Customers, and basic Sales history.
-- **Pending Approval Flow**: New registrations are locked into a "Pending" state until an Admin manually approves their role.
-- **Offline Persistence (PWA)**:
-    - **Installable**: Adds to desktop/home screen like a native app.
-    - **Offline Sync**: Browse products and view data even without an internet connection using Firestore IndexedDB persistence.
-    - **Service Workers**: Instant load times and offline asset caching.
-- **UI Responsiveness**: Tailored layouts for Desktop, Tablet, and Mobile screens.
+- **🔗 Product-Inventory Linkage**: New products automatically spin up inventory records. Deleting a product safely removes associated stock data.
+- **💎 Valuation Analysis**: Live financial reporting on **Asset Value** (at cost) and **Potential Revenue** (at retail).
+- **🏭 Supplier Management**: Full database for vendor contact management and historical order tracking.
+- **📝 Purchase Orders (PO)**: Professional PO creation with printable order sheets and "One-Click Receive" restocking.
+- **⚠️ Low Stock Alerts**: Proactive monitoring with visual warnings in the Dashboard when items hit customizable minimum thresholds.
+
+---
+
+## 📊 Financial Intelligence
+*Professional-grade bookkeeping integrated directly into the sale.*
+
+- **🏧 Automated Cash Flow**: Every cash sale is instantly recorded in the Register history via Auto-Sync.
+- **💸 Expense Tracking**: Monitor overheads (Rent, Utilities, Salaries) with categorized reporting.
+- **📈 Profit & Loss (P&L) Engine**:
+    - **COGS Tracking**: Captures the specific cost of an item at the moment of sale for precise margins.
+    - **Profit Breakdown**: Calculates Gross Profit and true Net Profit (after all expenses).
+- **📋 Register Reconciliation**: Security-focused "End of Day" workflow comparing digital records vs physical cash.
+
+---
+
+## 🛡️ Staff & Security
+*Robust controls to prevent shrinkage and standardize operations.*
+
+- **👨‍💼 Employee Management**: Centralized staff directory with specific permission profiles.
+- **🔒 Role-Based Access (RBAC)**:
+
+| Feature | Admin | Manager | Cashier |
+| :--- | :---: | :---: | :---: |
+| POS & Checkout | ✅ | ✅ | ✅ |
+| Customer History | ✅ | ✅ | ✅ |
+| Inventory Adjust | ✅ | ✅ | ❌ |
+| Financial Reports | ✅ | ✅ | ❌ |
+| System Settings | ✅ | ❌ | ❌ |
+
+- **🚦 Access Governance**: New users are locked in a "Pending" state, requiring explicit Admin verification.
+- **🕵️ Least-Privilege Enforcement**: Sensitive actions (deleting sales, editing prices) are hidden from unauthorized roles.
+
+---
+
+## 📶 Technical Resilience
+*Designed to work even when the internet doesn't.*
+
+- **📱 Progressive Web App (PWA)**: Desktop-class performance with mobile portability. Installable on Windows, Android, and iOS.
+- **🔌 Offline Continuity**: Robust session persistence and Firestore IndexedDB caching allow full operations without connectivity.
+- **🔄 Auto-Sync**: Data synchronization occurs automatically in the background once internet is restored.
+- **🛰️ Live Status**: Integrated "Online/Offline" indicator for real-time user awareness.
+
+---
+
+## 🛠️ System Utilities
+*Tools for scaling and maintaining the system.*
+
+- **📥 Data Portability**: Bulk-import products and customers via CSV to speed up initial deployment.
+- **💾 Cloud Backup**: Export the entire database (Sales, Customers, Products) to JSON for local archiving.
+- **🎨 Fluid Design**: A unified UI that adapts seamlessly from ultra-wide monitors to handheld smartphones.
+- **📖 Knowledge Base**: Built-in documentation and support links directly accessible from the Sidebar.
+
+---
+
+> [!TIP]
+> **GPOS** is designed for high-frequency retail environments. For technical support or feature requests, please consult the internal [Documentation](file:///c:/Users/TechPeer/gpos/src/pages/settings/Documentation.jsx).
