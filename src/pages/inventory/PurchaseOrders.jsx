@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
+import { handleError, showSuccess } from '../../utils/errorHandler'
 import {
     collection,
     addDoc,
@@ -80,7 +81,34 @@ function PurchaseOrders() {
         setOrderItems(orderItems.filter(item => item.productId !== id))
     }
 
+    const [editingPo, setEditingPo] = useState(null)
+
     const totalCost = orderItems.reduce((sum, item) => sum + (item.costPrice * item.quantity), 0)
+
+    const handleEdit = (po) => {
+        if (po.status !== 'pending') return alert('Only pending orders can be edited')
+        setEditingPo(po)
+        setSelectedSupplier(po.supplierId)
+        setOrderItems(po.items)
+        setShowForm(true)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    const handleDelete = async (po) => {
+        if (po.status === 'received') return alert('Cannot delete a received order')
+        if (!window.confirm('Are you sure you want to delete this purchase order?')) return
+
+        setLoading(true)
+        try {
+            await deleteDoc(doc(db, 'purchase_orders', po.id))
+            showSuccess('Purchase order deleted successfully')
+            fetchData()
+        } catch (err) {
+            handleError(err, 'Delete PO', 'Failed to delete purchase order')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -90,20 +118,33 @@ function PurchaseOrders() {
         setLoading(true)
         try {
             const supplier = suppliers.find(s => s.id === selectedSupplier)
-            await addDoc(collection(db, 'purchase_orders'), {
+            const poData = {
                 supplierId: selectedSupplier,
                 supplierName: supplier.name,
                 items: orderItems,
                 totalAmount: totalCost,
                 status: 'pending', // pending, received, cancelled
-                createdAt: serverTimestamp()
-            })
+                updatedAt: serverTimestamp()
+            }
+
+            if (editingPo) {
+                await updateDoc(doc(db, 'purchase_orders', editingPo.id), poData)
+                showSuccess('Purchase order updated')
+            } else {
+                await addDoc(collection(db, 'purchase_orders'), {
+                    ...poData,
+                    createdAt: serverTimestamp()
+                })
+                showSuccess('Purchase order created')
+            }
+
             setShowForm(false)
+            setEditingPo(null)
             setOrderItems([])
             setSelectedSupplier('')
             fetchData()
         } catch (err) {
-            console.error(err)
+            handleError(err, 'Save PO', 'Failed to save purchase order')
         } finally {
             setLoading(false)
         }
@@ -173,7 +214,14 @@ function PurchaseOrders() {
             <div className="flex justify-between items-center mb-6 mt-12">
                 <p className="text-gray-500">{pos.length} total orders</p>
                 <button
-                    onClick={() => setShowForm(!showForm)}
+                    onClick={() => {
+                        setShowForm(!showForm)
+                        if (showForm) {
+                            setEditingPo(null)
+                            setOrderItems([])
+                            setSelectedSupplier('')
+                        }
+                    }}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                 >
                     {showForm ? 'Cancel' : '+ Create Purchase Order'}
@@ -216,7 +264,9 @@ function PurchaseOrders() {
 
                     {/* Order Summary Form */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-[500px]">
-                        <h3 className="font-black text-gray-800 uppercase tracking-widest text-sm mb-4">New Order Summary</h3>
+                        <h3 className="font-black text-gray-800 uppercase tracking-widest text-sm mb-4">
+                            {editingPo ? 'Edit Purchase Order' : 'New Order Summary'}
+                        </h3>
 
                         <div className="mb-4">
                             <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-2">Supplier</label>
@@ -280,7 +330,7 @@ function PurchaseOrders() {
                                 disabled={loading || orderItems.length === 0}
                                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg shadow-blue-100 hover:bg-blue-700 transition disabled:opacity-50"
                             >
-                                {loading ? 'Processing...' : 'Place Order'}
+                                {loading ? 'Processing...' : (editingPo ? 'Update Order' : 'Place Order')}
                             </button>
                         </div>
                     </div>
@@ -307,7 +357,7 @@ function PurchaseOrders() {
                             </tr>
                         ) : (
                             pos.map(po => (
-                                <tr key={po.id} className="hover:bg-gray-50/50 transition-colors">
+                                <tr key={po.id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4 font-black text-gray-800">#{po.id.slice(-6).toUpperCase()}</td>
                                     <td className="px-6 py-4 text-sm font-bold text-gray-600">{po.supplierName}</td>
                                     <td className="px-6 py-4 text-xs text-gray-500 font-medium">
@@ -318,24 +368,49 @@ function PurchaseOrders() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${po.status === 'received' ? 'bg-green-100 text-green-700' :
-                                                po.status === 'pending' ? 'bg-orange-100 text-orange-700' :
-                                                    'bg-gray-100 text-gray-700'
+                                            po.status === 'pending' ? 'bg-orange-100 text-orange-700' :
+                                                'bg-gray-100 text-gray-700'
                                             }`}>
                                             {po.status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        {po.status === 'pending' && (
+                                        <div className="flex items-center gap-2">
+                                            {po.status === 'pending' && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleReceive(po)}
+                                                        className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-green-700 transition shadow-sm"
+                                                    >
+                                                        📥 Receive
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleEdit(po)}
+                                                        className="p-1.5 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition opacity-0 group-hover:opacity-100"
+                                                        title="Edit Order"
+                                                    >
+                                                        ✏️
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(po)}
+                                                        className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition opacity-0 group-hover:opacity-100"
+                                                        title="Delete Order"
+                                                    >
+                                                        🗑️
+                                                    </button>
+                                                </>
+                                            )}
                                             <button
-                                                onClick={() => handleReceive(po)}
-                                                className="bg-green-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-green-700 transition shadow-sm"
+                                                onClick={() => window.open(`/po-invoice/${po.id}`, '_blank')}
+                                                className="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition"
+                                                title="Print Order"
                                             >
-                                                📥 Receive
+                                                🖨️ Print
                                             </button>
-                                        )}
-                                        {po.status === 'received' && (
-                                            <span className="text-gray-300 text-[10px] font-black uppercase tracking-widest italic">Received ✅</span>
-                                        )}
+                                            {po.status === 'received' && (
+                                                <span className="text-gray-300 text-[10px] font-black uppercase tracking-widest italic ml-2">Received ✅</span>
+                                            )}
+                                        </div>
                                     </td>
                                 </tr>
                             ))

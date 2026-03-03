@@ -4,6 +4,8 @@ import { db } from '../../firebase/config'
 import {
     collection,
     addDoc,
+    updateDoc,
+    deleteDoc,
     getDocs,
     doc,
     serverTimestamp,
@@ -24,6 +26,8 @@ function CashFlow() {
         reason: '',
         date: new Date().toISOString().split('T')[0]
     })
+
+    const [editingMovement, setEditingMovement] = useState(null)
 
     const fetchMovements = async () => {
         try {
@@ -65,6 +69,37 @@ function CashFlow() {
             console.error(err)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            const moveRef = doc(db, 'cash_flow', editingMovement.id)
+            const amount = parseFloat(editingMovement.amount)
+            await updateDoc(moveRef, {
+                ...editingMovement,
+                amount: editingMovement.type === 'out' ? -Math.abs(amount) : Math.abs(amount),
+                updatedAt: serverTimestamp()
+            })
+            setEditingMovement(null)
+            fetchMovements()
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Delete this cash flow record? This will affect the calculated balance.')) {
+            try {
+                await deleteDoc(doc(db, 'cash_flow', id))
+                fetchMovements()
+            } catch (err) {
+                console.error(err)
+            }
         }
     }
 
@@ -132,12 +167,30 @@ function CashFlow() {
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-bold text-gray-800">{m.reason}</p>
-                                                        <p className="text-[10px] text-gray-400 font-bold uppercase">{m.createdAt?.toDate().toLocaleString()}</p>
+                                                        <p className="text-[10px] text-gray-400 font-bold uppercase">{m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString() : new Date(m.createdAt).toLocaleString()}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className={`px-6 py-4 text-right font-black ${m.type === 'in' ? 'text-green-600' : 'text-red-600'}`}>
-                                                {m.type === 'in' ? '+' : ''} {m.amount?.toLocaleString()}
+                                                <div className="flex items-center justify-end gap-6">
+                                                    <span>{m.type === 'in' ? '+' : ''} {m.amount?.toLocaleString()}</span>
+                                                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <button
+                                                            onClick={() => setEditingMovement({ ...m, amount: Math.abs(m.amount) })}
+                                                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                                            title="Edit"
+                                                        >
+                                                            ✏️
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(m.id)}
+                                                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                                            title="Delete"
+                                                        >
+                                                            🗑️
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))
@@ -197,6 +250,59 @@ function CashFlow() {
                                     className={`flex-1 px-4 py-3 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg transition disabled:opacity-50 ${type === 'in' ? 'bg-green-600 hover:bg-green-700 shadow-green-100' : 'bg-red-600 hover:bg-red-700 shadow-red-100'}`}
                                 >
                                     {loading ? 'Entering...' : `Confirm Cash ${type === 'in' ? 'In' : 'Out'}`}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Modal */}
+            {editingMovement && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in duration-300">
+                        <div className={`p-6 border-b flex justify-between items-center ${editingMovement.type === 'in' ? 'bg-green-50' : 'bg-red-50'}`}>
+                            <h3 className={`text-xl font-black uppercase tracking-tight ${editingMovement.type === 'in' ? 'text-green-800' : 'text-red-800'}`}>
+                                Edit Cash {editingMovement.type === 'in' ? 'In' : 'Out'}
+                            </h3>
+                            <button onClick={() => setEditingMovement(null)} className="text-gray-400 hover:text-gray-600">✕</button>
+                        </div>
+                        <form onSubmit={handleUpdate} className="p-6 space-y-4">
+                            <div>
+                                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Amount *</label>
+                                <input
+                                    type="number"
+                                    required
+                                    step="0.01"
+                                    value={editingMovement.amount}
+                                    onChange={(e) => setEditingMovement({ ...editingMovement, amount: e.target.value })}
+                                    className="w-full border border-gray-200 rounded-2xl px-4 py-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none text-xl font-bold"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Reason / Notes *</label>
+                                <textarea
+                                    required
+                                    value={editingMovement.reason}
+                                    onChange={(e) => setEditingMovement({ ...editingMovement, reason: e.target.value })}
+                                    className="w-full border border-gray-200 rounded-2xl px-4 py-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
+                                    rows="3"
+                                />
+                            </div>
+                            <div className="flex gap-3 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingMovement(null)}
+                                    className="flex-1 px-4 py-3 border border-gray-200 rounded-2xl font-bold text-gray-600 hover:bg-gray-50 transition"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`flex-1 px-4 py-3 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg transition disabled:opacity-50 ${editingMovement.type === 'in' ? 'bg-green-600 hover:bg-green-700 shadow-green-100' : 'bg-red-600 hover:bg-red-700 shadow-red-100'}`}
+                                >
+                                    {loading ? 'Updating...' : 'Update Entry'}
                                 </button>
                             </div>
                         </form>

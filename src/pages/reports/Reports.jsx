@@ -155,12 +155,20 @@ function Reports() {
                         </button>
                     ))}
                 </div>
-                <button
-                    onClick={handleExportCSV}
-                    className="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition shadow-sm flex items-center justify-center gap-2"
-                >
-                    📥 Export CSV
-                </button>
+                <div className="flex gap-2 w-full md:w-auto">
+                    <button
+                        onClick={handleExportCSV}
+                        className="flex-1 md:flex-none bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition shadow-sm flex items-center justify-center gap-2"
+                    >
+                        <span>📥</span> Export CSV
+                    </button>
+                    <button
+                        onClick={() => window.print()}
+                        className="flex-1 md:flex-none bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition shadow-sm flex items-center justify-center gap-2"
+                    >
+                        <span>🖨️</span> Print Report
+                    </button>
+                </div>
             </div>
 
             {/* Tabs */}

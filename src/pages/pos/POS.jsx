@@ -323,7 +323,14 @@ function POS() {
         setLoading(true)
         try {
             const saleData = {
-                items: cart.map(item => ({ productId: item.id, name: item.name, price: item.price, quantity: item.quantity, total: item.price * item.quantity })),
+                items: cart.map(item => ({
+                    productId: item.id,
+                    name: item.name,
+                    price: item.price,
+                    costPrice: item.costPrice || 0, // Recorded at time of sale
+                    quantity: item.quantity,
+                    total: item.price * item.quantity
+                })),
                 subtotal, tax, taxLabel: settings?.taxLabel || 'Tax',
                 discount: redemptionValue, total, currency, paymentMethod,
                 amountPaid: parseFloat(amountPaid) || total,
