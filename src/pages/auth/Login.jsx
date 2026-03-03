@@ -79,11 +79,18 @@ function Login() {
                     </button>
                 </form>
 
-                <div className="mt-8 text-center text-sm text-gray-500">
-                    Need an account?{' '}
-                    <Link to="/register" className="text-blue-600 font-semibold hover:underline">
-                        Register here
-                    </Link>
+                <div className="mt-8 text-center text-sm text-gray-500 space-y-2">
+                    <div>
+                        Need an account?{' '}
+                        <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+                            Register here
+                        </Link>
+                    </div>
+                    <div>
+                        <Link to="/docs" className="text-gray-400 hover:text-blue-600 transition font-medium">
+                            📘 View Documentation
+                        </Link>
+                    </div>
                 </div>
 
                 <p className="text-center text-gray-400 text-sm mt-6">

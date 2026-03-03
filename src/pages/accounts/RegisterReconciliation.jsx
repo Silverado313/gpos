@@ -117,9 +117,9 @@ function RegisterReconciliation() {
     if (loading) {
         return (
             <Layout title="Register Reconciliation">
-                <div className="min-h-[60vh] flex flex-col items-center justify-center">
+                <div className="min-h-[60vh] bg-white dark:bg-gray-950 flex flex-col items-center justify-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
-                    <p className="text-gray-500 font-medium">Calculating cash positions...</p>
+                    <p className="text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest text-[10px]">Calculating Final Positions...</p>
                 </div>
             </Layout>
         )
@@ -127,62 +127,62 @@ function RegisterReconciliation() {
 
     return (
         <Layout title="Register Reconciliation">
-            <div className="mt-12 max-w-4xl mx-auto">
-                <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100">
-                    <div className="p-10 bg-gradient-to-br from-gray-900 to-blue-900 text-white relative">
+            <div className="mt-12 max-w-4xl mx-auto pb-20">
+                <div className="bg-white dark:bg-gray-900 rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all duration-500">
+                    <div className="p-12 bg-gradient-to-br from-gray-950 to-blue-950 text-white relative">
                         <div className="relative z-10">
-                            <h3 className="text-sm font-black uppercase tracking-[0.3em] opacity-60 mb-2">End of Day</h3>
-                            <h2 className="text-4xl font-black tracking-tighter">Register Reconciliation</h2>
-                            <p className="mt-4 text-blue-200 text-sm font-medium">
-                                Last closed: {lastReconciliation ? new Date(lastReconciliation.createdAt.toDate()).toLocaleString() : 'Never'}
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 mb-3">Operational Cycle Termination</h3>
+                            <h2 className="text-5xl font-black tracking-tight mb-2">Register Reconciliation</h2>
+                            <p className="text-blue-200/60 text-[11px] font-black uppercase tracking-widest">
+                                Protocol last executed: {lastReconciliation ? new Date(lastReconciliation.createdAt.toDate()).toLocaleString('en-GB') : 'INITIAL RUN'}
                             </p>
                         </div>
-                        <div className="absolute top-0 right-0 p-10 opacity-10">
-                            <span className="text-9xl">🏧</span>
+                        <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none group">
+                            <span className="text-[160px] block transition-transform group-hover:scale-110 duration-700">🏧</span>
                         </div>
                     </div>
 
-                    <div className="p-10 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div className="p-12 grid grid-cols-1 lg:grid-cols-2 gap-16">
                         {/* Summary side */}
-                        <div className="space-y-8">
+                        <div className="space-y-10">
                             <div>
-                                <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Financial Summary</h4>
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center py-3 border-b border-gray-50">
-                                        <span className="text-sm text-gray-500 font-bold">Opening Balance</span>
-                                        <span className="font-bold text-gray-800">{currency} {openingBalance.toLocaleString()}</span>
+                                <h4 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8">Financial Position Summary</h4>
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-center py-4 border-b border-gray-50 dark:border-gray-800">
+                                        <span className="text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Starting Float</span>
+                                        <span className="font-black text-gray-800 dark:text-gray-100">{currency} {openingBalance.toLocaleString()}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-3 border-b border-gray-50">
-                                        <span className="text-sm text-gray-500 font-bold">Total Cash In (Sales + Manual)</span>
-                                        <span className="font-bold text-green-600">+{currency} {cashIn.toLocaleString()}</span>
+                                    <div className="flex justify-between items-center py-4 border-b border-gray-50 dark:border-gray-800">
+                                        <span className="text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Verified Inflow</span>
+                                        <span className="font-black text-green-600 dark:text-green-400">+{currency} {cashIn.toLocaleString()}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-3 border-b border-gray-50">
-                                        <span className="text-sm text-gray-500 font-bold">Total Cash Out</span>
-                                        <span className="font-bold text-red-600">-{currency} {cashOut.toLocaleString()}</span>
+                                    <div className="flex justify-between items-center py-4 border-b border-gray-50 dark:border-gray-800">
+                                        <span className="text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Authorized Outflow</span>
+                                        <span className="font-black text-red-600 dark:text-red-400">-{currency} {cashOut.toLocaleString()}</span>
                                     </div>
-                                    <div className="flex justify-between items-center py-4 bg-gray-50 px-4 rounded-2xl mt-4">
-                                        <span className="text-sm font-black text-gray-800 uppercase tracking-tighter">Expected in Drawer</span>
-                                        <span className="text-2xl font-black text-blue-600">{currency} {expectedCash.toLocaleString()}</span>
+                                    <div className="flex justify-between items-center py-6 bg-gray-50 dark:bg-gray-800/50 px-8 rounded-[2rem] mt-8 border border-gray-100 dark:border-gray-800 shadow-inner">
+                                        <span className="text-[10px] font-black text-gray-800 dark:text-gray-200 uppercase tracking-widest">Theoretical Drawer Target</span>
+                                        <span className="text-3xl font-black text-blue-600 dark:text-blue-400 tracking-tighter">{currency} {expectedCash.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-blue-50 rounded-3xl p-6 border border-blue-100">
-                                <p className="text-xs text-blue-800 font-bold leading-relaxed">
-                                    <span className="text-lg mr-1">💡</span>
-                                    Expected cash is calculated based on your starting balance plus all recorded cash transactions since your last reconciliation.
+                            <div className="bg-blue-600/5 dark:bg-blue-400/5 rounded-[2rem] p-8 border border-blue-600/10 dark:border-blue-400/10 relative overflow-hidden">
+                                <p className="text-[11px] text-blue-800 dark:text-blue-300 font-bold leading-relaxed relative z-10 flex gap-4">
+                                    <span className="text-2xl mt-1">💡</span>
+                                    The theoretical target is synthesized from the terminal starting float plus all verified liquidity shifts (sales + manual movements) recorded during the active cycle.
                                 </p>
                             </div>
                         </div>
 
                         {/* Audit side */}
-                        <form onSubmit={handleCloseRegister} className="space-y-6">
-                            <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Drawer Count</h4>
+                        <form onSubmit={handleCloseRegister} className="space-y-8">
+                            <h4 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8">Physical Audit Data</h4>
 
                             <div>
-                                <label className="text-xs font-black text-gray-500 uppercase tracking-widest block mb-2">Actual Cash Counted *</label>
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-gray-400">{currency}</span>
+                                <label className="text-[11px] font-black text-gray-800 dark:text-gray-300 uppercase tracking-widest block mb-3">Actual Terminal Balance *</label>
+                                <div className="relative group">
+                                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-gray-400 dark:text-gray-500 transition-colors group-focus-within:text-blue-600">{currency}</span>
                                     <input
                                         type="number"
                                         required
@@ -190,52 +190,49 @@ function RegisterReconciliation() {
                                         value={actualCash}
                                         onChange={(e) => setActualCash(e.target.value)}
                                         placeholder="0.00"
-                                        className="w-full pl-16 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:bg-white outline-none transition-all text-xl font-black"
+                                        className="w-full pl-16 pr-6 py-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-[1.5rem] focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-2xl font-black text-gray-800 dark:text-gray-100 placeholder:opacity-20"
                                     />
                                 </div>
                             </div>
 
-                            <div className={`p-6 rounded-2xl border-2 transition-all ${difference === 0 ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs font-black uppercase tracking-widest text-gray-600">Difference (Over/Short)</span>
-                                    <span className={`text-xl font-black ${difference === 0 ? 'text-green-600' : difference > 0 ? 'text-blue-600' : 'text-red-600'}`}>
-                                        {currency} {difference.toLocaleString()}
-                                    </span>
+                            <div className={`p-8 rounded-[2rem] border-2 transition-all duration-500 flex flex-col items-center justify-center text-center ${difference === 0 ? 'bg-green-50/50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30' : 'bg-orange-50/50 dark:bg-orange-900/10 border-orange-200 dark:border-orange-900/30'}`}>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 mb-2">Net Liquidity Variance</p>
+                                <h3 className={`text-4xl font-black tracking-tighter ${difference === 0 ? 'text-green-600 dark:text-green-400' : difference > 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
+                                    {currency} {difference.toLocaleString()}
+                                </h3>
+                                <div className={`mt-3 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${difference === 0 ? 'bg-green-600 text-white' : 'bg-orange-500 text-white'}`}>
+                                    {difference === 0 ? 'POS TERMINAL BALANCED' : difference > 0 ? 'UNEXPECTED SURPLUS' : 'LIQUIDITY SHORTFALL'}
                                 </div>
-                                <p className="text-[10px] font-bold text-gray-500 mt-2 uppercase">
-                                    {difference === 0 ? 'Perfect balance!' : difference > 0 ? 'Surplus detected' : 'Shortage detected'}
-                                </p>
                             </div>
 
                             <div>
-                                <label className="text-xs font-black text-gray-500 uppercase tracking-widest block mb-1">Internal Notes</label>
+                                <label className="text-[11px] font-black text-gray-800 dark:text-gray-300 uppercase tracking-widest block mb-3">Audit Justification / Notes</label>
                                 <textarea
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
-                                    placeholder="Add any reason for discrepancy..."
-                                    rows="4"
-                                    className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:bg-white outline-none transition-all text-sm font-medium"
+                                    placeholder="Enter detailed audit justification for any variance discovered..."
+                                    className="w-full px-6 py-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-[1.5rem] focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-sm font-bold text-gray-800 dark:text-gray-100 placeholder:opacity-20 min-h-[140px]"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="w-full bg-blue-600 text-white rounded-[1.5rem] py-5 font-black uppercase tracking-[0.2em] text-sm shadow-2xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50"
+                                className="w-full bg-blue-600 text-white rounded-[1.5rem] py-6 font-black uppercase tracking-[0.3em] text-[11px] shadow-2xl shadow-blue-500/30 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50"
                             >
-                                {submitting ? 'Generating Report...' : 'Finalize & Close Register'}
+                                {submitting ? 'Authenticating Data...' : 'SECURE & TERMINAL CLOSE'}
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="mt-8 text-center">
+                <div className="mt-12 text-center">
                     <button
                         type="button"
                         onClick={() => window.history.back()}
-                        className="text-xs font-black text-gray-400 uppercase tracking-widest hover:text-gray-600 transition"
+                        className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex items-center justify-center gap-3 mx-auto group"
                     >
-                        ← Back to Cash Flow
+                        <span className="transition-transform group-hover:-translate-x-1">←</span> REVERT TO CASH STREAM
                     </button>
                 </div>
             </div>

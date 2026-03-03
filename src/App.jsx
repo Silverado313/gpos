@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import { onAuthChange } from './firebase/auth'
@@ -7,6 +7,7 @@ import { db } from './firebase/config'
 import { doc, getDoc } from 'firebase/firestore'
 import ProtectedRoute from './routes/ProtectedRoute'
 import useAuthStore from './store/authStore'
+import useThemeStore from './store/themeStore'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import PendingApproval from './pages/auth/PendingApproval'
@@ -32,11 +33,14 @@ import CashFlow from './pages/accounts/CashFlow'
 import AccountsSummary from './pages/accounts/AccountsSummary'
 import RegisterReconciliation from './pages/accounts/RegisterReconciliation'
 import POInvoice from './pages/inventory/POInvoice'
+import PublicDocumentation from './pages/public/PublicDocumentation'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
+  const { initTheme } = useThemeStore()
 
   useEffect(() => {
+    initTheme()
     const unsubscribe = onAuthChange(async (currentUser) => {
       setLoading(true)
       try {
@@ -115,6 +119,7 @@ function App() {
         <Route path="/cash-flow" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><CashFlow /></ProtectedRoute>} />
         <Route path="/register-reconciliation" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><RegisterReconciliation /></ProtectedRoute>} />
         <Route path="/po-invoice/:id" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><POInvoice /></ProtectedRoute>} />
+        <Route path="/docs" element={<PublicDocumentation />} />
       </Routes>
     </ErrorBoundary>
   )

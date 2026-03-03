@@ -56,10 +56,10 @@ function Sidebar({ isOpen, setIsOpen }) {
     }
 
     return (
-        <div className={`h-screen w-64 bg-gray-900 text-white flex flex-col fixed left-0 top-0 z-[50] transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className={`h-screen w-64 bg-gray-900 dark:bg-black text-white flex flex-col fixed left-0 top-0 z-[50] transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
             {/* Logo */}
-            <div className="p-6 border-b border-gray-700">
+            <div className="p-6 border-b border-gray-700 dark:border-gray-800">
                 <h1 className="text-2xl font-bold text-blue-400">GPOS</h1>
                 <p className="text-gray-400 text-xs mt-1">General Point of Sale</p>
             </div>
@@ -75,15 +75,15 @@ function Sidebar({ isOpen, setIsOpen }) {
                             <button
                                 type="button"
                                 onClick={() => setOpenGroups(prev => ({ ...prev, [group.title]: !prev[group.title] }))}
-                                className="w-full flex items-center justify-between px-2 mb-2 text-xs uppercase text-gray-400 font-black"
+                                className="w-full flex items-center justify-between px-2 mb-2 text-xs uppercase text-gray-400 font-black h-8"
                                 aria-expanded={open}
                             >
                                 <span>{group.title}</span>
-                                <span className={`transform transition-transform text-gray-300 ${open ? 'rotate-90' : ''}`}>▸</span>
+                                <span className={`transform transition-transform text-gray-500 hover:text-white ${open ? 'rotate-90' : ''}`}>▸</span>
                             </button>
 
                             {open && (
-                                <div className="bg-gray-800 rounded-lg p-2 space-y-1">
+                                <div className="bg-gray-800/50 dark:bg-white/5 rounded-lg p-2 space-y-1">
                                     {items.map((item) => (
                                         <NavLink
                                             key={item.path}
@@ -91,8 +91,8 @@ function Sidebar({ isOpen, setIsOpen }) {
                                             onClick={() => setIsOpen(false)}
                                             className={({ isActive }) =>
                                                 `flex items-center gap-3 px-4 py-3 rounded-md transition text-sm font-medium ${isActive
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
+                                                    : 'text-gray-400 hover:bg-gray-700 dark:hover:bg-white/10 hover:text-white'
                                                 }`
                                             }
                                         >
@@ -108,10 +108,10 @@ function Sidebar({ isOpen, setIsOpen }) {
             </nav>
 
             {/* Logout */}
-            <div className="p-4 border-t border-gray-700">
+            <div className="p-4 border-t border-gray-700 dark:border-gray-800">
                 <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-red-600 hover:text-white transition w-full text-sm font-medium"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-500 hover:bg-red-600 hover:text-white transition w-full text-sm font-medium"
                 >
                     <span className="text-lg">🚪</span>
                     Logout

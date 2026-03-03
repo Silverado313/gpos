@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { auth, db } from '../../firebase/config'
 import { updateProfile, updatePassword } from 'firebase/auth'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import useAuthStore from '../../store/authStore'
 import { handleError, showSuccess } from '../../utils/errorHandler'
 

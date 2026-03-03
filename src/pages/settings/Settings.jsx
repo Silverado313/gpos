@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { auth } from '../../firebase/config'
 import { handleError, showSuccess } from '../../utils/errorHandler'
 
 function Settings() {

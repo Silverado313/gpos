@@ -30,20 +30,20 @@ const CartPanel = memo(({
 }) => (
     <>
         {/* Cart Header */}
-        <div className="p-4 border-b space-y-3 flex-shrink-0">
+        <div className="p-4 border-b dark:border-gray-800 space-y-3 flex-shrink-0">
             <div className="flex justify-between items-center">
-                <h3 className="font-bold text-gray-800 text-lg">
+                <h3 className="font-bold text-gray-800 dark:text-gray-100 text-lg">
                     🛒 Cart ({cart.length} items)
                 </h3>
                 <button
-                    className="lg:hidden text-gray-400 hover:text-gray-600 text-xl"
+                    className="lg:hidden text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xl"
                     onClick={() => setMobileCartOpen(false)}
                 >✕</button>
             </div>
             <div>
-                <label className="text-xs text-gray-500 block mb-1">Customer</label>
+                <label className="text-xs text-gray-500 dark:text-gray-400 block mb-1">Customer</label>
                 <select
-                    className="w-full text-sm border rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full text-sm border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={selectedCustomer?.id || ''}
                     onChange={(e) => {
                         const customer = customers.find(c => c.id === e.target.value)
@@ -61,21 +61,21 @@ const CartPanel = memo(({
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {cart.length === 0 ? (
-                <p className="text-gray-400 text-center mt-8">Click products to add them here</p>
+                <p className="text-gray-400 dark:text-gray-500 text-center mt-8">Click products to add them here</p>
             ) : (
                 cart.map(item => (
-                    <div key={item.id} className="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+                    <div key={item.id} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
                         <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-800">{item.name}</p>
-                            <p className="text-blue-600 text-sm">{currency} {item.price}</p>
+                            <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{item.name}</p>
+                            <p className="text-blue-600 dark:text-blue-400 text-sm font-bold">{currency} {item.price}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <button onClick={() => updateQty(item.id, item.quantity - 1)} className="w-6 h-6 bg-gray-200 rounded-full text-sm hover:bg-gray-300">-</button>
+                            <button onClick={() => updateQty(item.id, item.quantity - 1)} className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100">-</button>
                             <input
                                 type="number"
                                 value={item.quantity}
                                 onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
-                                className="w-12 text-center border rounded-lg text-sm py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-12 text-center border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg text-sm py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 min="1"
                             />
                             <button onClick={() => updateQty(item.id, item.quantity + 1)} className="w-6 h-6 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">+</button>
@@ -99,23 +99,23 @@ const CartPanel = memo(({
                                 onClick={() => setTaxEnabled(!taxEnabled)}
                                 className={`w-8 h-4 rounded-full transition ${taxEnabled ? 'bg-blue-600' : 'bg-gray-300'}`}
                             >
-                                <div className={`w-3 h-3 bg-white rounded-full shadow transition-transform ${taxEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
+                                <div className={`w-3 h-3 bg-white dark:bg-gray-200 rounded-full shadow transition-transform ${taxEnabled ? 'translate-x-4' : 'translate-x-1'}`} />
                             </button>
-                            <span>{settings.taxLabel || 'Tax'} ({settings.taxRate}%)</span>
+                            <span className="dark:text-gray-300">{settings.taxLabel || 'Tax'} ({settings.taxRate}%)</span>
                         </div>
-                        <span>{currency} {tax.toFixed(2)}</span>
+                        <span className="dark:text-gray-300">{currency} {tax.toFixed(2)}</span>
                     </div>
                 )}
                 {settings?.loyaltyEnabled && selectedCustomer && selectedCustomer.loyaltyPoints > 0 && (
-                    <div className="flex justify-between text-sm items-center py-1 bg-blue-50 px-2 rounded-lg border border-blue-100">
+                    <div className="flex justify-between text-sm items-center py-1 bg-blue-50 dark:bg-blue-900/20 px-2 rounded-lg border border-blue-100 dark:border-blue-900/30">
                         <div className="flex items-center gap-2">
-                            <input type="checkbox" checked={redeemPoints} onChange={(e) => setRedeemPoints(e.target.checked)} className="w-4 h-4 rounded text-blue-600" />
-                            <span className="text-blue-700 text-xs font-bold">Redeem {selectedCustomer.loyaltyPoints} pts</span>
+                            <input type="checkbox" checked={redeemPoints} onChange={(e) => setRedeemPoints(e.target.checked)} className="w-4 h-4 rounded text-blue-600 bg-white dark:bg-gray-800" />
+                            <span className="text-blue-700 dark:text-blue-400 text-xs font-bold">Redeem {selectedCustomer.loyaltyPoints} pts</span>
                         </div>
-                        <span className="text-blue-700 font-bold">-{currency} {redemptionValue.toFixed(2)}</span>
+                        <span className="text-blue-700 dark:text-blue-400 font-bold">-{currency} {redemptionValue.toFixed(2)}</span>
                     </div>
                 )}
-                <div className="flex justify-between font-black text-xl text-gray-900 border-t-2 border-gray-900 pt-3 mt-1">
+                <div className="flex justify-between font-black text-xl text-gray-900 dark:text-gray-100 border-t-2 border-gray-900 dark:border-gray-700 pt-3 mt-1">
                     <span>Total</span><span>{currency} {total.toFixed(2)}</span>
                 </div>
             </div>
@@ -126,7 +126,7 @@ const CartPanel = memo(({
                     <button
                         key={method}
                         onClick={() => setPaymentMethod(method)}
-                        className={`py-2 rounded-lg text-xs font-medium capitalize transition ${paymentMethod === method ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                        className={`py-2 rounded-lg text-xs font-medium capitalize transition ${paymentMethod === method ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
                     >{method}</button>
                 ))}
             </div>
@@ -139,10 +139,10 @@ const CartPanel = memo(({
                         placeholder="Amount paid"
                         value={amountPaid}
                         onChange={(e) => setAmountPaid(e.target.value)}
-                        className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {change > 0 && (
-                        <p className="text-green-600 text-sm mt-1 font-medium">Change: {currency} {change.toFixed(2)}</p>
+                        <p className="text-green-600 dark:text-green-400 text-sm mt-1 font-medium italic">Change: {currency} {change.toFixed(2)}</p>
                     )}
                 </div>
             )}
@@ -452,11 +452,11 @@ function POS() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={handleBarcodeSearch}
-                            className={`flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white transition-all ${barcodeFlash ? 'bg-green-50 border-green-400 ring-2 ring-green-400' : ''}`}
+                            className={`flex-1 border dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 transition-all ${barcodeFlash ? 'bg-green-50 dark:bg-green-900/20 border-green-400 ring-2 ring-green-400' : ''}`}
                         />
                         <button
                             onClick={() => setShowHeldSales(true)}
-                            className="bg-orange-100 text-orange-600 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-200 transition relative"
+                            className="bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition relative"
                         >
                             <span>⏸️</span> Held
                             {suspendedSales.length > 0 && (
@@ -467,11 +467,11 @@ function POS() {
 
                     {categories.length > 0 && (
                         <div className="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-hide">
-                            <button onClick={() => setActiveCategory('all')} className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 border hover:border-blue-400'}`}>
+                            <button onClick={() => setActiveCategory('all')} className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border dark:border-gray-700 hover:border-blue-400'}`}>
                                 {categories.find(c => c.icon)?.icon || '🏪'} All
                             </button>
                             {categories.map(cat => (
-                                <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 border hover:border-blue-400'}`}>
+                                <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition flex-shrink-0 ${activeCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border dark:border-gray-700 hover:border-blue-400'}`}>
                                     {cat.icon} {cat.name}
                                 </button>
                             ))}
@@ -480,14 +480,14 @@ function POS() {
 
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 pb-24 lg:pb-4">
                         {filtered.map(product => (
-                            <button key={product.id} onClick={() => addToCart(product)} className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-500 border-2 border-transparent transition text-left">
-                                <div className="w-full h-16 bg-blue-50 rounded-lg flex items-center justify-center mb-3"><span className="text-3xl">📦</span></div>
-                                <p className="font-medium text-gray-800 text-sm truncate">{product.name}</p>
-                                <p className="text-blue-600 font-bold mt-1">{currency} {product.price}</p>
+                            <button key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md dark:hover:shadow-blue-900/20 hover:border-blue-500 border-2 border-transparent transition text-left">
+                                <div className="w-full h-16 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-3"><span className="text-3xl">📦</span></div>
+                                <p className="font-medium text-gray-800 dark:text-gray-100 text-sm truncate">{product.name}</p>
+                                <p className="text-blue-600 dark:text-blue-400 font-bold mt-1">{currency} {product.price}</p>
                                 <div className="flex items-center justify-between mt-1">
-                                    <p className="text-gray-400 text-xs">{getCategoryName(product.category)}</p>
+                                    <p className="text-gray-400 dark:text-gray-500 text-xs">{getCategoryName(product.category)}</p>
                                     {product.stock !== null && (
-                                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${product.stock <= 0 ? 'bg-red-100 text-red-500' : product.stock <= 10 ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'}`}>
+                                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${product.stock <= 0 ? 'bg-red-100 dark:bg-red-900/20 text-red-500' : product.stock <= 10 ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600' : 'bg-green-100 dark:bg-green-900/20 text-green-600'}`}>
                                             {product.stock <= 0 ? 'Out' : `${product.stock} left`}
                                         </span>
                                     )}
@@ -495,7 +495,7 @@ function POS() {
                             </button>
                         ))}
                         {filtered.length === 0 && (
-                            <div className="col-span-full text-center py-12 text-gray-400 bg-white rounded-xl shadow-sm border border-dashed border-gray-200">
+                            <div className="col-span-full text-center py-12 text-gray-400 dark:text-gray-500 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-dashed border-gray-200 dark:border-gray-800">
                                 🔍 No products found. Try a different search!
                             </div>
                         )}
@@ -503,7 +503,7 @@ function POS() {
                 </div>
 
                 {/* Desktop Cart */}
-                <div className="hidden lg:flex w-96 bg-white rounded-xl shadow-sm flex-col shrink-0 h-full overflow-hidden">
+                <div className="hidden lg:flex w-96 bg-white dark:bg-gray-900 rounded-xl shadow-sm border dark:border-gray-800 flex-col shrink-0 h-full overflow-hidden">
                     <CartPanel {...cartProps} />
                 </div>
 
@@ -514,10 +514,10 @@ function POS() {
                         {cart.length > 0 && <span className="bg-white text-green-600 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">{cart.length}</span>}
                         {cart.length > 0 && <span className="text-sm font-black">{currency} {total.toFixed(2)}</span>}
                     </button>
-                    {mobileCartOpen && <div className="fixed inset-0 bg-black/50 z-[998]" onClick={() => setMobileCartOpen(false)} />}
-                    <div className={`fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-[999] transition-transform duration-300 max-h-[90vh] flex flex-col ${mobileCartOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+                    {mobileCartOpen && <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998]" onClick={() => setMobileCartOpen(false)} />}
+                    <div className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-3xl shadow-2xl z-[999] transition-transform duration-300 max-h-[90vh] flex flex-col border-t dark:border-gray-800 ${mobileCartOpen ? 'translate-y-0' : 'translate-y-full'}`}>
                         <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
-                            <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+                            <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
                         </div>
                         <CartPanel {...cartProps} />
                     </div>
@@ -526,34 +526,34 @@ function POS() {
 
             {/* Held Sales Modal */}
             {showHeldSales && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-6">
-                    <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl">
-                        <div className="p-6 border-b flex justify-between items-center bg-orange-50">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-6">
+                    <div className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border dark:border-gray-800">
+                        <div className="p-6 border-b dark:border-gray-800 flex justify-between items-center bg-orange-50 dark:bg-orange-950/20">
                             <div>
-                                <h3 className="text-xl font-black text-orange-800 uppercase tracking-tight">Suspended Sales</h3>
-                                <p className="text-orange-600 text-xs font-bold">Pick up where you left off</p>
+                                <h3 className="text-xl font-black text-orange-800 dark:text-orange-400 uppercase tracking-tight">Suspended Sales</h3>
+                                <p className="text-orange-600 dark:text-orange-500 text-xs font-bold">Pick up where you left off</p>
                             </div>
-                            <button onClick={() => setShowHeldSales(false)} className="text-orange-800 hover:bg-orange-100 p-2 rounded-full transition">✕</button>
+                            <button onClick={() => setShowHeldSales(false)} className="text-orange-800 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/50 p-2 rounded-full transition">✕</button>
                         </div>
                         <div className="p-6 max-h-[60vh] overflow-y-auto">
                             {suspendedSales.length === 0 ? (
-                                <div className="text-center py-12 opacity-50 italic">No held sales found</div>
+                                <div className="text-center py-12 text-gray-400 dark:text-gray-500 italic">No held sales found</div>
                             ) : (
                                 <div className="space-y-4">
                                     {suspendedSales.map((sale) => (
-                                        <div key={sale.id} className="border rounded-2xl p-5 hover:border-orange-500 transition-all flex justify-between items-center group bg-gray-50/50">
+                                        <div key={sale.id} className="border dark:border-gray-800 rounded-2xl p-5 hover:border-orange-500 transition-all flex justify-between items-center group bg-gray-50/50 dark:bg-gray-800/30">
                                             <div className="space-y-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-black text-gray-800">#{sale.id.slice(-6).toUpperCase()}</span>
-                                                    <span className="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-black uppercase">{sale.items?.length} Items</span>
+                                                    <span className="font-black text-gray-800 dark:text-gray-100">#{sale.id.slice(-6).toUpperCase()}</span>
+                                                    <span className="text-[10px] bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded-full font-black uppercase">{sale.items?.length} Items</span>
                                                 </div>
-                                                <p className="text-sm font-bold text-gray-600 italic leading-none">{sale.customerName}</p>
-                                                <p className="text-[10px] text-gray-400 font-bold">{sale.createdAt?.toDate().toLocaleString()}</p>
+                                                <p className="text-sm font-bold text-gray-600 dark:text-gray-400 italic leading-none">{sale.customerName}</p>
+                                                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-bold">{sale.createdAt?.toDate().toLocaleString()}</p>
                                             </div>
                                             <div className="text-right flex items-center gap-6">
                                                 <div>
-                                                    <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Total</p>
-                                                    <p className="text-xl font-black text-gray-900">{sale.currency} {sale.total?.toFixed(2)}</p>
+                                                    <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Total</p>
+                                                    <p className="text-xl font-black text-gray-900 dark:text-gray-100">{sale.currency} {sale.total?.toFixed(2)}</p>
                                                 </div>
                                                 <button onClick={() => restoreHeldSale(sale)} className="bg-orange-600 text-white px-6 py-2 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-orange-700 transition shadow-lg group-hover:scale-105">Retrieve</button>
                                             </div>

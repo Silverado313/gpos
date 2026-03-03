@@ -106,32 +106,32 @@ function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4 mt-12">
 
                 {/* Stat Cards */}
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-500 text-sm font-medium">Today's Sales</p>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-1">{currency} {stats.todaySales.toLocaleString()}</h3>
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Today's Sales</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">{currency} {stats.todaySales.toLocaleString()}</h3>
                     <p className={`text-xs mt-2 font-medium flex items-center gap-1 ${salesGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                        {salesGrowth >= 0 ? '↑' : '↓'} {Math.abs(salesGrowth).toFixed(1)}% <span className="text-gray-400 font-normal">from yesterday</span>
+                        {salesGrowth >= 0 ? '↑' : '↓'} {Math.abs(salesGrowth).toFixed(1)}% <span className="text-gray-400 dark:text-gray-500 font-normal">from yesterday</span>
                     </p>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-500 text-sm font-medium">Transactions</p>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-1">{stats.todayTransactions}</h3>
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Transactions</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">{stats.todayTransactions}</h3>
                     <p className={`text-xs mt-2 font-medium flex items-center gap-1 ${transGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                        {transGrowth >= 0 ? '↑' : '↓'} {Math.abs(transGrowth).toFixed(1)}% <span className="text-gray-400 font-normal">from yesterday</span>
+                        {transGrowth >= 0 ? '↑' : '↓'} {Math.abs(transGrowth).toFixed(1)}% <span className="text-gray-400 dark:text-gray-500 font-normal">from yesterday</span>
                     </p>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-500 text-sm font-medium">Products</p>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-1">{stats.totalProducts}</h3>
-                    <p className="text-gray-400 text-xs mt-2 italic">Active items in inventory</p>
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Products</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">{stats.totalProducts}</h3>
+                    <p className="text-gray-400 dark:text-gray-500 text-xs mt-2 italic">Active items in inventory</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-500 text-sm font-medium">Customers</p>
-                    <h3 className="text-2xl font-bold text-gray-800 mt-1">{stats.totalCustomers}</h3>
-                    <p className="text-gray-400 text-xs mt-2 italic">Registered profiles</p>
+                <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Customers</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">{stats.totalCustomers}</h3>
+                    <p className="text-gray-400 dark:text-gray-500 text-xs mt-2 italic">Registered profiles</p>
                 </div>
 
             </div>
@@ -158,27 +158,27 @@ function Dashboard() {
             {stats.lowStockItems?.length > 0 && (
                 <div className="mt-8">
                     <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-black text-gray-800 uppercase tracking-widest text-sm flex items-center gap-2">
+                        <h3 className="font-black text-gray-800 dark:text-gray-100 uppercase tracking-widest text-sm flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                             Low Stock Alerts
                         </h3>
-                        <span className="text-[10px] font-black text-red-500 bg-red-50 px-2 py-1 rounded-full uppercase italic">Action Required</span>
+                        <span className="text-[10px] font-black text-red-500 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full uppercase italic border dark:border-red-900/30">Action Required</span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {stats.lowStockItems.map(item => (
-                            <div key={item.id} className="bg-white rounded-2xl p-4 border border-red-100 shadow-sm flex items-center justify-between group hover:border-red-400 transition-colors">
+                            <div key={item.id} className="bg-white dark:bg-gray-900 rounded-2xl p-4 border border-red-100 dark:border-red-900/30 shadow-sm flex items-center justify-between group hover:border-red-400 transition-colors">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 font-bold">
+                                    <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-500 font-bold">
                                         ⚠️
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold text-gray-800 group-hover:text-red-600 transition-colors">{item.name}</p>
-                                        <p className="text-[10px] font-black text-gray-400 uppercase">Current: {item.currentStock} {item.unit || 'pcs'}</p>
+                                        <p className="text-sm font-bold text-gray-800 dark:text-gray-100 group-hover:text-red-600 transition-colors">{item.name}</p>
+                                        <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase">Current: {item.currentStock} {item.unit || 'pcs'}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Threshold</p>
-                                    <p className="text-xs font-black text-gray-500">{item.minStock}</p>
+                                    <p className="text-[10px] font-black text-red-400 dark:text-red-500 uppercase tracking-widest mb-1">Threshold</p>
+                                    <p className="text-xs font-black text-gray-500 dark:text-gray-400">{item.minStock}</p>
                                 </div>
                             </div>
                         ))}

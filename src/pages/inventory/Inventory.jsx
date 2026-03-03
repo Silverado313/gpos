@@ -128,9 +128,9 @@ function Inventory() {
     if (initialLoading) {
         return (
             <Layout title="Inventory">
-                <div className="min-h-screen bg-white flex flex-col items-center justify-center z-[9999]">
+                <div className="min-h-screen bg-white dark:bg-gray-950 flex flex-col items-center justify-center z-[9999]">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-4"></div>
-                    <p className="text-gray-500 font-medium">Loading inventory...</p>
+                    <p className="text-gray-500 dark:text-gray-400 font-medium">Loading Stock Database...</p>
                 </div>
             </Layout>
         )
@@ -140,35 +140,35 @@ function Inventory() {
         <Layout title="Inventory">
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-3 gap-6 mb-6 mt-12">
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest">Total Items</p>
-                    <h3 className="text-2xl font-black text-gray-800 mt-1">{inventory.length}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 mt-12">
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <p className="text-gray-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">Total Inventory Items</p>
+                    <h3 className="text-3xl font-black text-gray-800 dark:text-gray-100 mt-1 uppercase tracking-tight">{inventory.length}</h3>
                 </div>
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-yellow-400">
-                    <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest text-yellow-600">Low Stock</p>
-                    <h3 className="text-2xl font-black text-gray-800 mt-1">{lowStockCount}</h3>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border-l-4 border-l-yellow-400 border border-gray-100 dark:border-gray-800">
+                    <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-black uppercase tracking-widest mb-1">Low Stock Warning</p>
+                    <h3 className="text-3xl font-black text-gray-800 dark:text-gray-100 uppercase tracking-tight">{lowStockCount}</h3>
                 </div>
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-l-4 border-l-red-500">
-                    <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest text-red-600">Out of Stock</p>
-                    <h3 className="text-2xl font-black text-gray-800 mt-1">{outOfStockCount}</h3>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border-l-4 border-l-red-500 border border-gray-100 dark:border-gray-800">
+                    <p className="text-red-600 dark:text-red-500 text-[10px] font-black uppercase tracking-widest mb-1">Critical Depletion</p>
+                    <h3 className="text-3xl font-black text-gray-800 dark:text-gray-100 uppercase tracking-tight">{outOfStockCount}</h3>
                 </div>
             </div>
 
             {/* Header & Search */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div className="flex-1 w-full max-w-md">
                     <input
                         type="text"
                         placeholder="🔍 Search products in inventory..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-white border-2 border-gray-100 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                        className="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-gray-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
                     />
                 </div>
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100"
+                    className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20"
                 >
                     + Add Stock Record
                 </button>
@@ -176,16 +176,16 @@ function Inventory() {
 
             {/* Add Stock Form */}
             {showForm && (
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
-                    <h3 className="text-lg font-black text-gray-800 mb-6">📦 New Stock Record</h3>
+                <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 mb-8 transition-all animate-in slide-in-from-top duration-300">
+                    <h3 className="text-xl font-black text-gray-800 dark:text-gray-100 mb-6 uppercase tracking-tight">📦 New Stock Record</h3>
                     <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2">
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Select Product *</label>
+                            <label className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2">Select Product *</label>
                             <select
                                 required
                                 value={form.productId}
                                 onChange={(e) => setForm({ ...form, productId: e.target.value })}
-                                className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                                className="w-full border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                             >
                                 <option value="">Select Product</option>
                                 {products.map(p => (
@@ -194,35 +194,35 @@ function Inventory() {
                             </select>
                         </div>
                         <div>
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Current Stock *</label>
+                            <label className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2">Current Stock *</label>
                             <input
                                 type="number"
                                 required
                                 value={form.currentStock}
                                 onChange={(e) => setForm({ ...form, currentStock: e.target.value })}
-                                className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                                className="w-full border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                                 placeholder="0"
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Threshold (Min Stock) *</label>
+                            <label className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2">Threshold (Min Stock) *</label>
                             <input
                                 type="number"
                                 required
                                 value={form.minStock}
                                 onChange={(e) => setForm({ ...form, minStock: e.target.value })}
-                                className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                                className="w-full border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                                 placeholder="10"
                             />
                         </div>
                         <div className="col-span-1">
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest block mb-2">Target (Max Stock) *</label>
+                            <label className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2">Target (Max Stock) *</label>
                             <input
                                 type="number"
                                 required
                                 value={form.maxStock}
                                 onChange={(e) => setForm({ ...form, maxStock: e.target.value })}
-                                className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                                className="w-full border dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                                 placeholder="500"
                             />
                         </div>
@@ -230,14 +230,14 @@ function Inventory() {
                             <button
                                 type="button"
                                 onClick={() => setShowForm(false)}
-                                className="px-6 py-3 rounded-xl border-2 border-gray-100 text-gray-500 font-bold hover:bg-gray-50 transition"
+                                className="px-6 py-3 rounded-xl border dark:border-gray-700 text-gray-500 dark:text-gray-400 font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="px-8 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-black transition shadow-lg disabled:opacity-50"
+                                className="px-8 py-3 bg-gray-900 dark:bg-blue-600 text-white rounded-xl font-bold hover:bg-black dark:hover:bg-blue-700 transition shadow-lg disabled:opacity-50"
                             >
                                 {loading ? 'Saving...' : 'Confirm Stock Record'}
                             </button>
@@ -247,22 +247,22 @@ function Inventory() {
             )}
 
             {/* Inventory Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-gray-50/50 border-b border-gray-100">
+                        <thead className="bg-gray-50/50 dark:bg-gray-800/50 border-b dark:border-gray-800">
                             <tr>
-                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Product Details</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Stock Level</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">In/Out Range</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Update Stock</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Product Ledger</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Level</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Safety Bounds</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Alerts</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Adjustment</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
                             {filteredInventory.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" className="text-center py-20 text-gray-400 italic">
+                                    <td colSpan="5" className="text-center py-20 text-gray-400 dark:text-gray-500 italic">
                                         {searchTerm ? 'No matches found for your search' : 'No inventory records found'}
                                     </td>
                                 </tr>
@@ -270,35 +270,35 @@ function Inventory() {
                                 filteredInventory.map((item) => {
                                     const status = getStockStatus(item.currentStock, item.minStock)
                                     return (
-                                        <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
+                                        <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors group">
                                             <td className="px-6 py-5">
-                                                <p className="font-black text-gray-800">{getProductName(item.productId)}</p>
-                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1">{getProductCategory(item.productId) || `ID: ${item.productId.slice(-8)}`}</p>
+                                                <p className="font-bold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{getProductName(item.productId)}</p>
+                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">{getProductCategory(item.productId) || `ID: ${item.productId.slice(-8)}`}</p>
                                             </td>
                                             <td className="px-6 py-5">
-                                                <span className="text-xl font-black text-gray-900">{item.currentStock}</span>
-                                                <span className="text-[10px] text-gray-400 font-bold uppercase ml-1">Units</span>
+                                                <span className="text-xl font-black text-gray-900 dark:text-gray-100">{item.currentStock}</span>
+                                                <span className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase ml-1">UNITS</span>
                                             </td>
                                             <td className="px-6 py-5">
                                                 <div className="flex items-center justify-center gap-4 text-xs font-bold">
                                                     <div className="text-center">
-                                                        <span className="text-[10px] text-gray-400 block uppercase">Min</span>
-                                                        <span className="text-gray-600">{item.minStock}</span>
+                                                        <span className="text-[9px] text-gray-400 dark:text-gray-500 block uppercase tracking-tighter">Min</span>
+                                                        <span className="text-gray-600 dark:text-gray-400">{item.minStock}</span>
                                                     </div>
-                                                    <div className="w-12 h-1 bg-gray-100 rounded-full overflow-hidden relative">
+                                                    <div className="w-16 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative border dark:border-gray-700">
                                                         <div
-                                                            className="absolute inset-0 bg-blue-500 transition-all"
-                                                            style={{ width: `${Math.min((item.currentStock / item.maxStock) * 100, 100)}%` }}
+                                                            className={`absolute inset-0 transition-all ${item.currentStock <= item.minStock ? 'bg-amber-500' : 'bg-blue-500'}`}
+                                                            style={{ width: `${Math.min((item.currentStock / (item.maxStock || 1)) * 100, 100)}%` }}
                                                         />
                                                     </div>
                                                     <div className="text-center">
-                                                        <span className="text-[10px] text-gray-400 block uppercase">Max</span>
-                                                        <span className="text-gray-600">{item.maxStock}</span>
+                                                        <span className="text-[9px] text-gray-400 dark:text-gray-500 block uppercase tracking-tighter">Max</span>
+                                                        <span className="text-gray-600 dark:text-gray-400">{item.maxStock}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-5 text-center">
-                                                <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${status.color}`}>
+                                            <td className="px-6 py-5">
+                                                <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest ${status.color.includes('red') ? 'bg-red-50 dark:bg-red-900/20 text-red-500' : status.color.includes('yellow') ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600' : 'bg-green-50 dark:bg-green-900/20 text-green-600'}`}>
                                                     {status.label}
                                                 </span>
                                             </td>
@@ -307,7 +307,7 @@ function Inventory() {
                                                     <input
                                                         type="number"
                                                         defaultValue={item.currentStock}
-                                                        className="w-24 bg-gray-50 border-2 border-transparent focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-bold text-gray-800 focus:outline-none transition-all text-right"
+                                                        className="w-24 bg-gray-50 dark:bg-gray-800 border-2 border-transparent focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-black text-gray-800 dark:text-gray-100 focus:outline-none transition-all text-right shadow-inner"
                                                         onBlur={(e) => handleStockUpdate(item.id, e.target.value)}
                                                     />
                                                 </div>

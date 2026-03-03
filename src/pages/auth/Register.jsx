@@ -100,11 +100,18 @@ function Register() {
                     </button>
                 </form>
 
-                <div className="mt-8 text-center text-sm text-gray-500">
-                    Already have an account?{' '}
-                    <Link to="/login" className="text-blue-600 font-semibold hover:underline">
-                        Log In
-                    </Link>
+                <div className="mt-8 text-center text-sm text-gray-500 space-y-2">
+                    <div>
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+                            Log In
+                        </Link>
+                    </div>
+                    <div>
+                        <Link to="/docs" className="text-gray-400 hover:text-blue-600 transition font-medium">
+                            📘 View Documentation
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
