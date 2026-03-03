@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
-import { collection, getDocs, orderBy, query, updateDoc, doc, addDoc, serverTimestamp, where, limit } from 'firebase/firestore'
+import { collection, getDocs, getDoc, orderBy, query, updateDoc, doc, addDoc, serverTimestamp, where, limit } from 'firebase/firestore'
 import useAuthStore from '../../store/authStore'
 import { handleError, showSuccess } from '../../utils/errorHandler'
 
