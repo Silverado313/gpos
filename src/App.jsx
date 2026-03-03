@@ -30,6 +30,7 @@ import Backup from './pages/settings/Backup'
 import Expenses from './pages/accounts/Expenses'
 import CashFlow from './pages/accounts/CashFlow'
 import AccountsSummary from './pages/accounts/AccountsSummary'
+import RegisterReconciliation from './pages/accounts/RegisterReconciliation'
 import POInvoice from './pages/inventory/POInvoice'
 
 function App() {
@@ -112,6 +113,7 @@ function App() {
         <Route path="/accounts-summary" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AccountsSummary /></ProtectedRoute>} />
         <Route path="/expenses" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Expenses /></ProtectedRoute>} />
         <Route path="/cash-flow" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><CashFlow /></ProtectedRoute>} />
+        <Route path="/register-reconciliation" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><RegisterReconciliation /></ProtectedRoute>} />
         <Route path="/po-invoice/:id" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><POInvoice /></ProtectedRoute>} />
       </Routes>
     </ErrorBoundary>

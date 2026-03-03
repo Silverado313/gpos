@@ -357,6 +357,19 @@ function POS() {
                 })
             }
             const newSale = await newSalePromise
+
+            // Auto-sync to Cash Flow if payment is cash
+            if (paymentMethod === 'cash') {
+                addDoc(collection(db, 'cash_flow'), {
+                    type: 'in',
+                    category: 'Sales',
+                    amount: total,
+                    reason: `POS Sale (Auto-sync) #${newSale.id.slice(-6)}`,
+                    date: new Date().toISOString().split('T')[0],
+                    createdAt: serverTimestamp(),
+                    saleId: newSale.id
+                }).catch(err => console.error('Cash Flow Sync Failed:', err))
+            }
             setCart([])
             setAmountPaid('')
             setSelectedCustomer(null)

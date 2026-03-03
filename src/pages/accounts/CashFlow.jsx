@@ -128,7 +128,13 @@ function CashFlow() {
                         </h3>
                         <p className="text-xs text-gray-400 mt-2 font-bold uppercase tracking-wider">Manual Adjustments Only</p>
                     </div>
-                    <div className="flex gap-4 w-full md:w-auto">
+                    <div className="flex flex-wrap gap-4 w-full md:w-auto">
+                        <button
+                            onClick={() => window.location.href = '/register-reconciliation'}
+                            className="flex-1 md:flex-none px-6 py-3 bg-white text-gray-600 border border-gray-200 rounded-2xl font-black uppercase tracking-widest hover:bg-gray-50 transition shadow-sm"
+                        >
+                            📝 Register Close
+                        </button>
                         <button
                             onClick={() => { setType('in'); setShowForm(true); }}
                             className="flex-1 md:flex-none px-8 py-3 bg-green-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-green-700 transition shadow-lg shadow-green-100"
