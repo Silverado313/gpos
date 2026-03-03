@@ -18,6 +18,9 @@ const menuItems = [
     { path: '/settings', icon: '⚙️', label: 'Settings', roles: ['admin'] },
     { path: '/import', icon: '⬆️', label: 'Import Data', roles: ['admin'] },
     { path: '/backup', icon: '🗄️', label: 'Backup & Restore', roles: ['admin'] },
+    { path: '/accounts-summary', icon: '📊', label: 'Summary', roles: ['admin', 'manager'] },
+    { path: '/expenses', icon: '💸', label: 'Expenses', roles: ['admin', 'manager'] },
+    { path: '/cash-flow', icon: '🏧', label: 'Cash Flow', roles: ['admin', 'manager'] },
     { path: '/documentation', icon: '📖', label: 'Documentation', roles: ['admin', 'manager', 'cashier'] },
     { path: '/help', icon: '❓', label: 'Help & Support', roles: ['admin', 'manager', 'cashier'] },
     { path: '/user-settings', icon: '👤', label: 'Profile', roles: ['admin', 'manager', 'cashier'] },
@@ -36,6 +39,7 @@ function Sidebar({ isOpen, setIsOpen }) {
         { title: 'Management', paths: ['/products', '/inventory', '/suppliers', '/purchase-orders'] },
         { title: 'Sales', paths: ['/sales', '/customers'] },
         { title: 'Administration', paths: ['/employees', '/reports', '/settings', '/import', '/backup'] },
+        { title: 'Accounts', paths: ['/accounts-summary', '/expenses', '/cash-flow'] },
         { title: 'Help', paths: ['/documentation', '/help', '/user-settings'] },
     ]
 

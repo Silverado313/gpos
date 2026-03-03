@@ -27,6 +27,9 @@ import Suppliers from './pages/inventory/Suppliers'
 import PurchaseOrders from './pages/inventory/PurchaseOrders'
 import Import from './pages/settings/Import'
 import Backup from './pages/settings/Backup'
+import Expenses from './pages/accounts/Expenses'
+import CashFlow from './pages/accounts/CashFlow'
+import AccountsSummary from './pages/accounts/AccountsSummary'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
@@ -83,28 +86,31 @@ function App() {
     <ErrorBoundary>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-      <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-      <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
+        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+        <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
 
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/products" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Products /></ProtectedRoute>} />
-      <Route path="/pos" element={<ProtectedRoute><POS /></ProtectedRoute>} />
-      <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
-      <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
-      <Route path="/employees" element={<ProtectedRoute allowedRoles={['admin']}><Employees /></ProtectedRoute>} />
-      <Route path="/inventory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Inventory /></ProtectedRoute>} />
-      <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
-      <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
-      <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
-      <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
-      <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
-      <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
-      <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
-      <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
-      <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />
-      <Route path="/backup" element={<ProtectedRoute allowedRoles={['admin']}><Backup /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/products" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Products /></ProtectedRoute>} />
+        <Route path="/pos" element={<ProtectedRoute><POS /></ProtectedRoute>} />
+        <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
+        <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
+        <Route path="/employees" element={<ProtectedRoute allowedRoles={['admin']}><Employees /></ProtectedRoute>} />
+        <Route path="/inventory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Inventory /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><Settings /></ProtectedRoute>} />
+        <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
+        <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
+        <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
+        <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
+        <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
+        <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
+        <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />
+        <Route path="/backup" element={<ProtectedRoute allowedRoles={['admin']}><Backup /></ProtectedRoute>} />
+        <Route path="/accounts-summary" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AccountsSummary /></ProtectedRoute>} />
+        <Route path="/expenses" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Expenses /></ProtectedRoute>} />
+        <Route path="/cash-flow" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><CashFlow /></ProtectedRoute>} />
       </Routes>
     </ErrorBoundary>
   )
