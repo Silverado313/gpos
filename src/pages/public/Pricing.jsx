@@ -36,7 +36,7 @@ export default function Pricing() {
                             {isDarkMode ? '🌙' : '☀️'}
                         </button>
                         <Link to="/" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Features</Link>
-                        <a href="https://wa.me/923090404293" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all active:scale-95">
+                        <a href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product." target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all active:scale-95">
                             Contact Us
                         </a>
                     </div>
@@ -85,7 +85,7 @@ export default function Pricing() {
                             <PlanFeature cross label="Multiple Cashiers" />
                             <PlanFeature cross label="Customer Loyalty" />
                         </ul>
-                        <a href="https://wa.me/923090404293" target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800 text-gray-900 dark:text-gray-100 font-black uppercase tracking-widest text-xs hover:border-blue-600 hover:text-blue-600 transition-all active:scale-95">
+                        <a href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product." target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800 text-gray-900 dark:text-gray-100 font-black uppercase tracking-widest text-xs hover:border-blue-600 hover:text-blue-600 transition-all active:scale-95">
                             Get Started Free
                         </a>
                     </div>
@@ -115,7 +115,7 @@ export default function Pricing() {
                             <PlanFeature check label="Held Sales (Park Orders)" />
                             <PlanFeature check label="WhatsApp Support" />
                         </ul>
-                        <a href="https://wa.me/923090404293" target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl bg-blue-600 text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95">
+                        <a href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product." target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl bg-blue-600 text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-95">
                             Start 7-Day Free Trial
                         </a>
                     </div>
@@ -142,7 +142,7 @@ export default function Pricing() {
                             <PlanFeature check label="End of Day Reconciliation" />
                             <PlanFeature check label="Priority Phone Support" />
                         </ul>
-                        <a href="https://wa.me/923090404293" target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800 text-gray-900 dark:text-gray-100 font-black uppercase tracking-widest text-xs hover:border-blue-600 hover:text-blue-600 transition-all active:scale-95">
+                        <a href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product." target="_blank" rel="noopener noreferrer" className="block w-full text-center py-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800 text-gray-900 dark:text-gray-100 font-black uppercase tracking-widest text-xs hover:border-blue-600 hover:text-blue-600 transition-all active:scale-95">
                             Contact for Demo
                         </a>
                     </div>
