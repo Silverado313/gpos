@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware'
 const useThemeStore = create(
     persist(
         (set) => ({
-            isDarkMode: false,
+            isDarkMode: true,
             toggleTheme: () => set((state) => {
                 const next = !state.isDarkMode
                 if (next) {
@@ -24,7 +24,7 @@ const useThemeStore = create(
             }
         }),
         {
-            name: 'gpos-theme-storage',
+            name: 'gpos-theme-v2',
         }
     )
 )

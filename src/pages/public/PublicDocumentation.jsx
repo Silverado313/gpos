@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import useThemeStore from '../../store/themeStore'
+import useAuthStore from '../../store/authStore'
 
 export default function PublicDocumentation() {
-    const { initTheme } = useThemeStore()
+    const { isDarkMode, toggleTheme, initTheme } = useThemeStore()
+    const { user } = useAuthStore()
 
     useEffect(() => {
         initTheme()
@@ -67,16 +69,34 @@ export default function PublicDocumentation() {
             <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 z-50 transition-colors duration-500">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-200 dark:shadow-none">
-                            G
-                        </div>
-                        <span className="text-xl font-black tracking-tight text-gray-900 dark:text-gray-100">GPOS<span className="text-blue-600">.</span></span>
+                        <Link to="/" className="flex items-center gap-3 group">
+                            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-200 dark:shadow-none transition-transform group-hover:scale-110">
+                                G
+                            </div>
+                            <span className="text-xl font-black tracking-tight text-gray-900 dark:text-gray-100 group-hover:text-blue-600 transition-colors">GPOS<span className="text-blue-600">.</span></span>
+                        </Link>
                     </div>
                     <div className="flex items-center gap-6">
-                        <Link to="/login" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Login</Link>
-                        <Link to="/register" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all">
-                            Sign Up
-                        </Link>
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
+                            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                        >
+                            {isDarkMode ? '🌙' : '☀️'}
+                        </button>
+                        <Link to="/pricing" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Pricing</Link>
+                        {user ? (
+                            <Link to="/dashboard" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all">
+                                Go to Dashboard
+                            </Link>
+                        ) : (
+                            <>
+                                <Link to="/login" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Login</Link>
+                                <Link to="/register" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all">
+                                    Sign Up
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -163,8 +183,11 @@ export default function PublicDocumentation() {
                         <span className="text-sm font-bold text-gray-600 dark:text-gray-400 tracking-tight">GPOS Ecosystem © {new Date().getFullYear()}</span>
                     </div>
                     <div className="flex items-center gap-8">
-                        <Link to="/docs" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Documentation</Link>
-                        <Link to="/login" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Dashboard</Link>
+                        <Link to="/" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Documentation</Link>
+                        <Link to="/pricing" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Pricing</Link>
+                        <Link to={user ? "/dashboard" : "/login"} className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">
+                            {user ? "Dashboard" : "Login"}
+                        </Link>
                     </div>
                 </div>
             </footer>

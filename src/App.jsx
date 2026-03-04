@@ -12,6 +12,7 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import PendingApproval from './pages/auth/PendingApproval'
 import Invoice from './pages/sales/Invoice'
+import Pricing from './pages/public/Pricing'
 import Dashboard from './pages/dashboard/Dashboard'
 import Products from './pages/products/Products'
 import POS from './pages/pos/POS'
@@ -92,7 +93,8 @@ function App() {
     <ErrorBoundary>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-        <Route path="/" element={<Navigate to={user ? (isPending ? '/pending' : '/dashboard') : '/login'} />} />
+        <Route path="/" element={<PublicDocumentation />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
         <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />
