@@ -4,6 +4,7 @@ import { db } from '../../firebase/config'
 import { collection, getDocs, getDoc, orderBy, query, updateDoc, doc, addDoc, serverTimestamp, where, limit } from 'firebase/firestore'
 import useAuthStore from '../../store/authStore'
 import { handleError, showSuccess } from '../../utils/errorHandler'
+import { generateReceiptMessage, getWhatsAppLink, getSMSLink } from '../../utils/receiptHelper'
 
 function Sales() {
     const [sales, setSales] = useState([])
@@ -268,15 +269,34 @@ function Sales() {
                             </div>
                         </div>
 
-                        <div className="mt-8 flex items-center justify-between">
-                            <span className={`px-4 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest ${selected.paymentMethod === 'cash'
+                        <div className="mt-8 flex flex-col gap-3">
+                            <span className={`px-4 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest text-center ${selected.paymentMethod === 'cash'
                                 ? 'bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400'
                                 : selected.paymentMethod === 'card'
                                     ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                                     : 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400'
                                 }`}>
-                                Methods: {selected.paymentMethod}
+                                Method: {selected.paymentMethod}
                             </span>
+
+                            {selected.customerPhone && (
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button
+                                        onClick={() => {
+                                            const msg = generateReceiptMessage(selected, settings)
+                                            window.open(getWhatsAppLink(selected.customerPhone, msg), '_blank')
+                                        }}
+                                        className="bg-green-600 text-white py-2 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-green-700 transition flex items-center justify-center gap-2"
+                                    ><span>📱</span> WhatsApp</button>
+                                    <button
+                                        onClick={() => {
+                                            const msg = generateReceiptMessage(selected, settings)
+                                            window.location.href = getSMSLink(selected.customerPhone, msg)
+                                        }}
+                                        className="bg-gray-800 text-white py-2 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-900 transition flex items-center justify-center gap-2"
+                                    ><span>💬</span> SMS</button>
+                                </div>
+                            )}
                         </div>
 
                         {selected.status !== 'returned' && (user?.role === 'admin' || user?.role === 'manager') && (

@@ -111,7 +111,7 @@ function App() {
         <Route path="/user-settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
         <Route path="/suppliers" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><Suppliers /></ProtectedRoute>} />
         <Route path="/purchase-orders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><PurchaseOrders /></ProtectedRoute>} />
-        <Route path="/invoice/:id" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
+        <Route path="/invoice/:id" element={<Invoice />} />
         <Route path="/documentation" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
         <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
         <Route path="/import" element={<ProtectedRoute allowedRoles={['admin']}><Import /></ProtectedRoute>} />

@@ -17,6 +17,9 @@ import {
     query
 } from 'firebase/firestore'
 
+import { generateReceiptMessage, getWhatsAppLink, getSMSLink } from '../../utils/receiptHelper'
+import useAuthStore from '../../store/authStore'
+
 // ─── Cart Panel — defined OUTSIDE POS so it never remounts on parent re-render
 const CartPanel = memo(({
     cart, customers, selectedCustomer, setSelectedCustomer,
@@ -24,9 +27,9 @@ const CartPanel = memo(({
     settings, redeemPoints, setRedeemPoints, redemptionValue,
     paymentMethod, setPaymentMethod,
     amountPaid, setAmountPaid,
-    lastSaleId, success,
+    lastSaleId, lastSaleData, success,
     loading, handleCheckout, handleHoldSale, clearCart,
-    setMobileCartOpen, updateQty, removeFromCart
+    setMobileCartOpen, updateQty, removeFromCart, handleShare
 }) => (
     <>
         {/* Cart Header */}
@@ -158,9 +161,23 @@ const CartPanel = memo(({
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <button
-                            onClick={() => window.open(`/invoice/${lastSaleId}`, '_self')}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
-                        ><span>📜</span> Print Receipt</button>
+                            onClick={() => window.open(`/invoice/${lastSaleId}`, '_blank')}
+                            className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-md flex items-center gap-2 w-full justify-center"
+                        ><span>📜</span> View Full Invoice</button>
+
+                        {lastSaleData?.customerPhone && (
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    onClick={() => handleShare('whatsapp', lastSaleData)}
+                                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-green-700 transition flex items-center gap-2 justify-center"
+                                ><span>📱</span> WhatsApp</button>
+                                <button
+                                    onClick={() => handleShare('sms', lastSaleData)}
+                                    className="bg-gray-800 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-gray-900 transition flex items-center gap-2 justify-center"
+                                ><span>💬</span> Send SMS</button>
+                            </div>
+                        )}
+
                         <button
                             onClick={clearCart}
                             className="bg-white text-blue-600 border-2 border-blue-100 px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition flex items-center gap-2 w-full justify-center"
@@ -206,12 +223,23 @@ function POS() {
     const [suspendedSales, setSuspendedSales] = useState([])
     const [showHeldSales, setShowHeldSales] = useState(false)
     const [lastSaleId, setLastSaleId] = useState(null)
+    const [lastSaleData, setLastSaleData] = useState(null)
     const [mobileCartOpen, setMobileCartOpen] = useState(false)
     const [barcodeFlash, setBarcodeFlash] = useState(false)
+    const { user } = useAuthStore()
 
     const [amountPaid, setAmountPaid] = useState('')
 
     const currency = settings?.currency || 'PKR'
+
+    const handleShare = (method, sale) => {
+        const message = generateReceiptMessage(sale, settings)
+        if (method === 'whatsapp') {
+            window.open(getWhatsAppLink(sale.customerPhone, message), '_blank')
+        } else {
+            window.location.href = getSMSLink(sale.customerPhone, message)
+        }
+    }
 
     useEffect(() => {
         const fetchInitial = async () => {
@@ -331,14 +359,18 @@ function POS() {
                     quantity: item.quantity,
                     total: item.price * item.quantity
                 })),
-                subtotal, tax, taxLabel: settings?.taxLabel || 'Tax',
-                discount: redemptionValue, total, currency, paymentMethod,
-                amountPaid: parseFloat(amountPaid) || total,
-                change: change > 0 ? change : 0,
+                subtotal, tax, total,
+                currency,
+                taxLabel: settings?.taxLabel || 'Tax',
+                discount: redeemPoints ? redemptionValue : 0,
+                paymentMethod,
+                amountPaid: Number(amountPaid) || total,
+                change: Number(change) || 0,
+                cashierName: user?.name || auth.currentUser?.displayName || 'Unknown Staff',
                 cashierId: auth.currentUser?.uid,
-                cashierName: auth.currentUser?.displayName || 'Unknown Staff',
                 customerId: selectedCustomer?.id || 'walk-in',
                 customerName: selectedCustomer?.name || 'Walk-in Customer',
+                customerPhone: selectedCustomer?.phone || '',
                 status: 'completed', createdAt: serverTimestamp()
             }
             const newSalePromise = addDoc(collection(db, 'sales'), saleData)
@@ -357,6 +389,7 @@ function POS() {
                 })
             }
             const newSale = await newSalePromise
+            const finalSaleData = { id: newSale.id, ...saleData }
 
             // Auto-sync to Cash Flow if payment is cash
             if (paymentMethod === 'cash') {
@@ -376,6 +409,7 @@ function POS() {
             setRedeemPoints(false)
             setSuccess(newSale.id)
             setLastSaleId(newSale.id)
+            setLastSaleData(finalSaleData)
             setMobileCartOpen(true)
             showSuccess('Sale completed successfully')
             setTimeout(() => setSuccess(false), 15000)
@@ -396,7 +430,7 @@ function POS() {
                 customerId: selectedCustomer?.id || 'walk-in',
                 customerName: selectedCustomer?.name || 'Walk-in Customer',
                 cashierId: auth.currentUser?.uid,
-                cashierName: auth.currentUser?.displayName || 'Unknown Staff',
+                cashierName: user?.name || auth.currentUser?.displayName || 'Unknown Staff',
                 createdAt: serverTimestamp()
             })
             setCart([])
