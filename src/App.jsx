@@ -35,6 +35,7 @@ import AccountsSummary from './pages/accounts/AccountsSummary'
 import RegisterReconciliation from './pages/accounts/RegisterReconciliation'
 import POInvoice from './pages/inventory/POInvoice'
 import PublicDocumentation from './pages/public/PublicDocumentation'
+import Purpose from './pages/public/Purpose'
 
 function App() {
   const { user, setUser, loading, setLoading } = useAuthStore()
@@ -95,6 +96,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PublicDocumentation />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/purpose" element={<Purpose />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
         <Route path="/pending" element={user && isPending ? <PendingApproval /> : <Navigate to="/dashboard" />} />

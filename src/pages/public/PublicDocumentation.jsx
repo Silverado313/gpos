@@ -85,6 +85,7 @@ export default function PublicDocumentation() {
                             {isDarkMode ? '🌙' : '☀️'}
                         </button>
                         <Link to="/pricing" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Pricing</Link>
+                        <Link to="/purpose" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Purpose</Link>
                         {user ? (
                             <Link to="/dashboard" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all">
                                 Go to Dashboard
@@ -185,6 +186,7 @@ export default function PublicDocumentation() {
                     <div className="flex items-center gap-8">
                         <Link to="/" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Documentation</Link>
                         <Link to="/pricing" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Pricing</Link>
+                        <Link to="/purpose" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Purpose</Link>
                         <Link to={user ? "/dashboard" : "/login"} className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">
                             {user ? "Dashboard" : "Login"}
                         </Link>

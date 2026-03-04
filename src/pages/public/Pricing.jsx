@@ -36,6 +36,7 @@ export default function Pricing() {
                             {isDarkMode ? '🌙' : '☀️'}
                         </button>
                         <Link to="/" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">Features</Link>
+                        <Link to="/purpose" className="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition" >Purpose</Link>
                         <a href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product." target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-100 dark:shadow-none hover:bg-blue-700 hover:shadow-xl transition-all active:scale-95">
                             Contact Us
                         </a>
@@ -203,6 +204,7 @@ export default function Pricing() {
                     </div>
                     <div className="flex gap-8">
                         <Link to="/" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Features</Link>
+                        <Link to="/purpose" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Purpose</Link>
                         <Link to="/login" className="text-xs font-black uppercase text-gray-400 hover:text-blue-600 transition">Dashboard</Link>
                     </div>
                 </div>
