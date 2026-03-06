@@ -53,9 +53,9 @@ function App() {
           try {
             const userDoc = await getDoc(doc(db, 'users', currentUser.uid))
             if (userDoc.exists()) {
-              const freshRole = userDoc.data().role
-              setRole(freshRole)
-              setUser({ ...currentUser, role: freshRole })
+              const userData = userDoc.data()
+              setRole(userData.role)
+              setUser({ ...currentUser, ...userData })
             } else {
               // Fallback to cached role or default
               const finalRole = cachedRole || 'pending'

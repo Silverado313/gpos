@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Layout from '../../components/layout/Layout'
 import { db } from '../../firebase/config'
 import { handleError, showSuccess } from '../../utils/errorHandler'
@@ -15,6 +15,13 @@ import {
     where
 } from 'firebase/firestore'
 import { auth } from '../../firebase/config'
+
+const ROWS_OPTIONS = [10, 25, 50, 100]
+
+function SortIcon({ col, sortCol, sortDir }) {
+    if (sortCol !== col) return <span className="ml-1 opacity-25">↕</span>
+    return <span className="ml-1 text-blue-600">{sortDir === 'asc' ? '↑' : '↓'}</span>
+}
 
 function Products() {
     const [products, setProducts] = useState([])
@@ -33,6 +40,11 @@ function Products() {
     })
     const [editingProduct, setEditingProduct] = useState(null)
     const [initialLoading, setInitialLoading] = useState(true)
+    const [search, setSearch] = useState('')
+    const [sortCol, setSortCol] = useState('name')
+    const [sortDir, setSortDir] = useState('asc')
+    const [page, setPage] = useState(1)
+    const [rowsPerPage, setRowsPerPage] = useState(25)
 
     const businessId = auth.currentUser?.uid
 
@@ -166,6 +178,51 @@ function Products() {
             fetchProducts()
         }
     }
+
+    // ── Datatable Logic ──────────────────────────────────────
+    const handleSort = (col) => {
+        if (sortCol === col) {
+            setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+        } else {
+            setSortCol(col)
+            setSortDir('asc')
+        }
+        setPage(1)
+    }
+
+    const filtered = useMemo(() => {
+        const q = search.trim().toLowerCase()
+        if (!q) return products
+        return products.filter(p =>
+            p.name?.toLowerCase().includes(q) ||
+            p.barcode?.toLowerCase().includes(q) ||
+            getCategoryName(p.category).toLowerCase().includes(q) ||
+            p.unit?.toLowerCase().includes(q)
+        )
+    }, [products, categories, search])
+
+    const sorted = useMemo(() => {
+        return [...filtered].sort((a, b) => {
+            let aVal, bVal
+            if (sortCol === 'price') {
+                aVal = a.price || 0; bVal = b.price || 0
+            } else if (sortCol === 'stock') {
+                aVal = a.stock || 0; bVal = b.stock || 0
+            } else if (sortCol === 'category') {
+                aVal = getCategoryName(a.category); bVal = getCategoryName(b.category)
+            } else {
+                aVal = (a[sortCol] || '').toString().toLowerCase()
+                bVal = (b[sortCol] || '').toString().toLowerCase()
+            }
+            if (aVal < bVal) return sortDir === 'asc' ? -1 : 1
+            if (aVal > bVal) return sortDir === 'asc' ? 1 : -1
+            return 0
+        })
+    }, [filtered, sortCol, sortDir])
+
+    const totalPages = Math.max(1, Math.ceil(sorted.length / rowsPerPage))
+    const paginated = sorted.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    // ────────────────────────────────────────────────────────
 
     return (
         <Layout title="Products">
@@ -377,68 +434,111 @@ function Products() {
 
             {/* Products Table */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden border border-gray-100 dark:border-gray-800">
+
+                {/* Controls: Search + Rows per page */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border-b dark:border-gray-800">
+                    <div className="relative w-full sm:max-w-sm">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">🔍</span>
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={e => { setSearch(e.target.value); setPage(1) }}
+                            placeholder="Search by name, barcode, category..."
+                            className="w-full pl-9 pr-8 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        />
+                        {search && (
+                            <button
+                                onClick={() => { setSearch(''); setPage(1) }}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs"
+                            >✕</button>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 font-bold flex-shrink-0">
+                        <span>Show</span>
+                        <select
+                            value={rowsPerPage}
+                            onChange={e => { setRowsPerPage(Number(e.target.value)); setPage(1) }}
+                            className="border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            {ROWS_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
+                        </select>
+                        <span>entries</span>
+                    </div>
+                </div>
+
+                {/* Search result banner */}
+                {search && (
+                    <div className="px-4 py-2 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/10 border-b dark:border-gray-800">
+                        {filtered.length === 0 ? 'No results found.' : `${filtered.length} result${filtered.length > 1 ? 's' : ''} for "${search}"`}
+                    </div>
+                )}
+
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead className="bg-gray-50 dark:bg-gray-800/50 border-b dark:border-gray-800">
                             <tr>
-                                <th className="text-left px-6 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Product Details</th>
-                                <th className="text-left px-6 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Category</th>
-                                <th className="text-left px-6 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Sale Price</th>
-                                <th className="text-left px-6 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Availability</th>
-                                <th className="text-left px-6 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Actions</th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest w-10">#</th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest cursor-pointer hover:text-blue-600 select-none" onClick={() => handleSort('name')}>
+                                    Product Details <SortIcon col="name" sortCol={sortCol} sortDir={sortDir} />
+                                </th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest cursor-pointer hover:text-blue-600 select-none" onClick={() => handleSort('category')}>
+                                    Category <SortIcon col="category" sortCol={sortCol} sortDir={sortDir} />
+                                </th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest cursor-pointer hover:text-blue-600 select-none" onClick={() => handleSort('price')}>
+                                    Sale Price <SortIcon col="price" sortCol={sortCol} sortDir={sortDir} />
+                                </th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest cursor-pointer hover:text-blue-600 select-none" onClick={() => handleSort('stock')}>
+                                    Availability <SortIcon col="stock" sortCol={sortCol} sortDir={sortDir} />
+                                </th>
+                                <th className="text-left px-4 py-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                            {products.length === 0 ? (
+                            {paginated.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" className="text-center py-12 text-gray-400 dark:text-gray-500 italic">
-                                        No products yet. Click "Add Product" to start!
+                                    <td colSpan="6" className="text-center py-12 text-gray-400 dark:text-gray-500 italic">
+                                        {search ? 'No products match your search.' : 'No products yet. Click "Add Product" to start!'}
                                     </td>
                                 </tr>
                             ) : (
-                                products.map((product) => (
+                                paginated.map((product, index) => (
                                     <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-3 text-gray-400 dark:text-gray-500 text-xs font-medium">
+                                            {(page - 1) * rowsPerPage + index + 1}
+                                        </td>
+                                        <td className="px-4 py-3">
                                             <div className="flex flex-col">
                                                 <span className="font-bold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{product.name}</span>
                                                 <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">SKU: {product.barcode || 'N/A'}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-3">
                                             <span className="text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-lg border dark:border-gray-700">
                                                 {getCategoryName(product.category)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-3">
                                             <span className="text-sm font-black text-blue-600 dark:text-blue-400">{currency} {product.price.toLocaleString()}</span>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col gap-1">
-                                                <span className={`px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest inline-block w-fit ${product.stock <= 5 ? 'bg-red-50 dark:bg-red-900/20 text-red-500' : 'bg-green-50 dark:bg-green-900/20 text-green-500'}`}>
-                                                    {product.stock} {product.unit} Available
-                                                </span>
-                                            </div>
+                                        <td className="px-4 py-3">
+                                            <span className={`px-2 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest inline-block w-fit ${product.stock <= 5 ? 'bg-red-50 dark:bg-red-900/20 text-red-500' : 'bg-green-50 dark:bg-green-900/20 text-green-500'}`}>
+                                                {product.stock} {product.unit} Available
+                                            </span>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 py-3">
                                             <div className="flex gap-4">
                                                 <button
                                                     onClick={() => setEditingProduct(product)}
                                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xs font-black uppercase tracking-widest"
-                                                >
-                                                    Edit
-                                                </button>
+                                                >Edit</button>
                                                 <button
                                                     onClick={() => window.location.href = '/inventory'}
                                                     className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 text-xs font-black uppercase tracking-widest"
-                                                >
-                                                    Supply
-                                                </button>
+                                                >Supply</button>
                                                 <button
                                                     onClick={() => handleDelete(product.id)}
                                                     className="text-red-500 hover:text-red-700 dark:hover:text-red-400 text-xs font-black uppercase tracking-widest"
-                                                >
-                                                    Delete
-                                                </button>
+                                                >Delete</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -446,6 +546,33 @@ function Products() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Pagination Footer */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t dark:border-gray-800 bg-gray-50 dark:bg-gray-800/30">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                        {filtered.length === 0
+                            ? 'No entries'
+                            : `Showing ${Math.min((page - 1) * rowsPerPage + 1, filtered.length)}–${Math.min(page * rowsPerPage, filtered.length)} of ${filtered.length} entries`}
+                    </span>
+                    <div className="flex items-center gap-1">
+                        <button onClick={() => setPage(1)} disabled={page === 1} className="px-2 py-1 text-xs font-bold rounded-lg border dark:border-gray-700 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300">«</button>
+                        <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-2.5 py-1 text-xs font-bold rounded-lg border dark:border-gray-700 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300">‹</button>
+                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const start = Math.max(1, Math.min(page - 2, totalPages - 4))
+                            const p = start + i
+                            if (p > totalPages) return null
+                            return (
+                                <button
+                                    key={p}
+                                    onClick={() => setPage(p)}
+                                    className={`px-2.5 py-1 text-xs font-bold rounded-lg border transition ${p === page ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+                                >{p}</button>
+                            )
+                        })}
+                        <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="px-2.5 py-1 text-xs font-bold rounded-lg border dark:border-gray-700 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300">›</button>
+                        <button onClick={() => setPage(totalPages)} disabled={page === totalPages} className="px-2 py-1 text-xs font-bold rounded-lg border dark:border-gray-700 disabled:opacity-40 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300">»</button>
+                    </div>
                 </div>
             </div>
 

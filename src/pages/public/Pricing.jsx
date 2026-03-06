@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useThemeStore from '../../store/themeStore'
 
 export default function Pricing() {
     const { isDarkMode, toggleTheme, initTheme } = useThemeStore()
+    const [menuOpen, setMenuOpen] = useState(false)
 
     useEffect(() => {
         initTheme()
@@ -27,7 +28,9 @@ export default function Pricing() {
                             <span className="text-xl font-black tracking-tight text-gray-900 dark:text-gray-100 group-hover:text-blue-600 transition-colors">GPOS<span className="text-blue-600">.</span></span>
                         </Link>
                     </div>
-                    <div className="flex items-center gap-6">
+
+                    {/* Desktop Nav */}
+                    <div className="hidden md:flex items-center gap-6">
                         <button
                             onClick={toggleTheme}
                             className="p-2 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
@@ -41,7 +44,46 @@ export default function Pricing() {
                             Contact Us
                         </a>
                     </div>
+
+                    {/* Mobile: Theme + Hamburger */}
+                    <div className="flex md:hidden items-center gap-2">
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all"
+                        >
+                            {isDarkMode ? '🌙' : '☀️'}
+                        </button>
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                            aria-label="Toggle menu"
+                        >
+                            <div className="w-5 h-4 flex flex-col justify-between">
+                                <span className={`block h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`}></span>
+                                <span className={`block h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+                                <span className={`block h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-[9px]' : ''}`}></span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
+
+                {/* Mobile Dropdown */}
+                {menuOpen && (
+                    <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 px-6 py-4 flex flex-col gap-4">
+                        <Link to="/" onClick={() => setMenuOpen(false)} className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 transition">Features</Link>
+                        <Link to="/purpose" onClick={() => setMenuOpen(false)} className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 transition">Purpose</Link>
+                        <Link to="/pricing" onClick={() => setMenuOpen(false)} className="text-sm font-bold text-blue-600">Pricing</Link>
+                        <a
+                            href="https://wa.me/923090404293?text=Hello%20GPOS%20Team%2C%20I%20have%20a%20question%20about%20your%20product."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setMenuOpen(false)}
+                            className="w-full text-center px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all active:scale-95"
+                        >
+                            Contact Us
+                        </a>
+                    </div>
+                )}
             </nav>
 
             {/* Hero */}
