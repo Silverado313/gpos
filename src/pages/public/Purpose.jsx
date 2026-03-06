@@ -41,7 +41,6 @@ export default function Purpose() {
                 "Cafes & Coffee Shops",
                 "Bakeries & Pizzerias",
                 "Food Trucks & Delivery",
-                "Bars & Nightclubs",
                 "Catering Services"
             ],
             advantages: [
